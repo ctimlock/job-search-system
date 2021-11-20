@@ -33,7 +33,6 @@ public abstract class User  {
         this.date = date;
         this.isLoggedIn = isLoggedIn;
     }
-
     public String getFirstName() {
         return firstName;
     }
