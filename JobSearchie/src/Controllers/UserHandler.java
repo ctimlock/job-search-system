@@ -1,9 +1,12 @@
 package Controllers;
 
+import database.DatabaseIO;
 import entities.JobSeeker;
 import entities.User;
 import utilities.UserIO;
 import utilities.Validate;
+
+import java.util.HashMap;
 
 public abstract class UserHandler {
     public static void welcomeScreen () {
@@ -17,25 +20,38 @@ public abstract class UserHandler {
                 You will now be redirected to the registration and login page""");
     }
 
-    public static int loginOrRegister() {
-        UserIO.displayHeadingAndBody("", "");
-        int selection = UserIO.getIntegerInput();
-        while (! new Validate().isInRange(selection, 1, 3, true)) {
-            //try again
-            //get more user input
-            selection = 1;
-        }
-        if (selection == 1)
-            login();
-        else if (selection == 2)
-            register();
-        else if (selection == 3)
-            exit();
+    private static void printLoginOrRegister() {
+        UserIO.displayHeading("Login or Register");
+        HashMap<String, String> loginOptions = new HashMap<>();
+        loginOptions.put("1", "Login");
+        loginOptions.put("2", "Register");
+        loginOptions.put("3", "Exit");
+        UserIO.displayOptions(loginOptions);
+        UserIO.displayBody("Please select one of the above options:");
+    }
 
-        return 1;
+    public static User loginOrRegister() {
+        User user;
+        Validate validator = new Validate();
+        String userInput = UserIO.getInput().strip();
+        String[] options = new String[]{"1", "2", "3"};
+        while (!validator.isValidOption(userInput, options)) {
+            UserIO.displayBody("`" + userInput + "` is not a valid option please enter a valid option:");
+            userInput = UserIO.getInput();
+        }
+        switch (userInput) {
+            case ("1") -> user = login();
+            case ("2") -> user = register();
+            case ("3") -> exit();
+            default -> throw new IllegalStateException("Unexpected value: " + userInput + "User Handler class, login or register class");
+        }
+        return new JobSeeker();
     }
 
     public static User login() {
+        UserIO.displayBody("Please enter your email address");
+        String email = UserIO.getInput();
+        //DatabaseIO.doesEmailExist();
         return new JobSeeker();
     }
 

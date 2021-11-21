@@ -3,8 +3,18 @@ import Controllers.UserHandler;
 import entities.Admin;
 import entities.JobSeeker;
 import entities.User;
+import utilities.UserIO;
+
+import java.awt.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Scanner;
 
 public class JobSearchie {
+    private User user;
+
     public static void main(String[] args) {
         JobSearchie session = new JobSearchie();
         session.run();
@@ -12,10 +22,6 @@ public class JobSearchie {
 
     public void run() {
         UserHandler.welcomeScreen();
-        UserHandler.loginOrRegister();
-    }
-
-    public static void end() {
-        System.exit(1);
+        //user = UserHandler.loginOrRegister();
     }
 }

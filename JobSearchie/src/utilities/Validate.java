@@ -2,10 +2,17 @@ package utilities;
 
 import Controllers.UserHandler;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+
 public class Validate {
     private final int MAX_ATTEMPTS = 3;
     private int incorrectAttempts = 0;
 
+    public boolean isValidOption(String input, String[] options) {
+        checkAttempts();
+        return Arrays.asList(options).contains(input);
+    }
     public boolean isInRange(int value, int min, int max, boolean inclusive) {
         checkAttempts();
         if ((inclusive && isInRangeInclusive(value, min, max)) || (!inclusive && isInRangeExclusive(value, min, max))) {
