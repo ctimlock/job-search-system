@@ -1,0 +1,2 @@
+id, email, password, accountType, firstName, lastName, locationId, contactNumber, dateCreated, dateOfBirth, currentJobName, currentJobLevel, expectedCompensation, resumeDir, coverLetterDir, companyId, recruitingSpecialty
+1, lqui0007@student.monash.edu, abc123ABC123***, Job Seeker, Levi, Quilliam, 1, 0457393901, 20211121, 19870824, Analyst, Entry Level, 75000,,,,,
