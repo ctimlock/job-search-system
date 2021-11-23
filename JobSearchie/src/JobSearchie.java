@@ -1,27 +1,80 @@
-import Controllers.AdminHandler;
 import Controllers.UserHandler;
-import entities.Admin;
-import entities.JobSeeker;
+import entities.Session;
 import entities.User;
 import utilities.UserIO;
-
-import java.awt.*;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import utilities.Validate;
 import java.util.HashMap;
-import java.util.Scanner;
 
 public class JobSearchie {
-    private User user;
+    private Session session;
 
     public static void main(String[] args) {
-        JobSearchie session = new JobSearchie();
-        session.run();
+        JobSearchie program = new JobSearchie();
+        program.session = new Session();
+        program.run();
     }
 
     public void run() {
-        UserHandler.welcomeScreen();
-        //user = UserHandler.loginOrRegister();
+        welcomeScreen();
+        loginOrRegister();
+        UserHandler userHandler = session.getUserHandler();
+    }
+
+    public void welcomeScreen () {
+        UserIO.displayTitleAndBody("Welcome to Job Searchie", """
+                Job Searchie is a job listing market place.  We aim to provide a superb experience for both job seekers and recruiters.
+
+                At any time you may enter `exit` if you would like to exit the program.
+
+                Enjoy searching for your next dream job or finding the perfect employee.
+
+                You will now be redirected to the registration and login page""");
+    }
+
+    private void printLoginOrRegisterScreen() {
+        UserIO.displayHeading("Login or Register");
+        HashMap<String, String> loginOptions = new HashMap<>();
+        loginOptions.put("1", "Login");
+        loginOptions.put("2", "Register");
+        loginOptions.put("3", "Exit");
+        UserIO.displayOptions(loginOptions);
+        UserIO.displayBody("Please select one of the above options:");
+    }
+
+    public void loginOrRegister() {
+        printLoginOrRegisterScreen();
+        Validate validator = new Validate();
+        String userInput = UserIO.getInput().strip();
+        String[] options = new String[]{"1", "2", "3"};
+        while (!validator.isValidOption(userInput, options)) {
+            UserIO.displayBody("`" + userInput + "` is not a valid option please enter a valid option:");
+            userInput = UserIO.getInput();
+        }
+        switch (userInput) {
+            case ("1") -> login();
+            case ("2") -> register();
+            case ("3") -> exit();
+            default -> throw new IllegalStateException("Unexpected value: " + userInput + "User Handler class, login or register class");
+        }
+    }
+
+    public void login() {
+        UserIO.displayBody("Please enter your email address");
+        String email = UserIO.getInput();
+        //Does email exist (Database)
+        String password = UserIO.getInput();
+        //Does password match? (Database)
+
+        //populate user from database
+        //giver to session.
+        //session.setUser(new JobSeeker());
+    }
+
+    public void register() {
+        //register
+    }
+
+    public void exit() {
+        System.exit(1);
     }
 }

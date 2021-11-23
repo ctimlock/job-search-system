@@ -6,7 +6,7 @@ import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class UserIO {
-    private static final int CHAR_WIDTH = 60;
+    private static final int CHAR_WIDTH = 100;
 
     public static void displayBody(String body) {
         StringBuilder sb = new StringBuilder();
