@@ -25,8 +25,8 @@ public class Validate {
     }
 
     private void checkAttempts() {
-        if (incorrectAttempts >= MAX_ATTEMPTS)
-            UserHandler.exit();
+        //if (incorrectAttempts >= MAX_ATTEMPTS)
+            //UserHandler.exit();
     }
 
     private boolean isInRangeInclusive(int value, int min, int max) {
