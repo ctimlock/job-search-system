@@ -17,10 +17,8 @@ public class DatabaseIO {
         try (Scanner sc = new Scanner(file)){
             if (sc.hasNextLine()) {
                 Arrays
-                    .asList(
-                        sc.nextLine().split(","))
-                    .forEach(element ->
-                        header.add(element.strip()));
+                    .asList(sc.nextLine().split(","))
+                    .forEach(element -> header.add(element.strip()));
             } else {
                 return null;
             }
