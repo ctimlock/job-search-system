@@ -4,6 +4,8 @@ import Controllers.UserHandler;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Validate {
     private final int MAX_ATTEMPTS = 3;
@@ -40,8 +42,13 @@ public class Validate {
     private void resetAttempts() {
         incorrectAttempts = 0;
     }
-    public boolean isValidEmail(String email) {
-        return false;
+    public boolean isValidEmail(String input, String email) {
+        checkAttempts();
+        email = /*"^(.+)@(.+)$";*/ "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";
+        Pattern emailPattern = Pattern.compile(email, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = emailPattern.matcher(email);
+        return matcher.find();
+        //return false;
     }
     public boolean isValidLength(String string, int min, int max) {
         return false;
