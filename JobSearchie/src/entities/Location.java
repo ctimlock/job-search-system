@@ -3,20 +3,20 @@ package entities;
 public class Location {
     private String country;
     private String state;
-    private String suburb;
+    private String city;
     private String postcode;
 
     public Location() {
         country = "";
         state = "";
-        suburb = "";
+        city = "";
         postcode = "";
     }
 
-    public Location(String country, String state, String suburb, String postcode) {
+    public Location(String country, String state, String city, String postcode) {
         this.country = country;
         this.state = state;
-        this.suburb = suburb;
+        this.city = city;
         this.postcode = postcode;
     }
 
@@ -36,12 +36,12 @@ public class Location {
         this.state = state;
     }
 
-    public String getSuburb() {
-        return suburb;
+    public String getCity() {
+        return city;
     }
 
-    public void setSuburb(String suburb) {
-        this.suburb = suburb;
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public String getPostcode() {
