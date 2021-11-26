@@ -69,10 +69,59 @@ public class JobSearchie {
         //giver to session.
         //session.setUser(new JobSeeker());
     }
+    /**
+     * This method will collect an email address and password from a new user and save them into the UserDatabase??
+     */
+    public void register()
+    {
+        UserIO.displayBody("Please enter your email address");
+        String userEmailInput = UserIO.getInput().strip();
+        Validate validator = new Validate();
 
-    public void register() {
-        //register
+        while (!validator.isValidEmail(userEmailInput))
+        {
+            UserIO.displayBody("`" + userEmailInput + "` is not a valid option please enter a valid option:");
+            userEmailInput = UserIO.getInput();
+        }
+
+        String userPasswordInput;
+        String passwordA = "00";
+        String passwordB = "01";
+        do
+        {
+            validator.resetAttempts();
+            UserIO.displayBody("""
+                    Please enter a password that matches the following criteria:
+                    1. Has at least 8 characters in length.
+                    2. Includes at least one capital and one lower case letter.
+                    3. Includes at least one number and one special character.""");
+            passwordA = UserIO.getInput().strip();
+
+            while (!validator.isValidPassword(passwordA))
+            {
+                UserIO.displayBody("""
+                        The password you entered does not match the criteria.  Please ensure your password:
+                        1. Is at least 8 characters in length.
+                        2. Includes at least one capital and one lower case letter. 
+                        3. Includes at least one number and one special character.""");
+
+                passwordA = UserIO.getInput();
+            }
+            UserIO.displayBody("Please re-enter your password: ");
+            passwordB = UserIO.getInput().strip();
+
+            if (!passwordA.equals(passwordB))
+            {
+                UserIO.displayBody("Your password does not match. Please try again: ");
+            }
+            userPasswordInput = passwordB;
+        } while (!passwordA.equals(passwordB));
+        //TODO: pass email and password into create user.
+
     }
+
+
+
 
     public void exit() {
         System.exit(1);

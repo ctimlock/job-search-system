@@ -4,6 +4,8 @@ import Controllers.UserHandler;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Validate {
     private final int MAX_ATTEMPTS = 3;
@@ -37,17 +39,36 @@ public class Validate {
         return value > min && value < max;
     }
 
-    private void resetAttempts() {
+    public void resetAttempts() {
         incorrectAttempts = 0;
     }
-    public boolean isValidEmail(String email) {
-        return false;
+
+    /**
+     * This method will validate an email address enter into JobSearchie.
+     * @param input Accepts the email entered by the user as a string.
+     * @return Whether the inputted email matches the regex criteria, as a boolean.
+     */
+    public boolean isValidEmail(String input) {
+        checkAttempts();
+        Pattern emailPattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = emailPattern.matcher(input);
+        return matcher.find();
+        //return false;
     }
     public boolean isValidLength(String string, int min, int max) {
         return false;
     }
+
+    /**
+     * This method will validate a password enter into JobSearchie.
+     * @param password Accepts the password entered by the user as a string.
+     * @return Whether the inputted password matches the regex criteria, as a boolean.
+     */
     public boolean isValidPassword(String password) {
-        return false;
+        checkAttempts();
+        Pattern passwordPattern = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = passwordPattern.matcher(password);
+        return matcher.find();
     }
     public boolean isValidPostCode(String postCode) {
         return false;
