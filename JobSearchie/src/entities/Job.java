@@ -8,10 +8,12 @@ public class Job {
     private String jobTitle;
     private Date postDate;
     private String company;
-    private ArrayList<String> listOfCategories;
+    private String category;
     private Location location;
     private String workType;
     private String workingArrangement;
+    private int compensation;
+    private String jobLevel;
     private String description;
     private String advertisingStatus;
     private ArrayList<String> keywords;
@@ -23,10 +25,12 @@ public class Job {
         this.jobTitle = "";
         this.postDate = new Date();
         this.company = "";
-        this.listOfCategories = new ArrayList<String>();
+        this.category = "";
         this.location = new Location();
         this.workType = "";
         this.workingArrangement = "";
+        this.compensation = -1;
+        this.jobLevel = "";
         this.description = "";
         this.advertisingStatus = "";
         this.keywords = new ArrayList<String>();
@@ -35,14 +39,34 @@ public class Job {
         this.complaints = new ArrayList<Complaint>();
     }
 
-    public Job(String jobTitle, Date postDate, String company, ArrayList<String> listOfCategories, Location location, String workType, String workingArrangement, String description, String advertisingStatus, ArrayList<String> keywords, int uniqueIdentifier) {
+    public Job(String jobTitle, String company, String category, Location location, String workType, String workingArrangement, int compensation, String jobLevel, String description) {
         this.jobTitle = jobTitle;
-        this.postDate = postDate;
+        this.postDate = new Date();
         this.company = company;
-        this.listOfCategories = listOfCategories;
+        this.category = category;
         this.location = location;
         this.workType = workType;
         this.workingArrangement = workingArrangement;
+        this.compensation = compensation;
+        this.jobLevel = jobLevel;
+        this.description = description;
+        this.advertisingStatus = "";
+        this.keywords = new ArrayList<String>();
+        this.uniqueIdentifier = -1;
+        this.applications = new ArrayList<Application>();
+        this.complaints = new ArrayList<Complaint>();
+    }
+
+    public Job(String jobTitle, Date postDate, String company, String category, Location location, String workType, String workingArrangement, int compensation, String jobLevel, String description, String advertisingStatus, ArrayList<String> keywords, int uniqueIdentifier) {
+        this.jobTitle = jobTitle;
+        this.postDate = postDate;
+        this.company = company;
+        this.category = category;
+        this.location = location;
+        this.workType = workType;
+        this.workingArrangement = workingArrangement;
+        this.compensation = compensation;
+        this.jobLevel = jobLevel;
         this.description = description;
         this.advertisingStatus = advertisingStatus;
         this.keywords = keywords;
@@ -51,14 +75,16 @@ public class Job {
         this.complaints = new ArrayList<Complaint>();
     }
 
-    public Job(String jobTitle, Date postDate, String company, ArrayList<String> listOfCategories, Location location, String workType, String workingArrangement, String description, String advertisingStatus, ArrayList<String> keywords, int uniqueIdentifier, ArrayList<Application> applications, ArrayList<Complaint> complaints) {
+    public Job(String jobTitle, Date postDate, String company, String category, Location location, String workType, String workingArrangement, int compensation, String jobLevel, String description, String advertisingStatus, ArrayList<String> keywords, int uniqueIdentifier, ArrayList<Application> applications, ArrayList<Complaint> complaints) {
         this.jobTitle = jobTitle;
         this.postDate = postDate;
         this.company = company;
-        this.listOfCategories = listOfCategories;
+        this.category = category;
         this.location = location;
         this.workType = workType;
         this.workingArrangement = workingArrangement;
+        this.compensation = compensation;
+        this.jobLevel = jobLevel;
         this.description = description;
         this.advertisingStatus = advertisingStatus;
         this.keywords = keywords;
@@ -68,17 +94,18 @@ public class Job {
     }
 
     public void display() {
-        System.out.print(jobTitle + ",");
-        System.out.print(postDate + ",");
-        System.out.print(company + ",");
-        listOfCategories.forEach(System.out::print);
-        System.out.print(location + ",");
-        System.out.print(workType + ",");
-        System.out.print(workingArrangement + ",");
-        System.out.print(description + ",");
-        System.out.print(advertisingStatus + ",");
+        System.out.println(jobTitle);
+        System.out.println(postDate);
+        System.out.println(company);
+        System.out.println(category);
+        System.out.println(location.getCountry() + " " + location.getState() + " " + location.getSuburb() + " " + location.getPostcode());
+        System.out.println(workType + ",");
+        System.out.println(workingArrangement);
+        System.out.println(compensation);
+        System.out.println(description);
+        System.out.println(advertisingStatus);
         keywords.forEach(System.out::print);
-        System.out.print(uniqueIdentifier + ",");
+        System.out.println(uniqueIdentifier);
         applications.forEach(System.out::print);
         complaints.forEach(System.out::print);
     }
@@ -91,12 +118,16 @@ public class Job {
         return postDate;
     }
 
+    public String getCategory() {
+        return category;
+    }
+
     public String getCompany() {
         return company;
     }
 
-    public ArrayList<String> getListOfCategories() {
-        return listOfCategories;
+    public int getCompensation() {
+        return compensation;
     }
 
     public Location getLocation() {
@@ -143,12 +174,16 @@ public class Job {
         this.postDate = postDate;
     }
 
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
     public void setCompany(String company) {
         this.company = company;
     }
 
-    public void setListOfCategories(ArrayList<String> listOfCategories) {
-        this.listOfCategories = listOfCategories;
+    public void setCompensation(int compensation) {
+        this.compensation = compensation;
     }
 
     public void setLocation(Location location) {
