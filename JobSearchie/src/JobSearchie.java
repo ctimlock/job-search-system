@@ -69,46 +69,59 @@ public class JobSearchie {
         //giver to session.
         //session.setUser(new JobSeeker());
     }
-
-      public void register(){
+    /**
+     * This method will collect an email address and password from a new user and save them into the UserDatabase??
+     */
+    public void register()
+    {
         UserIO.displayBody("Please enter your email address");
-        Validate validator3 = new Validate();
-        String userInput = UserIO.getInput().strip();
-        String emailRegex = /*"^(.+)@(.+)$"; */ "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";
+        String userEmailInput = UserIO.getInput().strip();
+        Validate validator = new Validate();
 
-        while (!validator3.isValidEmail(userInput, emailRegex)) {
-            UserIO.displayBody("`" + userInput + "` is not a valid option please enter a valid option:");
-            userInput = UserIO.getInput();
+        while (!validator.isValidEmail(userEmailInput))
+        {
+            UserIO.displayBody("`" + userEmailInput + "` is not a valid option please enter a valid option:");
+            userEmailInput = UserIO.getInput();
         }
-        UserIO.displayBody("Please enter a password that has more than 8 characters which include an upper case letter and a special character: ");
-        registerPassword();
-        //if (userInput){
 
-        //}
-        /*switch (userInput) {
-            case ("1") -> login();
-            case ("2") -> register();
-            case ("3") -> exit();
-            default -> throw new IllegalStateException("Unexpected value: " + userInput + "User Handler class, login or register class");
-        }*/
+        String userPasswordInput;
+        String passwordA = "00";
+        String passwordB = "01";
+        do
+        {
+            validator.resetAttempts();
+            UserIO.displayBody("""
+                    Please enter a password that matches the following criteria:
+                    1. Has at least 8 characters in length.
+                    2. Includes at least one capital and one lower case letter.
+                    3. Includes at least one number and one special character.""");
+            passwordA = UserIO.getInput().strip();
+
+            while (!validator.isValidPassword(passwordA))
+            {
+                UserIO.displayBody("""
+                        The password you entered does not match the criteria.  Please ensure your password:
+                        1. Is at least 8 characters in length.
+                        2. Includes at least one capital and one lower case letter. 
+                        3. Includes at least one number and one special character.""");
+
+                passwordA = UserIO.getInput();
+            }
+            UserIO.displayBody("Please re-enter your password: ");
+            passwordB = UserIO.getInput().strip();
+
+            if (!passwordA.equals(passwordB))
+            {
+                UserIO.displayBody("Your password does not match. Please try again: ");
+            }
+            userPasswordInput = passwordB;
+        } while (!passwordA.equals(passwordB));
+        //TODO: pass email and password into create user.
 
     }
 
-   /* public void registerEmail(){
-        UserIO.displayBody("Please enter your email address");
-        Validate validator3 = new Validate();
-        String userInput = UserIO.getInput().strip();
-        String emailRegex = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";
 
-        while (!validator3.isValidEmail(userInput, emailRegex)) {
-            UserIO.displayBody("`" + userInput + "` is not a valid option please enter a valid option:");
-            userInput = UserIO.getInput();
-        }
-    }*/
 
-    public void registerPassword(){
-
-    }
 
     public void exit() {
         System.exit(1);
