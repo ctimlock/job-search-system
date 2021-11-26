@@ -1,23 +1,34 @@
 import Controllers.UserHandler;
+import database.UserDatabase;
 import entities.Session;
 import entities.User;
 import utilities.UserIO;
 import utilities.Validate;
+
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class JobSearchie {
     private Session session;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         JobSearchie program = new JobSearchie();
         program.session = new Session();
         program.run();
     }
 
-    public void run() {
-        welcomeScreen();
-        loginOrRegister();
-        UserHandler userHandler = session.getUserHandler();
+    public void run() throws IOException {
+        //welcomeScreen();
+        //loginOrRegister();
+        //UserHandler userHandler = session.getUserHandler();
+
+        UserDatabase udb = new UserDatabase();
+
+        ArrayList<User> users = udb.getAllUsers();
+
+        System.out.println(users.get(0).getFirstName());
     }
 
     public void welcomeScreen () {

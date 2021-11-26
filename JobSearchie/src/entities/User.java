@@ -11,6 +11,7 @@ public abstract class User {
     private Location location;
     private String contactNumber;
     private Date dateOfBirth;
+    private Date dateCreated;
 
     public User() {
         id = -1;
@@ -21,9 +22,10 @@ public abstract class User {
         email = "";
         password = "";
         dateOfBirth = new Date();
+        dateCreated = new Date();
     }
 
-    public User(int id, String firstName, String lastName, Location location, String contactNumber, String email, String password, Date date) {
+    public User(int id, String firstName, String lastName, Location location, String contactNumber, String email, String password, Date dateOfBirth, Date dateCreated) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -31,7 +33,24 @@ public abstract class User {
         this.contactNumber = contactNumber;
         this.email = email;
         this.password = password;
-        this.dateOfBirth = date;
+        this.dateOfBirth = dateOfBirth;
+        this.dateCreated = dateCreated;
+    }
+
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
     }
 
     public String getContactNumber() {
