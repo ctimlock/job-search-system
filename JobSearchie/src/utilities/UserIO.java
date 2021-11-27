@@ -79,4 +79,14 @@ public class UserIO {
 
     }
 
+    public static String menuSelector(String question, String[] array) {
+        UserIO.displayBody(question);
+        HashMap<String, String> map = new HashMap<>();
+        for (int i = 0; i < array.length; i++) {
+            map.put(String.valueOf(i+1), array[i]);
+        }
+        UserIO.displayOptions(map);
+        return map.get(UserIO.getInput());
+    }
+
 }
