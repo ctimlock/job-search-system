@@ -21,40 +21,13 @@ public class JobSearchie {
         program.run();
     }
 
-    public void run() throws ParseException, SQLException {
+    public void run() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         DatabaseManager db = new DatabaseManager();
         if(!db.open()) {
             System.out.println("Can't open database");
             return;
         }
-
-        try {
-            db.insertUserKeyword(1, "Finance");
-            db.insertUserKeyword(1, "Econometrics");
-            db.insertUserKeyword(1, "Finance");
-
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-        Location location = new Location("Australia", "Victoria", "Melbourne", "3000");
-        Date dateOfBirth = dateFormat.parse("05/02/1987");
-        Date dateOfCreated = dateFormat.parse("28/11/2021");
-        JobSeeker jobSeeker = new JobSeeker("Charlie", "Timlock",  location,  "0457878905",  "ctim0003@student.monash.edu",
-                 "Harry522*", dateOfBirth,  dateOfCreated);
-
-        ArrayList<String> keywords = new ArrayList<>();
-        keywords.add("Music");
-        keywords.add("Computer Science");
-        keywords.add("Gaming");
-
-        jobSeeker.setKeywords(keywords);
-
-        db.insertJobSeeker(jobSeeker);
-
-        db.close();
         //welcomeScreen();
         //loginOrRegister();
         //UserHandler userHandler = session.getUserHandler();

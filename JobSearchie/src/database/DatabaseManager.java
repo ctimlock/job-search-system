@@ -229,7 +229,6 @@ public class DatabaseManager {
             insertIntoJobSeeker.setString(10, jobSeeker.getCurrentJobLevel());
             insertIntoJobSeeker.setInt(11, jobSeeker.getExpectedCompensation());
             insertIntoJobSeeker.setString(12, jobSeeker.getResumeDir());
-            insertIntoJobSeeker.setString(13, jobSeeker.getCoverLetterDir());
             int affectedRows = insertIntoJobSeeker.executeUpdate();
             if (affectedRows != 1)
                 throw new SQLException("Couldn't insert location.");
@@ -311,7 +310,6 @@ public class DatabaseManager {
             jobSeeker.setCurrentJobLevel(resultSet.getString(USER_COLUMN_CURRENTJOBLEVEL));
             jobSeeker.setExpectedCompensation(resultSet.getInt(USER_COLUMN_EXPECTEDCOMPENSATION));
             jobSeeker.setResumeDir(resultSet.getString(USER_COLUMN_RESUMEDIR));
-            jobSeeker.setCoverLetterDir(resultSet.getString(USER_COLUMN_COVERLETTERDIR));
             jobSeeker.setLocation(resultToLocationWithoutJoin(resultSet));
             return jobSeeker;
         } catch (SQLException e) {
