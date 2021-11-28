@@ -1,9 +1,11 @@
 package utilities;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.lang.ProcessBuilder;
 
 public class UserIO {
     private static final int CHAR_WIDTH = 100;
@@ -75,9 +77,27 @@ public class UserIO {
 
     public static void displayHeadingAndBody(String heading, String body) {}
 
-    public static void clearScreen() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+    public static void clearScreen()
+    {
+        String operatingSystem = System.getProperty("os.name");
+
+        try
+        {
+            if (operatingSystem.contains("Windows"))
+            {
+                ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "cls");
+                Process startProcess = pb.inheritIO().start();
+                startProcess.waitFor();
+            } else
+            {
+                ProcessBuilder pb = new ProcessBuilder("clear");
+                Process startProcess = pb.inheritIO().start();
+
+                startProcess.waitFor();
+            }
+        } catch (IOException | InterruptedException ignored)
+        {
+        }
     }
 
     public static String menuSelector(String question, String[] array) {
