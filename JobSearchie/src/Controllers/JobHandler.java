@@ -10,9 +10,9 @@ public class JobHandler {
     public JobHandler() {}
 
     public Job createJob(){
-
         UserIO.displayHeading("Create a New Job");
         UserIO.displayBody("You are now required to enter the following requested information in order to create a job. At any time you wish to go back to the previous screen, please type ‘back’");
+        //Get next job id from database.
         String jobTitle = enterJobTitle();
         String company = enterCompany();
         String category = enterCategory();
@@ -20,11 +20,12 @@ public class JobHandler {
         String workType = enterWorkType();
         String workingArrangement = enterWorkingArrangement();
         int compensation = enterCompensation();
+        //TODO: add in keywords and category.
         String jobLevel = enterJobLevel();
         String description = enterDescription();
         UserIO.displayBody("You have now finished providing the required information.");
 
-        return new Job(jobTitle, company, category, location, workType, workingArrangement, compensation, jobLevel, description);
+        return new Job();
     }
 
     public String enterJobTitle() {

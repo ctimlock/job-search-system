@@ -1,6 +1,7 @@
 package entities;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Recruiter extends User{
     private String companyName;
@@ -16,6 +17,14 @@ public class Recruiter extends User{
         invitationsOffered = new ArrayList<Invitation>();
     }
 
+    public Recruiter(int id, String firstName, String lastName, Location location, String contactNumber, String email,
+                     String password, Date dateOfBirth, Date dateCreated) {
+        super(id, firstName, lastName, location, contactNumber, email, password, dateOfBirth, dateCreated);
+        companyName = "";
+        recruitingSpecialty = "";
+        jobListings = new ArrayList<Job>();
+        invitationsOffered = new ArrayList<Invitation>();
+    }
     public Recruiter(String companyName, String recruitingSpecialty, ArrayList<Job> jobListings, ArrayList<Invitation> invitationsOffered) {
         super();
         this.companyName = companyName;
