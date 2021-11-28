@@ -1,55 +1,80 @@
 package entities;
 
-import java.util.Date;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class JobSeeker extends User {
     private String currentJobName;
     private String currentJobLevel;
+    private Location location;
+    private String contactNumber;
+    private Date dateOfBirth;
     private int expectedCompensation;
     private ArrayList<String> keywords;
-    private ArrayList<String> skillSet;
     private String resumeDir;
-    private String coverLetterDir;
 
     public JobSeeker() {
         super();
         currentJobName = "";
         currentJobLevel = "";
-        expectedCompensation = -1;
-        keywords = new ArrayList<>();
-        skillSet = new ArrayList<>();
+        contactNumber = "";
         resumeDir = "";
-        coverLetterDir = "";
-    }
-    public JobSeeker(String firstName, String lastName, Location location, String contactNumber, String email,
-                     String password, Date dateOfBirth, Date dateCreated) {
-        super(firstName, lastName, location, contactNumber, email, password, dateOfBirth, dateCreated);
-        this.currentJobName = "";
-        this.currentJobLevel = "";
-        this.expectedCompensation = -1;
-        this.keywords = new ArrayList<>();
-        this.skillSet = new ArrayList<>();
-        this.resumeDir = "";
-        this.coverLetterDir = "";
+        location = null;
+        dateOfBirth = null;
+        keywords = null;
+        expectedCompensation = -1;
     }
 
+    public JobSeeker(String firstName, String lastName, String email, String password, Date dateCreated) {
+        super(firstName, lastName, email, password, dateCreated);
+        currentJobName = "";
+        currentJobLevel = "";
+        contactNumber = "";
+        resumeDir = "";
+        location = null;
+        dateOfBirth = null;
+        keywords = null;
+        expectedCompensation = -1;
+    }
 
-    public JobSeeker(int id, String firstName, String lastName, Location location, String contactNumber, String email,
-                     String password, Date dateOfBirth, Date dateCreated, String currentJobName, String currentJobLevel,
-                     int expectedCompensation, ArrayList<String> keywords, ArrayList<String> skillSet, String resumeDir, String coverLetterDir) {
-        super(id, firstName, lastName, location, contactNumber, email, password, dateOfBirth, dateCreated);
+    public JobSeeker(int id, String firstName, String lastName, String email, String password, Date dateCreated) {
+        super(id, firstName, lastName, email, password, dateCreated);
+        currentJobName = "";
+        currentJobLevel = "";
+        contactNumber = "";
+        resumeDir = "";
+        location = null;
+        dateOfBirth = null;
+        keywords = null;
+        expectedCompensation = -1;
+    }
+
+    public JobSeeker(String firstName, String lastName, String email, String password, Date dateCreated, String currentJobName, String currentJobLevel, String contactNumber, String resumeDir, Location location, Date dateOfBirth, ArrayList<String> keywords, int expectedCompensation) {
+        super(firstName, lastName, email, password, dateCreated);
         this.currentJobName = currentJobName;
         this.currentJobLevel = currentJobLevel;
-        this.expectedCompensation = expectedCompensation;
-        this.keywords = keywords;
-        this.skillSet = skillSet;
+        this.contactNumber = contactNumber;
         this.resumeDir = resumeDir;
-        this.coverLetterDir = coverLetterDir;
+        this.location = location;
+        this.dateOfBirth = dateOfBirth;
+        this.keywords = keywords;
+        this.expectedCompensation = expectedCompensation;
     }
 
-    public String getCoverLetterDir() {
-        return coverLetterDir;
+    public JobSeeker(int id, String firstName, String lastName, String email, String password, Date dateCreated, String currentJobName, String currentJobLevel, String contactNumber, String resumeDir, Location location, Date dateOfBirth, ArrayList<String> keywords, int expectedCompensation) {
+        super(id, firstName, lastName, email, password, dateCreated);
+        this.currentJobName = currentJobName;
+        this.currentJobLevel = currentJobLevel;
+        this.contactNumber = contactNumber;
+        this.resumeDir = resumeDir;
+        this.location = location;
+        this.dateOfBirth = dateOfBirth;
+        this.keywords = keywords;
+        this.expectedCompensation = expectedCompensation;
+    }
+
+    public String getContactNumber() {
+        return contactNumber;
     }
 
     public String getCurrentJobLevel() {
@@ -60,6 +85,10 @@ public class JobSeeker extends User {
         return currentJobName;
     }
 
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
     public int getExpectedCompensation() {
         return expectedCompensation;
     }
@@ -68,16 +97,16 @@ public class JobSeeker extends User {
         return keywords;
     }
 
+    public Location getLocation() {
+        return location;
+    }
+
     public String getResumeDir() {
         return resumeDir;
     }
 
-    public ArrayList<String> getSkillSet() {
-        return skillSet;
-    }
-
-    public void setCoverLetterDir(String coverLetterDir) {
-        this.coverLetterDir = coverLetterDir;
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
     }
 
     public void setCurrentJobLevel(String currentJobLevel) {
@@ -88,6 +117,10 @@ public class JobSeeker extends User {
         this.currentJobName = currentJobName;
     }
 
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
     public void setExpectedCompensation(int expectedCompensation) {
         this.expectedCompensation = expectedCompensation;
     }
@@ -96,15 +129,11 @@ public class JobSeeker extends User {
         this.keywords = keywords;
     }
 
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
     public void setResumeDir(String resumeDir) {
         this.resumeDir = resumeDir;
     }
-
-    public void setSkillSet(ArrayList<String> skillSet) {
-        this.skillSet = skillSet;
-    }
-
-
-
-
 }

@@ -1,51 +1,53 @@
 package entities;
 
-import java.util.ArrayList;
 import java.util.Date;
 
-public class Recruiter extends User{
+public class Recruiter extends User {
     private String companyName;
     private String recruitingSpecialty;
-    private ArrayList<Job> jobListings;
-    private ArrayList<Invitation> invitationsOffered;
+    private String contactNumber;
+    private Date dateOfBirth;
 
-    public Recruiter(){
+    public Recruiter() {
         super();
         companyName = "";
         recruitingSpecialty = "";
-        jobListings = new ArrayList<Job>();
-        invitationsOffered = new ArrayList<Invitation>();
     }
 
-    public Recruiter(int id, String firstName, String lastName, Location location, String contactNumber, String email,
-                     String password, Date dateOfBirth, Date dateCreated) {
-        super(id, firstName, lastName, location, contactNumber, email, password, dateOfBirth, dateCreated);
-        companyName = "";
-        recruitingSpecialty = "";
-        jobListings = new ArrayList<Job>();
-        invitationsOffered = new ArrayList<Invitation>();
+    public Recruiter(String firstName, String lastName, String email, String password, Date dateCreated) {
+        super(firstName, lastName, email, password, dateCreated);
+        this.companyName = "";
+        this.recruitingSpecialty = "";
     }
-    public Recruiter(String companyName, String recruitingSpecialty, ArrayList<Job> jobListings, ArrayList<Invitation> invitationsOffered) {
-        super();
+
+    public Recruiter(int id, String firstName, String lastName, String email, String password, Date dateCreated) {
+        super(id, firstName, lastName, email, password, dateCreated);
+        this.companyName = "";
+        this.recruitingSpecialty = "";
+    }
+
+    public Recruiter(String firstName, String lastName, String email, String password, Date dateCreated, String companyName, String recruitingSpecialty) {
+        super(firstName, lastName, email, password, dateCreated);
         this.companyName = companyName;
         this.recruitingSpecialty = recruitingSpecialty;
-        this.jobListings = jobListings;
-        this.invitationsOffered = invitationsOffered;
     }
 
-    public void display(){
-
+    public Recruiter(int id, String firstName, String lastName, String email, String password, Date dateCreated, String companyName, String recruitingSpecialty) {
+        super(id, firstName, lastName, email, password, dateCreated);
+        companyName = companyName;
+        recruitingSpecialty = recruitingSpecialty;
     }
+
     public String getCompanyName() {
         return companyName;
     }
 
-    public ArrayList<Invitation> getInvitationsOffered() {
-        return invitationsOffered;
+    public String getContactNumber() {
+        return contactNumber;
     }
 
-    public ArrayList<Job> getJobListings() {
-        return jobListings;
+    public Date getDateOfBirth() {
+        return dateOfBirth;
     }
 
     public String getRecruitingSpecialty() {
@@ -56,16 +58,15 @@ public class Recruiter extends User{
         this.companyName = companyName;
     }
 
-    public void setInvitationsOffered(ArrayList<Invitation> invitationsOffered) {
-        this.invitationsOffered = invitationsOffered;
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
     }
 
-    public void setJobListings(ArrayList<Job> jobListings) {
-        this.jobListings = jobListings;
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public void setRecruitingSpecialty(String recruitingSpecialty) {
         this.recruitingSpecialty = recruitingSpecialty;
     }
-
 }
