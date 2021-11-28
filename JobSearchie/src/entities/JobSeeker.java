@@ -4,67 +4,60 @@ import java.util.Date;
 import java.util.ArrayList;
 
 public class JobSeeker extends User {
-    private Date dateOfBirth;
     private String currentJobName;
     private String currentJobLevel;
     private int expectedCompensation;
     private ArrayList<String> keywords;
-    private String skillSet;
-    private String resume;
-    private String coverLetter;
+    private ArrayList<String> skillSet;
+    private String resumeDir;
+    private String coverLetterDir;
 
     public JobSeeker() {
         super();
-        dateOfBirth = new Date();
         currentJobName = "";
         currentJobLevel = "";
         expectedCompensation = -1;
-        keywords = new ArrayList<String>();
-        skillSet = "";
-        resume = "";
-        coverLetter = "";
+        keywords = new ArrayList<>();
+        skillSet = new ArrayList<>();
+        resumeDir = "";
+        coverLetterDir = "";
+    }
+    public JobSeeker(String firstName, String lastName, Location location, String contactNumber, String email,
+                     String password, Date dateOfBirth, Date dateCreated) {
+        super(firstName, lastName, location, contactNumber, email, password, dateOfBirth, dateCreated);
+        this.currentJobName = "";
+        this.currentJobLevel = "";
+        this.expectedCompensation = -1;
+        this.keywords = new ArrayList<>();
+        this.skillSet = new ArrayList<>();
+        this.resumeDir = "";
+        this.coverLetterDir = "";
     }
 
-    public JobSeeker(Date dateOfBirth, String currentJobName, String currentJobLevel, int expectedCompensation, ArrayList<String> keywords, String skillSet, String resume, String coverLetter) {
-        super();
-        this.dateOfBirth = dateOfBirth;
+
+    public JobSeeker(int id, String firstName, String lastName, Location location, String contactNumber, String email,
+                     String password, Date dateOfBirth, Date dateCreated, String currentJobName, String currentJobLevel,
+                     int expectedCompensation, ArrayList<String> keywords, ArrayList<String> skillSet, String resumeDir, String coverLetterDir) {
+        super(id, firstName, lastName, location, contactNumber, email, password, dateOfBirth, dateCreated);
         this.currentJobName = currentJobName;
         this.currentJobLevel = currentJobLevel;
         this.expectedCompensation = expectedCompensation;
         this.keywords = keywords;
         this.skillSet = skillSet;
-        this.resume = resume;
-        this.coverLetter = coverLetter;
+        this.resumeDir = resumeDir;
+        this.coverLetterDir = coverLetterDir;
     }
-    /* this is an additional constructor that I didn't have.
-     TODO: resolve this stuff
-    public JobSeeker(String firstName, String lastName, Location location, String contactNumber, String email, String password, Date date, Boolean isLoggedIn, Date dateOfBirth, String currentJobName, String currentJobLevel, int expectedCompensation, String[] keywords, String[] skillSet) {
-        super(firstName, lastName, location, contactNumber, email, password, date, isLoggedIn);
-        this.dateOfBirth = dateOfBirth;
-        this.currentJobName = currentJobName;
-        this.currentJobLevel = currentJobLevel;
-        this.expectedCompensation = expectedCompensation;
-        this.keywords = keywords;
-        this.skillSet = skillSet;
-    }  */
 
-    public String getCoverLetter() {
-        return coverLetter;
+    public String getCoverLetterDir() {
+        return coverLetterDir;
     }
 
     public String getCurrentJobLevel() {
         return currentJobLevel;
     }
 
-    public void displayJobSeeker(){
-
-    }
     public String getCurrentJobName() {
         return currentJobName;
-    }
-
-    public Date getDateOfBirth() {
-        return dateOfBirth;
     }
 
     public int getExpectedCompensation() {
@@ -75,16 +68,16 @@ public class JobSeeker extends User {
         return keywords;
     }
 
-    public String getResume() {
-        return resume;
+    public String getResumeDir() {
+        return resumeDir;
     }
 
-    public String getSkillSet() {
+    public ArrayList<String> getSkillSet() {
         return skillSet;
     }
 
-    public void setCoverLetter(String coverLetter) {
-        this.coverLetter = coverLetter;
+    public void setCoverLetterDir(String coverLetterDir) {
+        this.coverLetterDir = coverLetterDir;
     }
 
     public void setCurrentJobLevel(String currentJobLevel) {
@@ -95,10 +88,6 @@ public class JobSeeker extends User {
         this.currentJobName = currentJobName;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
     public void setExpectedCompensation(int expectedCompensation) {
         this.expectedCompensation = expectedCompensation;
     }
@@ -107,11 +96,11 @@ public class JobSeeker extends User {
         this.keywords = keywords;
     }
 
-    public void setResume(String resume) {
-        this.resume = resume;
+    public void setResumeDir(String resumeDir) {
+        this.resumeDir = resumeDir;
     }
 
-    public void setSkillSet(String skillSet) {
+    public void setSkillSet(ArrayList<String> skillSet) {
         this.skillSet = skillSet;
     }
 

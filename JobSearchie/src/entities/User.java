@@ -2,7 +2,7 @@ package entities;
 
 import java.util.Date;
 
-public abstract class User {
+public class User {
     private int id;
     private String email;
     private String password;
@@ -23,6 +23,18 @@ public abstract class User {
         password = "";
         dateOfBirth = new Date();
         dateCreated = new Date();
+    }
+
+    public User(String firstName, String lastName, Location location, String contactNumber, String email, String password, Date dateOfBirth, Date dateCreated) {
+        this.id = -1;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.location = location;
+        this.contactNumber = contactNumber;
+        this.email = email;
+        this.password = password;
+        this.dateOfBirth = dateOfBirth;
+        this.dateCreated = dateCreated;
     }
 
     public User(int id, String firstName, String lastName, Location location, String contactNumber, String email, String password, Date dateOfBirth, Date dateCreated) {

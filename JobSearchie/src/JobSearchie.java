@@ -1,12 +1,13 @@
-import Controllers.UserHandler;
-import database.UserDatabase;
-import entities.Session;
-import entities.User;
+import database.DatabaseManager;
+import entities.*;
 import utilities.UserIO;
 import utilities.Validate;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -19,16 +20,17 @@ public class JobSearchie {
         program.run();
     }
 
-    public void run() throws IOException {
+    public void run() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        DatabaseManager db = new DatabaseManager();
+        if(!db.open()) {
+            System.out.println("Can't open database");
+            return;
+        }
+        db.close();
         //welcomeScreen();
         //loginOrRegister();
         //UserHandler userHandler = session.getUserHandler();
-
-        UserDatabase udb = new UserDatabase();
-
-        ArrayList<User> users = udb.getAllUsers();
-
-        System.out.println(users.get(0).getFirstName());
     }
 
     public void welcomeScreen () {

@@ -1,76 +1,73 @@
 package entities;
 
-public class Location
-{
+public class Location {
+    private int id;
     private String country;
     private String state;
     private String city;
-    private String suburb;
     private String postcode;
 
-    public Location()
-    {
+    public Location() {
+        id = -1;
         country = "";
         state = "";
         city = "";
         postcode = "";
     }
 
-    public Location(String country, String state, String city, String postcode)
-    {
+    public Location(String country, String state, String city, String postcode) {
+        this.id = -1;
         this.country = country;
         this.state = state;
         this.city = city;
         this.postcode = postcode;
     }
 
-    public String getSuburb()
-    {
-        return suburb;
+    public Location(int id, String country, String state, String city, String postcode) {
+        this.id = id;
+        this.country = country;
+        this.state = state;
+        this.city = city;
+        this.postcode = postcode;
     }
 
-    public void setSuburb(String suburb)
-    {
-        this.suburb = suburb;
+    public int getId() {
+        return id;
     }
 
-    public String getCountry()
-    {
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getCountry() {
         return country;
     }
 
-    public void setCountry(String country)
-    {
+    public void setCountry(String country) {
         this.country = country;
     }
 
-    public String getState()
-    {
+    public String getState() {
         return state;
     }
 
-    public void setState(String state)
-    {
+    public void setState(String state) {
         this.state = state;
     }
 
-    public String getCity()
-    {
+    public String getCity() {
         return city;
     }
 
-    public void setCity(String city)
-    {
+    public void setCity(String city) {
         this.city = city;
     }
 
-    public String getPostcode()
-    {
+    public String getPostcode() {
         return postcode;
     }
 
-    public void setPostcode(String postcode)
-    {
+    public void setPostcode(String postcode) {
         this.postcode = postcode;
     }
 }

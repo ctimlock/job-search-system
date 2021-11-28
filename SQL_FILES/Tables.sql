@@ -1,0 +1,1 @@
+CREATE TABLE application ( userId INTEGER NOT NULL, jobId INTEGER NOT NULL, coverLetter TEXT NOT NULL, resume TEXT NOT NULL, status TEXT NOT NULL, FOREIGN KEY (userId) REFERENCES user(id), FOREIGN KEY (jobId) REFERENCES job(id), PRIMARY KEY (userId, jobId))

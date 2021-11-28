@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Job {
-
+    private int id;
     private String jobTitle;
     private Date postDate;
     private String company;
@@ -17,11 +17,11 @@ public class Job {
     private String description;
     private String advertisingStatus;
     private ArrayList<String> keywords;
-    private int uniqueIdentifier;
     private ArrayList<Application> applications;
     private ArrayList<Complaint> complaints;
 
     public Job() {
+        this.id = -1;
         this.jobTitle = "";
         this.postDate = new Date();
         this.company = "";
@@ -34,30 +34,27 @@ public class Job {
         this.description = "";
         this.advertisingStatus = "";
         this.keywords = new ArrayList<String>();
-        this.uniqueIdentifier = -1;
         this.applications = new ArrayList<Application>();
         this.complaints = new ArrayList<Complaint>();
     }
 
-    public Job(String jobTitle, String company, String category, Location location, String workType, String workingArrangement, int compensation, String jobLevel, String description) {
-        this.jobTitle = jobTitle;
-        this.postDate = new Date();
-        this.company = company;
-        this.category = category;
-        this.location = location;
-        this.workType = workType;
-        this.workingArrangement = workingArrangement;
-        this.compensation = compensation;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getJobLevel() {
+        return jobLevel;
+    }
+
+    public void setJobLevel(String jobLevel) {
         this.jobLevel = jobLevel;
-        this.description = description;
-        this.advertisingStatus = "";
-        this.keywords = new ArrayList<String>();
-        this.uniqueIdentifier = -1;
-        this.applications = new ArrayList<Application>();
-        this.complaints = new ArrayList<Complaint>();
     }
 
-    public Job(String jobTitle, Date postDate, String company, String category, Location location, String workType, String workingArrangement, int compensation, String jobLevel, String description, String advertisingStatus, ArrayList<String> keywords, int uniqueIdentifier) {
+    public Job(String jobTitle, Date postDate, String company, String category, Location location, String workType, String workingArrangement, int compensation, String jobLevel, String description, String advertisingStatus, ArrayList<String> keywords, ArrayList<Application> applications, ArrayList<Complaint> complaints) {
         this.jobTitle = jobTitle;
         this.postDate = postDate;
         this.company = company;
@@ -70,25 +67,6 @@ public class Job {
         this.description = description;
         this.advertisingStatus = advertisingStatus;
         this.keywords = keywords;
-        this.uniqueIdentifier = uniqueIdentifier;
-        this.applications = new ArrayList<Application>();
-        this.complaints = new ArrayList<Complaint>();
-    }
-
-    public Job(String jobTitle, Date postDate, String company, String category, Location location, String workType, String workingArrangement, int compensation, String jobLevel, String description, String advertisingStatus, ArrayList<String> keywords, int uniqueIdentifier, ArrayList<Application> applications, ArrayList<Complaint> complaints) {
-        this.jobTitle = jobTitle;
-        this.postDate = postDate;
-        this.company = company;
-        this.category = category;
-        this.location = location;
-        this.workType = workType;
-        this.workingArrangement = workingArrangement;
-        this.compensation = compensation;
-        this.jobLevel = jobLevel;
-        this.description = description;
-        this.advertisingStatus = advertisingStatus;
-        this.keywords = keywords;
-        this.uniqueIdentifier = uniqueIdentifier;
         this.applications = applications;
         this.complaints = complaints;
     }
@@ -98,14 +76,13 @@ public class Job {
         System.out.println(postDate);
         System.out.println(company);
         System.out.println(category);
-        System.out.println(location.getCountry() + " " + location.getState() + " " + location.getSuburb() + " " + location.getPostcode());
+        System.out.println(location.getCountry() + " " + location.getState() + " " + location.getCity() + " " + location.getPostcode());
         System.out.println(workType + ",");
         System.out.println(workingArrangement);
         System.out.println(compensation);
         System.out.println(description);
         System.out.println(advertisingStatus);
         keywords.forEach(System.out::print);
-        System.out.println(uniqueIdentifier);
         applications.forEach(System.out::print);
         complaints.forEach(System.out::print);
     }
@@ -152,10 +129,6 @@ public class Job {
 
     public ArrayList<String> getKeywords() {
         return keywords;
-    }
-
-    public int getUniqueIdentifier() {
-        return uniqueIdentifier;
     }
 
     public ArrayList<Application> getApplications() {
@@ -208,10 +181,6 @@ public class Job {
 
     public void setKeywords(ArrayList<String> keywords) {
         this.keywords = keywords;
-    }
-
-    public void setUniqueIdentifier(int uniqueIdentifier) {
-        this.uniqueIdentifier = uniqueIdentifier;
     }
 
     public void setApplications(ArrayList<Application> applications) {
