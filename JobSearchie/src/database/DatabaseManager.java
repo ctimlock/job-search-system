@@ -288,6 +288,46 @@ public class DatabaseManager {
     }
 
     /**
+     * TESTED
+     * Queries the keyword table to retrun the keyword associated the keyword id.
+     * @param id The keyword Id that is to be returned.
+     * @return Returns the keyword if it exists and null if it doesn't exist.
+     */
+    public String getKeyword(int id) {
+        try {
+            queryKeyword.setInt(1, id);
+            ResultSet results = queryKeyword.executeQuery();
+            if(results.next()) {
+                return results.getString(KeywordDB.Column.KEYWORD);
+            } else
+                return null;
+        } catch (SQLException e) {
+            System.out.println("Error querying keyword table to get keyword: " + e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * TESTED
+     * Queries the keyword table to see if a keyword exists.
+     * @param keyword The keyword to query in the keyword table.
+     * @return Return the keywords associated id or -1 if the keyword doesn't exist.
+     */
+    public int getKeywordId(String keyword) {
+        try {
+            queryKeywordId.setString(1, keyword);
+            ResultSet results = queryKeywordId.executeQuery();
+            if(results.next()) {
+                return results.getInt(KeywordDB.Column.ID);
+            } else
+                return -1;
+        } catch (SQLException e) {
+            System.out.println("Error querying keyword table to get keywordId: " + e.getMessage());
+            return -1;
+        }
+    }
+
+    /**
      * Gets all the keywords associated with the given user.
      * @param userId The userId of who you would like to get all associated keywords.
      * @return Returns an ArrayList of strings which represent th users keywords.
@@ -312,26 +352,28 @@ public class DatabaseManager {
     }
 
     /**
+     * TESTED
      * Inserts a keyword into the keyword table. Checks to see if that keyword already exists and inserts if it doesn't.
      * @param keyword The keyword to be inserted.
      * @return The id of the keyword once it has been inserted or the id of the matching keyword.
      * @throws SQLException Throws an SQLException if the method cannot insert the keyword.
      */
-    private int insertKeyword(String keyword) throws SQLException {
-        queryKeywordId.setString(1, keyword);
-        ResultSet results = queryKeywordId.executeQuery();
-        if (results.next()) {
-            return results.getInt(KeywordDB.Column.ID);
-        } else {
+    public int insertKeyword(String keyword) throws SQLException {
+        int id = getKeywordId(keyword);
+        if (id != -1)
+            return id;
+        else {
             insertKeyword.setString(1, keyword);
             int affectedRows = insertKeyword.executeUpdate();
-            if (affectedRows != 1)
-                throw new SQLException("Couldn't insert keyword.");
-            ResultSet generatedKeys = insertKeyword.getGeneratedKeys();
-            if (generatedKeys.next())
-                return generatedKeys.getInt(1);
-            else
-                throw new SQLException("Couldn't get id from location.");
+            if (affectedRows != 1) {
+                throw new SQLException("Couldn't insert keyword, updated more than one row.");
+            } else {
+                ResultSet generatedKeys = insertKeyword.getGeneratedKeys();
+                if (generatedKeys.next())
+                    return generatedKeys.getInt(1);
+                else
+                    throw new SQLException("Couldn't get id from keyword after insert.");
+            }
         }
     }
 

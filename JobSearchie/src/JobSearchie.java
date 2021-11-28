@@ -29,33 +29,44 @@ public class JobSearchie {
             return;
         }
 
-        Location location = new Location("Australia", "Tasmania", "Burnie", "7321");
+        System.out.println(db.getKeyword(1));
+        System.out.println(db.getKeyword(7));
+        System.out.println(db.getKeyword(10));
+        System.out.println(db.getKeywordId(db.getKeyword(1)));
+        System.out.println(db.getKeywordId("Econometrics"));
+        System.out.println(db.getKeywordId("Happy"));
 
-        ArrayList<String> keywords = new ArrayList<>();
-        keywords.add("Finance");
-        keywords.add("Economics");
-        keywords.add("Corporate");
+        System.out.println(db.insertKeyword("Finance"));
+        System.out.println(db.insertKeyword("Happy"));
 
-        JobSeeker ron = new JobSeeker();
-        ron.setFirstName("Ron");
-        ron.setLastName("James");
-        ron.setEmail("ron_james@hotmail.com");
-        ron.setPassword("abc123abc123");
-        ron.setDateCreated(new Date());
-        ron.setCurrentJobName("Software Engineer");
-        ron.setCurrentJobLevel("Senior");
-        ron.setLocation(location);
-        ron.setContactNumber("0457393520");
-        ron.setDateOfBirth(new Date());
-        ron.setExpectedCompensation(80000);
-        ron.setKeywords(keywords);
-        ron.setResumeDir("N/A");
 
-        db.insertJobSeeker(ron);
-
-        JobSeeker ron2 = db.getJobSeekerFromEmail("ron_james@hotmail.com");
-
-        System.out.println(ron2.getKeywords().size());
+//        Location location = new Location("Australia", "Tasmania", "Burnie", "7321");
+//
+//        ArrayList<String> keywords = new ArrayList<>();
+//        keywords.add("Finance");
+//        keywords.add("Economics");
+//        keywords.add("Corporate");
+//
+//        JobSeeker ron = new JobSeeker();
+//        ron.setFirstName("Ron");
+//        ron.setLastName("James");
+//        ron.setEmail("ron_james@hotmail.com");
+//        ron.setPassword("abc123abc123");
+//        ron.setDateCreated(new Date());
+//        ron.setCurrentJobName("Software Engineer");
+//        ron.setCurrentJobLevel("Senior");
+//        ron.setLocation(location);
+//        ron.setContactNumber("0457393520");
+//        ron.setDateOfBirth(new Date());
+//        ron.setExpectedCompensation(80000);
+//        ron.setKeywords(keywords);
+//        ron.setResumeDir("N/A");
+//
+//        db.insertJobSeeker(ron);
+//
+//        JobSeeker ron2 = db.getJobSeekerFromEmail("ron_james@hotmail.com");
+//
+//        System.out.println(ron2.getKeywords().size());
 
 
         db.close();
