@@ -34,25 +34,6 @@ public class DatabaseManager {
     public static final String SKILL_COLUMN_ID = "id";
     public static final String SKILL_COLUMN_CATEGORY = "skill";
 
-    public static final String USER_TABLE = "user";
-    public static final String USER_COLUMN_ID = "id";
-    public static final String USER_COLUMN_ACCOUNTTYPE = "accountType";
-    public static final String USER_COLUMN_FIRSTNAME = "firstName";
-    public static final String USER_COLUMN_LASTNAME = "lastName";
-    public static final String USER_COLUMN_EMAIL = "email";
-    public static final String USER_COLUMN_PASSWORD = "password";
-    public static final String USER_COLUMN_LOCATIONID = "locationId";
-    public static final String USER_COLUMN_CONTACTNUMBER = "contactNumber";
-    public static final String USER_COLUMN_DATECREATED = "dateCreated";
-    public static final String USER_COLUMN_DATEOFBIRTH = "dateOfBirth";
-    public static final String USER_COLUMN_CURRENTJOBNAME = "currentJobName";
-    public static final String USER_COLUMN_CURRENTJOBLEVEL = "currentJobLevel";
-    public static final String USER_COLUMN_EXPECTEDCOMPENSATION = "expectedCompensation";
-    public static final String USER_COLUMN_RESUMEDIR = "resumeDir";
-    public static final String USER_COLUMN_COVERLETTERDIR = "coverLetterDir";
-    public static final String USER_COLUMN_COMPANYNAME = "companyName";
-    public static final String USER_COLUMN_RECRUITINGSPECIALTY = "recruitingSpecialty";
-
     public static final String JOB_TABLE = "job";
     public static final String JOB_COLUMN_ID = "id";
     public static final String JOB_COLUMN_JOBTITLE = "jobTitle";

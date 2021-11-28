@@ -15,27 +15,23 @@ public class Job {
     private int compensation;
     private String jobLevel;
     private String description;
-    private String advertisingStatus;
+    private boolean isAdvertised;
     private ArrayList<String> keywords;
-    private ArrayList<Application> applications;
-    private ArrayList<Complaint> complaints;
 
     public Job() {
         this.id = -1;
         this.jobTitle = "";
-        this.postDate = new Date();
+        this.postDate = null;
         this.company = "";
         this.category = "";
-        this.location = new Location();
+        this.location = null;
         this.workType = "";
         this.workingArrangement = "";
         this.compensation = -1;
         this.jobLevel = "";
         this.description = "";
-        this.advertisingStatus = "";
-        this.keywords = new ArrayList<String>();
-        this.applications = new ArrayList<Application>();
-        this.complaints = new ArrayList<Complaint>();
+        this.isAdvertised = false;
+        this.keywords = null;
     }
 
     public int getId() {
@@ -54,7 +50,8 @@ public class Job {
         this.jobLevel = jobLevel;
     }
 
-    public Job(String jobTitle, Date postDate, String company, String category, Location location, String workType, String workingArrangement, int compensation, String jobLevel, String description, String advertisingStatus, ArrayList<String> keywords, ArrayList<Application> applications, ArrayList<Complaint> complaints) {
+    public Job(String jobTitle, Date postDate, String company, String category, Location location, String workType, String workingArrangement, int compensation, String jobLevel, String description, boolean isAdvertised, ArrayList<String> keywords) {
+        id = -1;
         this.jobTitle = jobTitle;
         this.postDate = postDate;
         this.company = company;
@@ -65,10 +62,24 @@ public class Job {
         this.compensation = compensation;
         this.jobLevel = jobLevel;
         this.description = description;
-        this.advertisingStatus = advertisingStatus;
+        this.isAdvertised = isAdvertised;
         this.keywords = keywords;
-        this.applications = applications;
-        this.complaints = complaints;
+    }
+
+    public Job(int id, String jobTitle, Date postDate, String company, String category, Location location, String workType, String workingArrangement, int compensation, String jobLevel, String description, boolean isAdvertised, ArrayList<String> keywords) {
+        this.id = id;
+        this.jobTitle = jobTitle;
+        this.postDate = postDate;
+        this.company = company;
+        this.category = category;
+        this.location = location;
+        this.workType = workType;
+        this.workingArrangement = workingArrangement;
+        this.compensation = compensation;
+        this.jobLevel = jobLevel;
+        this.description = description;
+        this.isAdvertised = isAdvertised;
+        this.keywords = keywords;
     }
 
     public void display() {
@@ -81,10 +92,8 @@ public class Job {
         System.out.println(workingArrangement);
         System.out.println(compensation);
         System.out.println(description);
-        System.out.println(advertisingStatus);
+        System.out.println(isAdvertised);
         keywords.forEach(System.out::print);
-        applications.forEach(System.out::print);
-        complaints.forEach(System.out::print);
     }
 
     public String getJobTitle() {
@@ -123,20 +132,12 @@ public class Job {
         return description;
     }
 
-    public String getAdvertisingStatus() {
-        return advertisingStatus;
+    public boolean getIsAdvertised() {
+        return isAdvertised;
     }
 
     public ArrayList<String> getKeywords() {
         return keywords;
-    }
-
-    public ArrayList<Application> getApplications() {
-        return applications;
-    }
-
-    public ArrayList<Complaint> getComplaints() {
-        return complaints;
     }
 
     public void setJobTitle(String jobTitle) {
@@ -175,19 +176,11 @@ public class Job {
         this.description = description;
     }
 
-    public void setAdvertisingStatus(String advertisingStatus) {
-        this.advertisingStatus = advertisingStatus;
+    public void setAdvertisingStatus(boolean isAdvertised) {
+        this.isAdvertised = isAdvertised;
     }
 
     public void setKeywords(ArrayList<String> keywords) {
         this.keywords = keywords;
-    }
-
-    public void setApplications(ArrayList<Application> applications) {
-        this.applications = applications;
-    }
-
-    public void setComplaints(ArrayList<Complaint> complaints) {
-        this.complaints = complaints;
     }
 }
