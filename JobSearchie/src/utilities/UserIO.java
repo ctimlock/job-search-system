@@ -76,7 +76,8 @@ public class UserIO {
     public static void displayHeadingAndBody(String heading, String body) {}
 
     public static void clearScreen() {
-
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 
     public static String menuSelector(String question, String[] array) {
@@ -98,5 +99,4 @@ public class UserIO {
         UserIO.displayOptions(map);
         return UserIO.getInput();
     }
-
 }
