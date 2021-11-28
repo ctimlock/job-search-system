@@ -34,8 +34,8 @@ public class Recruiter extends User {
 
     public Recruiter(int id, String firstName, String lastName, String email, String password, Date dateCreated, String companyName, String recruitingSpecialty) {
         super(id, firstName, lastName, email, password, dateCreated);
-        companyName = companyName;
-        recruitingSpecialty = recruitingSpecialty;
+        this.companyName = companyName;
+        this.recruitingSpecialty = recruitingSpecialty;
     }
 
     public String getCompanyName() {

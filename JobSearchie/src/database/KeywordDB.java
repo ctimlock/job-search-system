@@ -12,8 +12,8 @@ public class KeywordDB {
     }
 
     public static class Query {
-        public static final String QUERY_KEYWORD_ID = "SELECT id FROM " + NAME + " WHERE " + KEYWORD + " = ?";
-
+        public static final String KEYWORD_ID = "SELECT " + ID + " FROM " + NAME + " WHERE " + Column.KEYWORD + " = ?";
+        public static final String KEYWORD = "SELECT * FROM " + NAME + " WHERE " + ID + " = ?";
     }
 
     public static class Insert {

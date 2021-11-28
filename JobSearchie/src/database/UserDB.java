@@ -31,7 +31,9 @@ public class UserDB {
 
     public static class Query{
         public static final String JOBSEEKER_BY_EMAIL = "SELECT * FROM " + FULL + " WHERE " + EMAIL + " = ?";
-        public static final String JOBSEEKER_ID_BY_EMAIL = "SELECT id FROM " + TABLE_NAME + " WHERE " + EMAIL + " = ?";
+        public static final String JOBSEEKER_ID_BY_EMAIL = "SELECT " + ID + " FROM " + TABLE_NAME + " WHERE " + EMAIL + " = ?";
+        private static final String RECRUITER_ID_BY_EMAIL = "SELECT " + ID + " FROM " + FULL + " WHERE " + EMAIL + " = ?";
+        private static final String RECRUITER_BY_EMAIL = "SELECT * FROM " + FULL + " WHERE " + EMAIL + " = ?";
     }
 
     public static class Insert{

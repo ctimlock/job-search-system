@@ -21,16 +21,44 @@ public class JobSearchie {
         program.run();
     }
 
-    public void run() {
+    public void run() throws SQLException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         DatabaseManager db = new DatabaseManager();
         if(!db.open()) {
             System.out.println("Can't open database");
             return;
         }
-        //welcomeScreen();
-        //loginOrRegister();
-        //UserHandler userHandler = session.getUserHandler();
+
+        Location location = new Location("Australia", "Tasmania", "Burnie", "7321");
+
+        ArrayList<String> keywords = new ArrayList<>();
+        keywords.add("Finance");
+        keywords.add("Economics");
+        keywords.add("Corporate");
+
+        JobSeeker ron = new JobSeeker();
+        ron.setFirstName("Ron");
+        ron.setLastName("James");
+        ron.setEmail("ron_james@hotmail.com");
+        ron.setPassword("abc123abc123");
+        ron.setDateCreated(new Date());
+        ron.setCurrentJobName("Software Engineer");
+        ron.setCurrentJobLevel("Senior");
+        ron.setLocation(location);
+        ron.setContactNumber("0457393520");
+        ron.setDateOfBirth(new Date());
+        ron.setExpectedCompensation(80000);
+        ron.setKeywords(keywords);
+        ron.setResumeDir("N/A");
+
+        db.insertJobSeeker(ron);
+
+        JobSeeker ron2 = db.getJobSeekerFromEmail("ron_james@hotmail.com");
+
+        System.out.println(ron2.getKeywords().size());
+
+
+        db.close();
     }
 
     public void welcomeScreen () {
