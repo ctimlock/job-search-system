@@ -1,8 +1,10 @@
 package Controllers;
 
+import database.DatabaseIO;
 import entities.*;
 import utilities.UserIO;
 
+import java.io.FileReader;
 import java.util.*;
 
 public class JobHandler {
@@ -28,6 +30,7 @@ public class JobHandler {
         return new Job();
     }
 
+
     public String enterJobTitle() {
 
         UserIO.displayBody("Please enter the name of the job that you would like to create:");
@@ -44,17 +47,28 @@ public class JobHandler {
 
     public String enterCategory() {
 
-        UserIO.displayBody("Please enter the category of the job:");
-        HashMap<String, String> map = new HashMap<>();
-        map.put("1", "Banking and Financial Services");
-        map.put("2", "Construction");
-        map.put("3", "Education");
-        map.put("4", "Health");
-        map.put("5", "Hospitality and Entertainment");
-        map.put("6", "Technology");
-        UserIO.displayOptions(map);
-
-        return map.get(UserIO.getInput());
+        String[] options = {
+                "Agricultural Forestry and Fishing",
+                "Mining",
+                "Manufacturing",
+                "Electricity Gas Water and Waste Services",
+                "Construction",
+                "Wholesale Trade",
+                "Retail Trade",
+                "Accommodation and Food Services",
+                "Transport Postal and Warehousing",
+                "Information Media and Telecommunications",
+                "Financial and Insurance Services",
+                "Rental Hiring and Real Estate Services",
+                "Professional Scientific and Technical Services",
+                "Administrative and Support Services",
+                "Public Administration and Safety",
+                "Education and Training",
+                "Health Care and Social Assistance",
+                "Arts and Recreation Services",
+                "Other Services"
+        };
+        return UserIO.menuSelector("Please enter the category of the job:", options);
     }
 
     public Location enterLocation() {
@@ -73,27 +87,25 @@ public class JobHandler {
 
     public String enterWorkType() {
 
-        UserIO.displayBody("Please enter the type of work (Full time, Part time, Contract/ Temp, Casual/ Vacation):");
-        HashMap<String, String> map = new HashMap<>();
-        map.put("1", "Full time");
-        map.put("2", "Part time");
-        map.put("3", "Contract/ Temporary");
-        map.put("4", "Casual/ Vacation");
-        UserIO.displayOptions(map);
+        String[] options = {
+                "Full time",
+                "Part time",
+                "Contract/ Temporary",
+                "Casual/ Vacation"
+        };
 
-        return map.get(UserIO.getInput());
+        return UserIO.menuSelector("Please enter the type of work:", options);
     }
 
     public String enterWorkingArrangement() {
 
-        UserIO.displayBody("Please enter the working arrangement (Work from home, Office, or Combination):");
-        HashMap<String, String> map = new HashMap<>();
-        map.put("1", "Office");
-        map.put("2", "Work from home");
-        map.put("3", "Combination");
-        UserIO.displayOptions(map);
+        String[] options = {
+                "Office",
+                "Remote",
+                "Hybrid"
+        };
 
-        return map.get(UserIO.getInput());
+        return UserIO.menuSelector("Please enter the working arrangement:", options);
     }
 
     public String enterDescription() {
@@ -113,33 +125,49 @@ public class JobHandler {
 
     public String enterJobLevel() {
 
-        UserIO.displayBody("Please enter the level of this job:");
-        HashMap<String, String> map = new HashMap<>();
-        map.put("1", "Entry level");
-        map.put("2", "Mid level");
-        map.put("3", "Senior level");
-        UserIO.displayOptions(map);
+        String[] options = {
+                "Entry level",
+                "Mid level",
+                "Senior level"
+        };
 
-        return map.get(UserIO.getInput());
+        return UserIO.menuSelector("Please enter the level of this job:", options);
     }
 
-    public String enterAdvertisingStatus() {
-        HashMap<String, String> map = new HashMap<>();
-        map.put("1", "Save this job and advertise it.");
-        map.put("2", "Save this job but don’t advertise it.");
-        map.put("3", "Return home without saving.");
-        UserIO.displayOptions(map);
+    public void advertiseJob(Job job) {
+        String[] options = {
+                "Yes",
+                "No"
+        };
+        String userInput = UserIO.menuSelectorSwitch("Would you like to advertise this job?:", options);
 
-        return map.get(UserIO.getInput());
+        /*
+        switch  (userInput) {
+            case ("1") -> saveJob(job);
+            case ("2") -> ;
+            default ->
+        }
+        */
+
+    }
+
+    public void saveJob(Job job) {
+
+        String jobTitle = job.getJobTitle();
+
+
+        // DatabaseIO dbio = new DatabaseIO();
+
     }
 
     public static void main(String[] args) {
 
+        //DatabaseIO db = new DatabaseIO(new FileReader("category.csv"));
         JobHandler jobHandler = new JobHandler();
         Job newJob = jobHandler.createJob();
-        System.out.println("Please review the job details:");
-        newJob.display();
-        newJob.setAdvertisingStatus(jobHandler.enterAdvertisingStatus());
+        //System.out.println("Please review the job details:");
+        //newJob.display();
+        //newJob.setAdvertisingStatus(jobHandler.enterAdvertisingStatus());
     }
 
 }

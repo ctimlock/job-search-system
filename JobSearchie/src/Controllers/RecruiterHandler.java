@@ -9,15 +9,16 @@ import java.util.HashMap;
 public class RecruiterHandler extends UserHandler{
 
     public void home() {
-        UserIO.displayBody("Please enter one of the follow options:");
-        HashMap<String, String> map = new HashMap<>();
-        map.put("1", "Create a job listing");
-        map.put("2", "View my jobs");
-        map.put("3", "Messages");
-        map.put("4", "Search for a job seeker");
-        map.put("5", "Profile management");
-        UserIO.displayOptions(map);
-        String userInput = map.get(UserIO.getInput());
+
+        String[] options = {
+                "Create a job listing",
+                "View my jobs",
+                "Messages",
+                "Offer interview",
+                "Search for a job seeker",
+                "Profile management"
+        };
+        String userInput = UserIO.menuSelectorSwitch("Please enter one of the following:", options);
 
         switch (userInput) {
             case ("1") -> new JobHandler().createJob();
@@ -30,13 +31,13 @@ public class RecruiterHandler extends UserHandler{
     }
 
     public void profileManagement() {
-        UserIO.displayBody("Please enter one of the follow options:");
-        HashMap<String, String> map = new HashMap<>();
-        map.put("1", "Update profile");
-        map.put("2", "Delete profile");
-        map.put("3", "Home");
-        UserIO.displayOptions(map);
-        String userInput = map.get(UserIO.getInput());
+
+        String[] options = {
+                "Update profile",
+                "Delete profile",
+                "Home",
+        };
+        String userInput = UserIO.menuSelectorSwitch("Please enter one of the following:", options);
 
         switch (userInput) {
             case ("1") -> updateProfile();
@@ -47,12 +48,12 @@ public class RecruiterHandler extends UserHandler{
     }
 
     public void deleteProfile() {
-        UserIO.displayBody("Are you sure you would like to delete your profile?:");
-        HashMap<String, String> map = new HashMap<>();
-        map.put("1", "Yes");
-        map.put("2", "No");
-        UserIO.displayOptions(map);
-        String userInput = map.get(UserIO.getInput());
+
+        String[] options = {
+                "Yes",
+                "No"
+        };
+        String userInput = UserIO.menuSelectorSwitch("Are you sure you would like to delete your profile?:", options);
 
         switch (userInput) {
             case ("1") -> deleteProfileYes();
@@ -92,17 +93,17 @@ public class RecruiterHandler extends UserHandler{
     }
 
     public void menuJobSeeker() {
-        UserIO.displayBody("Please enter one of the following:");
-        HashMap<String, String> map = new HashMap<>();
-        map.put("1", "Read resume");
-        map.put("2", "Read cover letter");
-        map.put("3", "Send message");
-        map.put("4", "Offer interview");
-        map.put("5", "Report job seeker to admin");
-        map.put("6", "Remove job seeker from search");
-        map.put("7", "Home");
-        UserIO.displayOptions(map);
-        String userInput = map.get(UserIO.getInput());
+
+        String[] options = {
+                "Read resume",
+                "Read cover letter",
+                "Send message",
+                "Offer interview",
+                "Report job seeker to admin",
+                "Remove job seeker from search",
+                "Home"
+        };
+        String userInput = UserIO.menuSelectorSwitch("Please enter one of the following:", options);
 
         /*
         switch (userInput) {
