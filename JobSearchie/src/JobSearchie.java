@@ -29,15 +29,11 @@ public class JobSearchie {
             return;
         }
 
-        System.out.println(db.getKeyword(1));
-        System.out.println(db.getKeyword(7));
-        System.out.println(db.getKeyword(10));
-        System.out.println(db.getKeywordId(db.getKeyword(1)));
-        System.out.println(db.getKeywordId("Econometrics"));
-        System.out.println(db.getKeywordId("Happy"));
+        Location loc1 = new Location("Australia", "NSW", "Sydney", "3000");
+        Location loc2 = new Location("Australia", "NSW", "Sydney", "3000");
 
-        System.out.println(db.insertKeyword("Finance"));
-        System.out.println(db.insertKeyword("Happy"));
+        System.out.println(db.insertLocation(loc1));
+        System.out.println(db.insertLocation(loc2));
 
 
 //        Location location = new Location("Australia", "Tasmania", "Burnie", "7321");

@@ -17,6 +17,7 @@ public class LocationDB {
 
     public static class Query{
         public static final String LOCATION_ID = "SELECT " + ID + " FROM " + NAME + " WHERE " + COUNTRY + " = ? AND " + STATE + " = ? AND " + CITY + " = ? AND " + POSTCODE + " = ?";
+        public static final String LOCATION = "SELECT * FROM " + NAME + " WHERE " + ID + " = ?";
     }
     public static class Insert{
         public static final String INSERT_LOCATION = "INSERT INTO " + NAME + " (" + COUNTRY + ", " + STATE + ", " + CITY + ", " + POSTCODE + ") VALUES (?, ?, ?, ?)";
