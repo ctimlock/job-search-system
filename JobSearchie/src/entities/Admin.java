@@ -4,10 +4,10 @@ import java.util.Date;
 
 public class Admin extends User {
     public Admin() {
-        super();
+        super("Admin");
     }
 
     public Admin(String firstName, String lastName, String email, String password, Date dateCreated) {
-        super(firstName, lastName, email, password, dateCreated);
+        super("Admin", firstName, lastName, email, password, dateCreated);
     }
 }

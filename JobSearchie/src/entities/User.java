@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class User {
     private int id;
+    private String userType;
     private String firstName;
     private String lastName;
     private String email;
@@ -12,6 +13,7 @@ public class User {
 
     public User() {
         id = -1;
+        userType = "User";
         firstName = "";
         lastName = "";
         email = "";
@@ -19,8 +21,19 @@ public class User {
         dateCreated = null;
     }
 
-    public User(String firstName, String lastName, String email, String password, Date dateCreated) {
+    public User(String userType) {
+        id = -1;
+        this.userType = userType;
+        firstName = "";
+        lastName = "";
+        email = "";
+        password = "";
+        dateCreated = null;
+    }
+
+    public User(String userType, String firstName, String lastName, String email, String password, Date dateCreated) {
         this.id = -1;
+        this.userType = userType;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -28,13 +41,22 @@ public class User {
         this.dateCreated = dateCreated;
     }
 
-    public User(int id, String firstName, String lastName, String email, String password, Date dateCreated) {
+    public User(int id, String userType, String firstName, String lastName, String email, String password, Date dateCreated) {
         this.id = id;
+        this.userType = userType;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.dateCreated = dateCreated;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
     }
 
     public Date getDateCreated() {

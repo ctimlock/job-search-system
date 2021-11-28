@@ -255,24 +255,30 @@ public class DatabaseManager {
         }
     }
 
-//    private User parseUser(ResultSet result) {
-//        return new User();
-//    }
+    public boolean doesUserExist(String email) {}
 
-//    public User getUser(String email) {
-//        try {
-//            queryUserByEmail.setString(1, email);
-//            ResultSet results = queryUserByEmail.executeQuery();
-//            if(results.next()) {
-//                User user = parseUser(results);
-//                return user;
-//            } else
-//                return null;
-//        } catch (SQLException e) {
-//            System.out.println("Could't query user table: " + e.getMessage());
-//            return null;
-//        }
-//    }
+    public String getUserType(String email) {
+        try {
+            queryUserByEmail.setString(1, email);
+        } catch (SQLException e) {
+            System.out.println("Error querying user table: " + e.getMessage());
+        }
+    }
+
+    public User getUser(String email) {
+        try {
+            queryUserByEmail.setString(1, email);
+            ResultSet results = queryUserByEmail.executeQuery();
+            if(results.next()) {
+                //User user = parseUser(results);
+                return null;
+            } else
+                return null;
+        } catch (SQLException e) {
+            System.out.println("Could't query user table: " + e.getMessage());
+            return null;
+        }
+    }
 
     /**
      * Given an email returns a JobSeeker object. Returns null if email doesn't exist.

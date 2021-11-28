@@ -9,31 +9,32 @@ public class Recruiter extends User {
     private Date dateOfBirth;
 
     public Recruiter() {
-        super();
+        super("Recruiter");
         companyName = "";
         recruitingSpecialty = "";
     }
 
     public Recruiter(String firstName, String lastName, String email, String password, Date dateCreated) {
-        super(firstName, lastName, email, password, dateCreated);
+        super("Recruiter", firstName, lastName, email, password, dateCreated);
         this.companyName = "";
         this.recruitingSpecialty = "";
     }
 
     public Recruiter(int id, String firstName, String lastName, String email, String password, Date dateCreated) {
-        super(id, firstName, lastName, email, password, dateCreated);
+        super(id,"Recruiter" ,firstName, lastName, email, password, dateCreated);
         this.companyName = "";
         this.recruitingSpecialty = "";
     }
 
     public Recruiter(String firstName, String lastName, String email, String password, Date dateCreated, String companyName, String recruitingSpecialty) {
-        super(firstName, lastName, email, password, dateCreated);
+        super("Recruiter", firstName, lastName, email, password, dateCreated);
         this.companyName = companyName;
         this.recruitingSpecialty = recruitingSpecialty;
     }
 
     public Recruiter(int id, String firstName, String lastName, String email, String password, Date dateCreated, String companyName, String recruitingSpecialty) {
-        super(id, firstName, lastName, email, password, dateCreated);
+        super(id, "Recruiter", firstName, lastName, email, password, dateCreated);
+
         this.companyName = companyName;
         this.recruitingSpecialty = recruitingSpecialty;
     }

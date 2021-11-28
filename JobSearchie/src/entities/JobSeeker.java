@@ -14,7 +14,7 @@ public class JobSeeker extends User {
     private String resumeDir;
 
     public JobSeeker() {
-        super();
+        super("Job Seeker");
         currentJobName = "";
         currentJobLevel = "";
         contactNumber = "";
@@ -26,7 +26,7 @@ public class JobSeeker extends User {
     }
 
     public JobSeeker(String firstName, String lastName, String email, String password, Date dateCreated) {
-        super(firstName, lastName, email, password, dateCreated);
+        super("Job Seeker", firstName, lastName, email, password, dateCreated);
         currentJobName = "";
         currentJobLevel = "";
         contactNumber = "";
@@ -38,7 +38,7 @@ public class JobSeeker extends User {
     }
 
     public JobSeeker(int id, String firstName, String lastName, String email, String password, Date dateCreated) {
-        super(id, firstName, lastName, email, password, dateCreated);
+        super(id, "Job Seeker", firstName, lastName, email, password, dateCreated);
         currentJobName = "";
         currentJobLevel = "";
         contactNumber = "";
@@ -50,7 +50,7 @@ public class JobSeeker extends User {
     }
 
     public JobSeeker(String firstName, String lastName, String email, String password, Date dateCreated, String currentJobName, String currentJobLevel, String contactNumber, String resumeDir, Location location, Date dateOfBirth, ArrayList<String> keywords, int expectedCompensation) {
-        super(firstName, lastName, email, password, dateCreated);
+        super("Job Seeker", firstName, lastName, email, password, dateCreated);
         this.currentJobName = currentJobName;
         this.currentJobLevel = currentJobLevel;
         this.contactNumber = contactNumber;
@@ -62,7 +62,7 @@ public class JobSeeker extends User {
     }
 
     public JobSeeker(int id, String firstName, String lastName, String email, String password, Date dateCreated, String currentJobName, String currentJobLevel, String contactNumber, String resumeDir, Location location, Date dateOfBirth, ArrayList<String> keywords, int expectedCompensation) {
-        super(id, firstName, lastName, email, password, dateCreated);
+        super(id, "Job Seeker", firstName, lastName, email, password, dateCreated);
         this.currentJobName = currentJobName;
         this.currentJobLevel = currentJobLevel;
         this.contactNumber = contactNumber;
