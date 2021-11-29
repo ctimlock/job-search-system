@@ -3,7 +3,6 @@ package entities;
 import java.util.Date;
 
 public class User {
-    private int id;
     private String accountType;
     private String firstName;
     private String lastName;
@@ -12,7 +11,6 @@ public class User {
     private Date dateCreated;
 
     public User() {
-        id = -1;
         accountType = "User";
         firstName = "";
         lastName = "";
@@ -22,7 +20,6 @@ public class User {
     }
 
     public User(String accountType) {
-        id = -1;
         this.accountType = accountType;
         firstName = "";
         lastName = "";
@@ -31,18 +28,16 @@ public class User {
         dateCreated = null;
     }
 
-    public User(String accountType, String firstName, String lastName, String email, String password, Date dateCreated) {
-        this.id = -1;
+    public User(String accountType, String email) {
         this.accountType = accountType;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        firstName = "";
+        lastName = "";
         this.email = email;
-        this.password = password;
-        this.dateCreated = dateCreated;
+        password = "";
+        dateCreated = null;
     }
 
-    public User(int id, String accountType, String firstName, String lastName, String email, String password, Date dateCreated) {
-        this.id = id;
+    public User(String accountType, String firstName, String lastName, String email, String password, Date dateCreated) {
         this.accountType = accountType;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -71,10 +66,6 @@ public class User {
         return firstName;
     }
 
-    public int getId() {
-        return id;
-    }
-
     public String getLastName() {
         return lastName;
     }
@@ -94,8 +85,6 @@ public class User {
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-
-    public void setId(int id) {this.id = id;}
 
     public void setLastName(String lastName) {
         this.lastName = lastName;

@@ -16,32 +16,24 @@ public class Recruiter extends User {
         dateOfBirth = null;
     }
 
-    public Recruiter(String firstName, String lastName, String email, String password, Date dateCreated) {
-        super("Recruiter", firstName, lastName, email, password, dateCreated);
-        this.companyName = "";
-        this.recruitingSpecialty = "";
+    public Recruiter(String email) {
+        super("Recruiter", email);
+        companyName = "";
+        recruitingSpecialty = "";
         contactNumber = "";
         dateOfBirth = null;
     }
 
-    public Recruiter(int id, String firstName, String lastName, String email, String password, Date dateCreated) {
-        super(id,"Recruiter" ,firstName, lastName, email, password, dateCreated);
-        this.companyName = "";
-        this.recruitingSpecialty = "";
+    public Recruiter(String firstName, String lastName, String email, String password, Date dateCreated) {
+        super("Recruiter", firstName, lastName, email, password, dateCreated);
+        companyName = "";
+        recruitingSpecialty = "";
         contactNumber = "";
         dateOfBirth = null;
     }
 
     public Recruiter(String firstName, String lastName, String email, String password, Date dateCreated, String companyName, String recruitingSpecialty, String contactNumber, Date dateOfBirth) {
         super("Recruiter", firstName, lastName, email, password, dateCreated);
-        this.companyName = companyName;
-        this.recruitingSpecialty = recruitingSpecialty;
-        this.contactNumber = contactNumber;
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public Recruiter(int id, String firstName, String lastName, String email, String password, Date dateCreated, String companyName, String recruitingSpecialty, String contactNumber, Date dateOfBirth) {
-        super(id, "Recruiter", firstName, lastName, email, password, dateCreated);
         this.companyName = companyName;
         this.recruitingSpecialty = recruitingSpecialty;
         this.contactNumber = contactNumber;

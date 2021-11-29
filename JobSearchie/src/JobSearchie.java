@@ -1,16 +1,17 @@
 import database.DatabaseManager;
-import entities.*;
+import entities.Job;
+import entities.Location;
+import entities.Recruiter;
+import entities.Session;
 import utilities.UserIO;
 import utilities.Validate;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 
 public class JobSearchie {
     private Session session;
@@ -29,6 +30,28 @@ public class JobSearchie {
             return;
         }
 
+        Location loc = new Location("Australia", "Tasmania", "Trowutta", "7330");
+        ArrayList<String> keywords = new ArrayList<>();
+        keywords.add("Accounting");
+        keywords.add("Economics");
+        keywords.add("Study");
+        keywords.add("Focus");
+
+        ArrayList<String> categories = new ArrayList<>();
+        categories.add("Accounting");
+        categories.add("Economics");
+        categories.add("Study");
+        categories.add("Accounting");
+
+        Recruiter recruiter = new Recruiter("James", "Bond", "james_bond@hotmail.com", "Abcabc123", new Date(), "Seek Pty Ltd", "Computer Science", "0459797824", new Date());
+
+        Job job = new Job("Software Dev", recruiter, new Date(), new Date(), new Date(), "Seek Pty Ltf", categories, loc, "Full Time", "WFH", 95625, "Entry Level", "Excellent opportunity as an entry level software developer", true, keywords);
+
+        db.insertJob(job);
+
+        System.out.println(db.getJob(1).getCompany());
+
+        System.out.println("Here");
         db.close();
     }
 
