@@ -9,33 +9,43 @@ public class Recruiter extends User {
     private Date dateOfBirth;
 
     public Recruiter() {
-        super();
+        super("Recruiter");
         companyName = "";
         recruitingSpecialty = "";
+        contactNumber = "";
+        dateOfBirth = null;
     }
 
     public Recruiter(String firstName, String lastName, String email, String password, Date dateCreated) {
-        super(firstName, lastName, email, password, dateCreated);
+        super("Recruiter", firstName, lastName, email, password, dateCreated);
         this.companyName = "";
         this.recruitingSpecialty = "";
+        contactNumber = "";
+        dateOfBirth = null;
     }
 
     public Recruiter(int id, String firstName, String lastName, String email, String password, Date dateCreated) {
-        super(id, firstName, lastName, email, password, dateCreated);
+        super(id,"Recruiter" ,firstName, lastName, email, password, dateCreated);
         this.companyName = "";
         this.recruitingSpecialty = "";
+        contactNumber = "";
+        dateOfBirth = null;
     }
 
-    public Recruiter(String firstName, String lastName, String email, String password, Date dateCreated, String companyName, String recruitingSpecialty) {
-        super(firstName, lastName, email, password, dateCreated);
+    public Recruiter(String firstName, String lastName, String email, String password, Date dateCreated, String companyName, String recruitingSpecialty, String contactNumber, Date dateOfBirth) {
+        super("Recruiter", firstName, lastName, email, password, dateCreated);
         this.companyName = companyName;
         this.recruitingSpecialty = recruitingSpecialty;
+        this.contactNumber = contactNumber;
+        this.dateOfBirth = dateOfBirth;
     }
 
-    public Recruiter(int id, String firstName, String lastName, String email, String password, Date dateCreated, String companyName, String recruitingSpecialty) {
-        super(id, firstName, lastName, email, password, dateCreated);
-        companyName = companyName;
-        recruitingSpecialty = recruitingSpecialty;
+    public Recruiter(int id, String firstName, String lastName, String email, String password, Date dateCreated, String companyName, String recruitingSpecialty, String contactNumber, Date dateOfBirth) {
+        super(id, "Recruiter", firstName, lastName, email, password, dateCreated);
+        this.companyName = companyName;
+        this.recruitingSpecialty = recruitingSpecialty;
+        this.contactNumber = contactNumber;
+        this.dateOfBirth = dateOfBirth;
     }
 
     public String getCompanyName() {

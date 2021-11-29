@@ -21,16 +21,15 @@ public class JobSearchie {
         program.run();
     }
 
-    public void run() {
+    public void run() throws SQLException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         DatabaseManager db = new DatabaseManager();
         if(!db.open()) {
             System.out.println("Can't open database");
             return;
         }
-        //welcomeScreen();
-        //loginOrRegister();
-        //UserHandler userHandler = session.getUserHandler();
+
+        db.close();
     }
 
     public void welcomeScreen () {
