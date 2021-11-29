@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class User {
     private int id;
-    private String userType;
+    private String accountType;
     private String firstName;
     private String lastName;
     private String email;
@@ -13,7 +13,7 @@ public class User {
 
     public User() {
         id = -1;
-        userType = "User";
+        accountType = "User";
         firstName = "";
         lastName = "";
         email = "";
@@ -21,9 +21,9 @@ public class User {
         dateCreated = null;
     }
 
-    public User(String userType) {
+    public User(String accountType) {
         id = -1;
-        this.userType = userType;
+        this.accountType = accountType;
         firstName = "";
         lastName = "";
         email = "";
@@ -31,9 +31,9 @@ public class User {
         dateCreated = null;
     }
 
-    public User(String userType, String firstName, String lastName, String email, String password, Date dateCreated) {
+    public User(String accountType, String firstName, String lastName, String email, String password, Date dateCreated) {
         this.id = -1;
-        this.userType = userType;
+        this.accountType = accountType;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -41,9 +41,9 @@ public class User {
         this.dateCreated = dateCreated;
     }
 
-    public User(int id, String userType, String firstName, String lastName, String email, String password, Date dateCreated) {
+    public User(int id, String accountType, String firstName, String lastName, String email, String password, Date dateCreated) {
         this.id = id;
-        this.userType = userType;
+        this.accountType = accountType;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -51,12 +51,12 @@ public class User {
         this.dateCreated = dateCreated;
     }
 
-    public String getUserType() {
-        return userType;
+    public String getAccountType() {
+        return accountType;
     }
 
-    public void setUserType(String userType) {
-        this.userType = userType;
+    public void setAccountType(String accountType) {
+        this.accountType = accountType;
     }
 
     public Date getDateCreated() {

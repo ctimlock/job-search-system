@@ -4,11 +4,9 @@ import static database.UserDB.Column.*;
 import static database.UserDB.View.*;
 
 public class UserDB {
-    public static final String TABLE_NAME = "user";
+    public static final String NAME = "user";
 
-    public static class View{
-        public static final String FULL = "user_full";
-    }
+    public static class View{}
 
     public static class Column{
         public static final String ID = "id";
@@ -30,16 +28,19 @@ public class UserDB {
     }
 
     public static class Query{
-        public static final String USER_BY_EMAIL = "SELECT * FROM " + FULL + " WHERE " + EMAIL + " = ?";
-        public static final String USER_BY_ID = "SELECT * FROM " + FULL + " WHERE " + EMAIL + " = ?";
-        public static final String JOBSEEKER_ID_BY_EMAIL = "SELECT " + ID + " FROM " + TABLE_NAME + " WHERE " + EMAIL + " = ?";
-        private static final String RECRUITER_ID_BY_EMAIL = "SELECT " + ID + " FROM " + FULL + " WHERE " + EMAIL + " = ?";
-        private static final String RECRUITER_BY_EMAIL = "SELECT * FROM " + FULL + " WHERE " + EMAIL + " = ?";
+        public static final String USER_BY_EMAIL = "SELECT * FROM " + NAME + " WHERE " + EMAIL + " = ?";
+        public static final String USER_BY_ID = "SELECT * FROM " + NAME + " WHERE " + EMAIL + " = ?";
+        public static final String JOBSEEKER_ID_BY_EMAIL = "SELECT " + ID + " FROM " + NAME + " WHERE " + EMAIL + " = ?";
+        public static final String ACCOUNTTYPE_BY_EMAIL = "SELECT " + ACCOUNTTYPE + " FROM " + NAME + " WHERE " + EMAIL + " = ?";
+        private static final String RECRUITER_ID_BY_EMAIL = "SELECT " + ID + " FROM " + NAME + " WHERE " + EMAIL + " = ?";
+        private static final String RECRUITER_BY_EMAIL = "SELECT * FROM " + NAME + " WHERE " + EMAIL + " = ?";
     }
 
     public static class Insert{
-        public static final String JOBSEEKER = "INSERT INTO " + TABLE_NAME + " (" + ACCOUNTTYPE + ", " + FIRSTNAME + ", " + LASTNAME + ", " + EMAIL + ", " + PASSWORD + ", " + LOCATIONID + ", " + CONTACTNUMBER + ", " + DATECREATED + ", " + DATEOFBIRTH + ", " + CURRENTJOBNAME + ", " + CURRENTJOBLEVEL + ", " + EXPECTEDCOMPENSATION + ", " + RESUMEDIR + ") VALUES ('Job Seeker', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        public static final String RECRUITER = "INSERT INTO " + TABLE_NAME + " (" + ACCOUNTTYPE + ", " + FIRSTNAME + ", " + LASTNAME + ", " + EMAIL + ", " + PASSWORD + ", " + LOCATIONID + ", " + CONTACTNUMBER + ", " + DATECREATED + ", " + DATEOFBIRTH + ", " + COMPANYNAME + ", " + RECRUITINGSPECIALTY + ") VALUES ('Recruiter', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        public static final String JOBSEEKER = "INSERT INTO " + NAME + " (" + ACCOUNTTYPE + ", " + FIRSTNAME + ", " + LASTNAME + ", " + EMAIL + ", " + PASSWORD + ", " + LOCATIONID + ", " + CONTACTNUMBER + ", " + DATECREATED + ", " + DATEOFBIRTH + ", " + CURRENTJOBNAME + ", " + CURRENTJOBLEVEL + ", " + EXPECTEDCOMPENSATION + ", " + RESUMEDIR + ") VALUES ('Job Seeker', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        public static final String RECRUITER = "INSERT INTO " + NAME + " (" + ACCOUNTTYPE + ", " + FIRSTNAME + ", " + LASTNAME + ", " + EMAIL + ", " + PASSWORD + ", " + DATECREATED + ", " + COMPANYNAME + ", " + RECRUITINGSPECIALTY + ", " + CONTACTNUMBER + ", " + DATEOFBIRTH + ") VALUES ('Recruiter', ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        public static final String ADMIN = "INSERT INTO " + NAME + " (" + ACCOUNTTYPE + ", " + FIRSTNAME + ", " + LASTNAME + ", " + EMAIL + ", " + PASSWORD + ", " + DATECREATED + ") VALUES ('Admin', ?, ?, ?, ?, ?)";
+
     }
 
     public static class Update{}

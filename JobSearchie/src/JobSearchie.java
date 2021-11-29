@@ -29,42 +29,6 @@ public class JobSearchie {
             return;
         }
 
-        Location loc1 = new Location("Australia", "NSW", "Sydney", "3000");
-        Location loc2 = new Location("Australia", "NSW", "Sydney", "3000");
-
-        System.out.println(db.insertLocation(loc1));
-        System.out.println(db.insertLocation(loc2));
-
-
-//        Location location = new Location("Australia", "Tasmania", "Burnie", "7321");
-//
-//        ArrayList<String> keywords = new ArrayList<>();
-//        keywords.add("Finance");
-//        keywords.add("Economics");
-//        keywords.add("Corporate");
-//
-//        JobSeeker ron = new JobSeeker();
-//        ron.setFirstName("Ron");
-//        ron.setLastName("James");
-//        ron.setEmail("ron_james@hotmail.com");
-//        ron.setPassword("abc123abc123");
-//        ron.setDateCreated(new Date());
-//        ron.setCurrentJobName("Software Engineer");
-//        ron.setCurrentJobLevel("Senior");
-//        ron.setLocation(location);
-//        ron.setContactNumber("0457393520");
-//        ron.setDateOfBirth(new Date());
-//        ron.setExpectedCompensation(80000);
-//        ron.setKeywords(keywords);
-//        ron.setResumeDir("N/A");
-//
-//        db.insertJobSeeker(ron);
-//
-//        JobSeeker ron2 = db.getJobSeekerFromEmail("ron_james@hotmail.com");
-//
-//        System.out.println(ron2.getKeywords().size());
-
-
         db.close();
     }
 
