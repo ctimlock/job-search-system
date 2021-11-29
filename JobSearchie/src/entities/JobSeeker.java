@@ -37,32 +37,8 @@ public class JobSeeker extends User {
         expectedCompensation = -1;
     }
 
-    public JobSeeker(int id, String firstName, String lastName, String email, String password, Date dateCreated) {
-        super(id, "Job Seeker", firstName, lastName, email, password, dateCreated);
-        currentJobName = "";
-        currentJobLevel = "";
-        contactNumber = "";
-        resumeDir = "";
-        location = null;
-        dateOfBirth = null;
-        keywords = null;
-        expectedCompensation = -1;
-    }
-
     public JobSeeker(String firstName, String lastName, String email, String password, Date dateCreated, String currentJobName, String currentJobLevel, String contactNumber, String resumeDir, Location location, Date dateOfBirth, ArrayList<String> keywords, int expectedCompensation) {
         super("Job Seeker", firstName, lastName, email, password, dateCreated);
-        this.currentJobName = currentJobName;
-        this.currentJobLevel = currentJobLevel;
-        this.contactNumber = contactNumber;
-        this.resumeDir = resumeDir;
-        this.location = location;
-        this.dateOfBirth = dateOfBirth;
-        this.keywords = keywords;
-        this.expectedCompensation = expectedCompensation;
-    }
-
-    public JobSeeker(int id, String firstName, String lastName, String email, String password, Date dateCreated, String currentJobName, String currentJobLevel, String contactNumber, String resumeDir, Location location, Date dateOfBirth, ArrayList<String> keywords, int expectedCompensation) {
-        super(id, "Job Seeker", firstName, lastName, email, password, dateCreated);
         this.currentJobName = currentJobName;
         this.currentJobLevel = currentJobLevel;
         this.contactNumber = contactNumber;

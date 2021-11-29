@@ -22,7 +22,6 @@ public class Job {
     private ArrayList<String> keywords;
 
     public Job() {
-        id = -1;
         jobTitle = "";
         author = null;
         dateCreated = null;
@@ -40,11 +39,12 @@ public class Job {
         keywords = null;
     }
 
-    public Job(String jobTitle, Date dateCreated, String company, ArrayList<String> categories, Recruiter author, Location location, String workType, String workingArrangement, int compensation, String jobLevel, String description, boolean isAdvertised, ArrayList<String> keywords) {
-        id = -1;
-        this.author = author;
+    public Job(String jobTitle, Recruiter author, Date dateCreated, Date dateListed, Date dateDeListed, String company, ArrayList<String> categories, Location location, String workType, String workingArrangement, int compensation, String jobLevel, String description, boolean isAdvertised, ArrayList<String> keywords) {
         this.jobTitle = jobTitle;
+        this.author = author;
         this.dateCreated = dateCreated;
+        this.dateListed = dateListed;
+        this.dateDeListed = dateDeListed;
         this.company = company;
         this.categories = categories;
         this.location = location;
@@ -57,11 +57,13 @@ public class Job {
         this.keywords = keywords;
     }
 
-    public Job(int id, String jobTitle, Recruiter author, Date dateCreated, String company, ArrayList<String> categories, Location location, String workType, String workingArrangement, int compensation, String jobLevel, String description, boolean isAdvertised, ArrayList<String> keywords) {
+    public Job(int id, String jobTitle, Recruiter author, Date dateCreated, Date dateListed, Date dateDeListed, String company, ArrayList<String> categories, Location location, String workType, String workingArrangement, int compensation, String jobLevel, String description, boolean isAdvertised, ArrayList<String> keywords) {
         this.id = id;
         this.jobTitle = jobTitle;
         this.author = author;
         this.dateCreated = dateCreated;
+        this.dateListed = dateListed;
+        this.dateDeListed = dateDeListed;
         this.company = company;
         this.categories = categories;
         this.location = location;
@@ -96,10 +98,6 @@ public class Job {
         return categories;
     }
 
-    public ArrayList<String> getCategory() {
-        return categories;
-    }
-
     public String getCompany() {
         return company;
     }
@@ -128,8 +126,12 @@ public class Job {
         return id;
     }
 
-    public boolean getIsAdvertised() {
-        return isAdvertised;
+    public String getJobLevel() {
+        return jobLevel;
+    }
+
+    public String getJobTitle() {
+        return jobTitle;
     }
 
     public String getJobLevel() {
@@ -156,16 +158,8 @@ public class Job {
         return workingArrangement;
     }
 
-    public boolean isAdvertised() {
+    public boolean getIsAdvertised() {
         return isAdvertised;
-    }
-
-    public void setAdvertised(boolean advertised) {
-        isAdvertised = advertised;
-    }
-
-    public void setAdvertisingStatus(boolean isAdvertised) {
-        this.isAdvertised = isAdvertised;
     }
 
     public void setAuthor(Recruiter author) {
@@ -173,10 +167,6 @@ public class Job {
     }
 
     public void setCategories(ArrayList<String> categories) {
-        this.categories = categories;
-    }
-
-    public void setCategory(ArrayList<String> categories) {
         this.categories = categories;
     }
 
@@ -208,6 +198,10 @@ public class Job {
         this.id = id;
     }
 
+    public void setIsAdvertised(boolean isAdvertised) {
+        this.isAdvertised = isAdvertised;
+    }
+
     public void setJobLevel(String jobLevel) {
         this.jobLevel = jobLevel;
     }
@@ -231,4 +225,5 @@ public class Job {
     public void setWorkingArrangement(String workingArrangement) {
         this.workingArrangement = workingArrangement;
     }
+
 }
