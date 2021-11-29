@@ -132,9 +132,6 @@ public class JobSearchie {
 
     }
 
-
-
-
     public void exit() {
         System.exit(1);
     }
