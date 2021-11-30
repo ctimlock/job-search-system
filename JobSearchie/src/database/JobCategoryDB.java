@@ -17,11 +17,16 @@ public class JobCategoryDB implements DBHelper {
      * Prepared statement that will return all categoryId's associated with a given jobId. Used to populate
      * a job categories.
      */
-    private PreparedStatement queryJobCategories;
+    private final PreparedStatement queryJobCategories;
     /**
      * Prepared statement that will insert an entry into the job_category table given a jobId and categoryId.
      */
-    private PreparedStatement insertJobCategory;
+    private final PreparedStatement insertJobCategory;
+
+    public JobCategoryDB(Connection conn) throws SQLException {
+        queryJobCategories = conn.prepareStatement(JobCategoryDB.Query.JOB_category, Statement.RETURN_GENERATED_KEYS);
+        insertJobCategory = conn.prepareStatement(JobCategoryDB.Insert.JOB_category, Statement.RETURN_GENERATED_KEYS);
+    }
 
     @Override
     public void close() throws SQLException {
@@ -111,12 +116,6 @@ public class JobCategoryDB implements DBHelper {
             if (affectedRows != 1)
                 throw new SQLException("Couldn't insert job category.");
         }
-    }
-
-    @Override
-    public void open(Connection conn) throws SQLException {
-        queryJobCategories = conn.prepareStatement(JobCategoryDB.Query.JOB_category, Statement.RETURN_GENERATED_KEYS);
-        insertJobCategory = conn.prepareStatement(JobCategoryDB.Insert.JOB_category, Statement.RETURN_GENERATED_KEYS);
     }
 
     public static class View {}

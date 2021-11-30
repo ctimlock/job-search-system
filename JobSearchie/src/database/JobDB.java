@@ -11,12 +11,22 @@ public class JobDB implements DBHelper {
     public static final String NAME = "job";
     /**
      * Prepared statement that will insert a Job into the job table.
-     *
-     * @see JobDB.Insert
      */
-    private PreparedStatement insertJob;
-    private PreparedStatement queryJob;
+    private final PreparedStatement insertJob;
+    /**
+     * Prepared statement which will query a job and all it's atributes.
+     */
+    private final PreparedStatement queryJob;
 
+    public JobDB(Connection conn) throws SQLException {
+        insertJob = conn.prepareStatement(JobDB.Insert.JOB, Statement.RETURN_GENERATED_KEYS);
+        queryJob = conn.prepareStatement(JobDB.Query.JOB, Statement.RETURN_GENERATED_KEYS);
+    }
+
+    /**
+     * Closes all prepared statements.
+     * @throws SQLException Throws an SQLException if a prepared statement is unable to be closed.
+     */
     @Override
     public void close() throws SQLException {
         if (insertJob != null)
@@ -25,11 +35,6 @@ public class JobDB implements DBHelper {
             queryJob.close();
     }
 
-    @Override
-    public void open(Connection conn) throws SQLException {
-        insertJob = conn.prepareStatement(JobDB.Insert.JOB, Statement.RETURN_GENERATED_KEYS);
-        queryJob = conn.prepareStatement(JobDB.Query.JOB, Statement.RETURN_GENERATED_KEYS);
-    }
 
     public Job getJob(int jobId, UserDB userDB, LocationDB locationDB, JobKeywordDB jobKeywordDB, JobCategoryDB jobCategoryDB) {
         try {
@@ -50,12 +55,21 @@ public class JobDB implements DBHelper {
         }
     }
 
-    public Job insertJob(Job job, UserDB userDB, LocationDB locationDB, JobKeywordDB jobKeywordDB, JobCategoryDB jobCategoryDB) throws SQLException {
-        if (job.getId()!= -1)
+    /**
+     * Inserts a job into the database. If any of the job foreign keys don't exist such as location, them location
+     * will be inserted into the database.
+     * @param job The job to be inserted into the database.
+     * @param locationDB LocationBD helper class used to insert or get job location.
+     * @param jobKeywordDB JobKeywordDB helper class used to insert job keywords.
+     * @param jobCategoryDB JobCategoryDB helper class used to insert job categories.
+     * @return Returns the job that has been inserted into the database.
+     * @throws SQLException Throws an SQLException if job cannot be inserted.
+     */
+    public Job insertJob(Job job , LocationDB locationDB, JobKeywordDB jobKeywordDB, JobCategoryDB jobCategoryDB) throws SQLException {
+        if (job.getId()!= -1) {
             return job;
-        else {
+        } else {
             job.setLocation(locationDB.insertLocation(job.getLocation()));
-            job.setAuthor(userDB.insertRecruiter(job.getAuthor()));
 
             insertJob.setString(1, job.getJobTitle());
             insertJob.setString(2, job.getAuthor().getEmail());

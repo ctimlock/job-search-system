@@ -21,6 +21,12 @@ public class CategoryDB implements DBHelper {
      */
     private static PreparedStatement queryCategoryId;
 
+    public CategoryDB(Connection conn) throws SQLException {
+        insertCategory = conn.prepareStatement(CategoryDB.Insert.CATEGORY, Statement.RETURN_GENERATED_KEYS);
+        queryCategory = conn.prepareStatement(CategoryDB.Query.CATEGORY, Statement.RETURN_GENERATED_KEYS);
+        queryCategoryId = conn.prepareStatement(CategoryDB.Query.CATEGORY_ID, Statement.RETURN_GENERATED_KEYS);
+    }
+
     @Override
     public void close() throws SQLException {
         if (queryCategory != null)
@@ -98,13 +104,6 @@ public class CategoryDB implements DBHelper {
                     throw new SQLException("Couldn't get id from category after insert.");
             }
         }
-    }
-
-    @Override
-    public void open(Connection conn) throws SQLException {
-        insertCategory = conn.prepareStatement(CategoryDB.Insert.CATEGORY, Statement.RETURN_GENERATED_KEYS);
-        queryCategory = conn.prepareStatement(CategoryDB.Query.CATEGORY, Statement.RETURN_GENERATED_KEYS);
-        queryCategoryId = conn.prepareStatement(CategoryDB.Query.CATEGORY_ID, Statement.RETURN_GENERATED_KEYS);
     }
 
     public static class Column {
