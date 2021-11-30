@@ -65,7 +65,7 @@ public class JobHandler {
                 "Other Services"
         };
 
-        return UserIO.menuSelector("Please enter the category of the job:", options);
+        return UserIO.menuSelectorValue("Please enter the category of the job:", options);
     }
 
     public Location enterLocation() {
@@ -87,7 +87,7 @@ public class JobHandler {
                 "Casual/ Vacation"
         };
 
-        return UserIO.menuSelector("Please enter the type of work:", options);
+        return UserIO.menuSelectorValue("Please enter the type of work:", options);
     }
 
     public String enterWorkingArrangement() {
@@ -98,7 +98,7 @@ public class JobHandler {
                 "Hybrid"
         };
 
-        return UserIO.menuSelector("Please enter the working arrangement:", options);
+        return UserIO.menuSelectorValue("Please enter the working arrangement:", options);
     }
 
     public String enterDescription() {
@@ -139,7 +139,7 @@ public class JobHandler {
                 "Senior level"
         };
 
-        return UserIO.menuSelector("Please enter the level of this job:", options);
+        return UserIO.menuSelectorValue("Please enter the level of this job:", options);
     }
 
     public void advertiseJob(Job job) {
@@ -147,7 +147,7 @@ public class JobHandler {
                 "Yes",
                 "No"
         };
-        String userInput = UserIO.menuSelectorSwitch("Would you like to advertise this job?:", options);
+        String userInput = UserIO.menuSelectorKey("Would you like to advertise this job?:", options);
 
         /*
         switch  (userInput) {
