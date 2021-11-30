@@ -37,9 +37,18 @@ public class UserIO {
 
     public static void displayOptions(HashMap<String, String> options) {
         //Add in the CHAR_WIDTH functionality
-        options.forEach((key, value) -> {
-            System.out.println("  " + key + ". " + value);
-        });
+        try {
+            int size = options.size();
+            for (int i=1; i<=size; i++) {
+                System.out.println(String.valueOf(i) + ". " + options.get(String.valueOf(i)));
+            }
+        }
+        catch (Exception e)
+        {
+            options.forEach(
+                    (key, value) -> {System.out.println("  " + key + ". " + value);}
+            );
+        }
     }
 
     public static void displayTitle(String title) {
