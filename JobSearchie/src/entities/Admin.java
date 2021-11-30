@@ -1,6 +1,6 @@
 package entities;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Admin extends User {
     public Admin() {
@@ -9,5 +9,9 @@ public class Admin extends User {
 
     public Admin(String firstName, String lastName, String email, String password, Date dateCreated) {
         super("Admin", firstName, lastName, email, password, dateCreated);
+    }
+
+    public static Admin generateAdminForTesting() {
+        return new Admin("James", "Bond", "james@bond.com", "LiveAndLetDie", new Date(System.currentTimeMillis()));
     }
 }

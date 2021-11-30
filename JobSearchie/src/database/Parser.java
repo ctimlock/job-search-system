@@ -5,13 +5,8 @@ import entities.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 public class Parser implements DBHelper {
-
-    public static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-
     @Override
     public void close() throws SQLException {
 
@@ -37,17 +32,17 @@ public class Parser implements DBHelper {
             return null;
     }
 
-    public static Job parseJob(ResultSet result) {
+    public static Job parseJob(ResultSet result, UserDB userDB, LocationDB locationDB) {
         Job job = new Job();
         try {
             job.setId(result.getInt(JobDB.Column.ID));
             job.setJobTitle(result.getString(JobDB.Column.JOBTITLE));
-            job.setAuthor(new Recruiter(result.getString(JobDB.Column.RECRUITEREMAIL)));
-            job.setDateCreated(dateFormat.parse(result.getString(JobDB.Column.DATECREATED)));
-            job.setDateListed(dateFormat.parse(result.getString(JobDB.Column.DATELISTED)));
-            job.setDateDeListed(dateFormat.parse(result.getString(JobDB.Column.DATEDELISTED)));
+            job.setAuthor(userDB.getRecruiter(result.getString(JobDB.Column.RECRUITEREMAIL)));
+            job.setDateCreated(result.getDate(JobDB.Column.DATECREATED));
+            job.setDateListed(result.getDate(JobDB.Column.DATELISTED));
+            job.setDateDeListed(result.getDate(JobDB.Column.DATEDELISTED));
             job.setCompany(result.getString(JobDB.Column.COMPANYNAME));
-            job.setLocation(new Location(result.getInt(JobDB.Column.LOCATIONID)));
+            job.setLocation(locationDB.getLocation(result.getInt(JobDB.Column.LOCATIONID)));
             job.setWorkType(result.getString(JobDB.Column.WORKTYPE));
             job.setWorkingArrangement(result.getString(JobDB.Column.WORKINGARRANGEMENT));
             job.setCompensation(result.getInt(JobDB.Column.COMPENSATION));
@@ -55,10 +50,27 @@ public class Parser implements DBHelper {
             job.setDescription(result.getString(JobDB.Column.DESCRIPTION));
             job.setIsAdvertised(result.getBoolean(JobDB.Column.ISADVERTISED));
             return job;
-        } catch (SQLException | ParseException e) {
+        } catch (SQLException e) {
             System.out.println("Error parsing job: " + e.getMessage());
             return null;
         }
+    }
+
+    public static Application parseApplication(ResultSet result, UserDB userDB, UserKeywordDB userKeywordDB, LocationDB locationDB, JobDB jobDB, JobKeywordDB jobKeywordDB, JobCategoryDB jobCategoryDB) {
+            try {
+                Application application = new Application();
+                application.setId(result.getInt(ApplicationDB.Column.ID));
+                application.setJobSeeker(userDB.getJobSeeker(ApplicationDB.Column.USEREMAIL, userKeywordDB, locationDB));
+                application.setJob(jobDB.getJob(result.getInt(ApplicationDB.Column.JOBID),userDB, locationDB, jobKeywordDB, jobCategoryDB));
+                application.setCoverLetterDir(result.getString(ApplicationDB.Column.COVERLETTERDIR));
+                application.setResumeDir(result.getString(ApplicationDB.Column.RESUMEDIR));
+                application.setStatus(result.getString(ApplicationDB.Column.STATUS));
+                application.setApplicationDate(result.getDate(ApplicationDB.Column.DATE));
+                return application;
+            } catch (SQLException e) {
+                System.out.println("Error parsing Job Seeker from Result Set: " + e.getMessage());
+                return null;
+            }
     }
 
     /**
@@ -68,7 +80,7 @@ public class Parser implements DBHelper {
      * @param result ResultSet from user object.
      * @return Returns a user object.
      */
-    public static JobSeeker parseJobSeeker(ResultSet result) {
+    public static JobSeeker parseJobSeeker(ResultSet result, LocationDB locationDB) {
         User user = parseUser(result);
         if (user != null && user.getAccountType().equals("Job Seeker")) {
             JobSeeker jobSeeker = new JobSeeker(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword(), user.getDateCreated());
@@ -77,10 +89,10 @@ public class Parser implements DBHelper {
                 jobSeeker.setCurrentJobLevel(result.getString(UserDB.Column.CURRENTJOBLEVEL));
                 jobSeeker.setContactNumber(result.getString(UserDB.Column.CONTACTNUMBER));
                 jobSeeker.setResumeDir(result.getString(UserDB.Column.RESUMEDIR));
-                jobSeeker.setLocation(new Location(result.getInt(UserDB.Column.LOCATIONID)));
-                jobSeeker.setDateOfBirth(dateFormat.parse(result.getString(UserDB.Column.DATEOFBIRTH)));
+                jobSeeker.setLocation(locationDB.getLocation(result.getInt(UserDB.Column.LOCATIONID)));
+                jobSeeker.setDateOfBirth(result.getDate(UserDB.Column.DATEOFBIRTH));
                 return jobSeeker;
-            } catch (SQLException | ParseException e) {
+            } catch (SQLException e) {
                 System.out.println("Error parsing Job Seeker from Result Set: " + e.getMessage());
                 return null;
             }
@@ -125,9 +137,9 @@ public class Parser implements DBHelper {
                 recruiter.setCompanyName(result.getString(UserDB.Column.COMPANYNAME));
                 recruiter.setRecruitingSpecialty(result.getString(UserDB.Column.RECRUITINGSPECIALTY));
                 recruiter.setContactNumber(result.getString(UserDB.Column.CONTACTNUMBER));
-                recruiter.setDateOfBirth(dateFormat.parse(result.getString(UserDB.Column.DATEOFBIRTH)));
+                recruiter.setDateOfBirth(result.getDate(UserDB.Column.DATEOFBIRTH));
                 return recruiter;
-            } catch (SQLException | ParseException e) {
+            } catch (SQLException e) {
                 System.out.println("Error parsing Recruiter from Result Set: " + e.getMessage());
                 return null;
             }
@@ -153,10 +165,10 @@ public class Parser implements DBHelper {
                 user.setLastName(result.getString(UserDB.Column.LASTNAME));
                 user.setEmail(result.getString(UserDB.Column.EMAIL));
                 user.setPassword(result.getString(UserDB.Column.PASSWORD));
-                user.setDateCreated(dateFormat.parse(result.getString(UserDB.Column.DATECREATED)));
+                user.setDateCreated(result.getDate(UserDB.Column.DATECREATED));
                 return user;
             }
-        } catch (SQLException | ParseException e) {
+        } catch (SQLException e) {
             System.out.println("Error parsing resultSet to user object: " + e.getMessage());
             return null;
         }

@@ -3,8 +3,12 @@ package database;
 import entities.Admin;
 import entities.JobSeeker;
 import entities.Recruiter;
+import entities.User;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import static database.Parser.*;
 import static database.UserDB.Column.*;
@@ -59,11 +63,11 @@ public class UserDB implements DBHelper {
      * TESTED
      * Checks to see if the user email exists in the database. Note: User emails are unique.
      *
-     * @param email The email to be checked against.
+     * @param user The user to be checked against.
      * @return True if user email exists in the database false otherwise.
      */
-    public boolean doesUserExist(String email) {
-        return getUserAccountType(email) != null;
+    public boolean doesUserExist(User user) {
+        return getUserAccountType(user.getEmail()) != null;
     }
 
     /**
@@ -94,12 +98,16 @@ public class UserDB implements DBHelper {
      * @param email The email you would like to check against and get the Job Seeker from.
      * @return A Job Seeker object with the given email address.
      */
-    public JobSeeker getJobSeeker(String email) {
+    public JobSeeker getJobSeeker(String email, UserKeywordDB userKeywordDB, LocationDB locationDB) {
         try {
             queryUserByEmail.setString(1, email);
             ResultSet result = queryUserByEmail.executeQuery();
             if (result.next()) {
-                return parseJobSeeker(result);
+                JobSeeker jobSeeker = parseJobSeeker(result, locationDB);
+                if (jobSeeker != null) {
+                    jobSeeker.setKeywords(userKeywordDB.getUserKeywords(jobSeeker));
+                }
+                return jobSeeker;
             } else {
                 return null;
             }
@@ -161,19 +169,18 @@ public class UserDB implements DBHelper {
      * @throws SQLException Thrown is certain fields of the Admin are not filled in or it cannot be inserted for
      *                      any other reason.
      */
-    public String insertAdmin(Admin admin) throws SQLException {
-        if (getAdmin(admin.getEmail()) != null)
-            throw new SQLException("Admin " + admin.getEmail() + " already exists in database.");
+    public Admin insertAdmin(Admin admin) throws SQLException {
+        if (doesUserExist(admin))
+            return admin;
         else {
             insertIntoAdmin.setString(1, admin.getFirstName());
             insertIntoAdmin.setString(2, admin.getLastName());
             insertIntoAdmin.setString(3, admin.getEmail());
             insertIntoAdmin.setString(4, admin.getPassword());
             insertIntoAdmin.setString(5, dateFormat.format(admin.getDateCreated()));
-
             int affectedRows = insertIntoAdmin.executeUpdate();
             if (affectedRows == 1) {
-                return admin.getEmail();
+                return admin;
             } else {
                 throw new SQLException("Error inserting Admin rows affected");}
         }
@@ -187,29 +194,32 @@ public class UserDB implements DBHelper {
      * @param jobSeeker The JobSeeker object to be inserted.
      * @throws SQLException Throws and SQLException if the Job Seeker could not be inserted.
      */
-    public String insertJobSeeker(JobSeeker jobSeeker) throws SQLException {
-        if (getJobSeeker(jobSeeker.getEmail()) != null)
-            throw new SQLException("Job Seeker " + jobSeeker.getEmail() + " already exists in database.");
+    public JobSeeker insertJobSeeker(JobSeeker jobSeeker, LocationDB locationDB, UserKeywordDB userKeywordDB) throws SQLException {
+        if (doesUserExist(jobSeeker))
+            return jobSeeker;
         else {
+            jobSeeker.setLocation(locationDB.insertLocation(jobSeeker.getLocation()));
             insertIntoJobSeeker.setString(1, jobSeeker.getFirstName());
             insertIntoJobSeeker.setString(2, jobSeeker.getLastName());
             insertIntoJobSeeker.setString(3, jobSeeker.getEmail());
             insertIntoJobSeeker.setString(4, jobSeeker.getPassword());
             insertIntoJobSeeker.setInt(5, jobSeeker.getLocation().getId());
             insertIntoJobSeeker.setString(6, jobSeeker.getContactNumber());
-            insertIntoJobSeeker.setString(7, dateFormat.format(jobSeeker.getDateCreated()));
-            insertIntoJobSeeker.setString(8, dateFormat.format(jobSeeker.getDateOfBirth()));
+            insertIntoJobSeeker.setDate(7, jobSeeker.getDateCreated());
+            insertIntoJobSeeker.setDate(8, jobSeeker.getDateOfBirth());
             insertIntoJobSeeker.setString(9, jobSeeker.getCurrentJobName());
             insertIntoJobSeeker.setString(10, jobSeeker.getCurrentJobLevel());
             insertIntoJobSeeker.setInt(11, jobSeeker.getExpectedCompensation());
             insertIntoJobSeeker.setString(12, jobSeeker.getResumeDir());
             int affectedRows = insertIntoJobSeeker.executeUpdate();
             if (affectedRows == 1) {
-                return jobSeeker.getEmail();
+                userKeywordDB.insertJobSeekerKeywords(jobSeeker);
+                return jobSeeker;
             } else {
                 throw new SQLException("Error inserting Job Seeker");
+            }
         }
-    }}
+    }
 
     /**
      * TESTED
@@ -219,23 +229,22 @@ public class UserDB implements DBHelper {
      * @param recruiter Recruiter object to be inserted into the database.
      * @throws SQLException Throws an exception if the Recruiter is already in the database or something else went wrong.
      */
-    public String insertRecruiter(Recruiter recruiter) throws SQLException {
-        String recruiterEmail = getRecruiter(recruiter.getEmail()).getEmail();
-        if (recruiterEmail != null) {
-            return recruiterEmail;
+    public Recruiter insertRecruiter(Recruiter recruiter) throws SQLException {
+        if (doesUserExist(recruiter)) {
+            return recruiter;
         } else {
             insertIntoRecruiter.setString(1, recruiter.getFirstName());
             insertIntoRecruiter.setString(2, recruiter.getLastName());
             insertIntoRecruiter.setString(3, recruiter.getEmail());
             insertIntoRecruiter.setString(4, recruiter.getPassword());
-            insertIntoRecruiter.setString(5, dateFormat.format(recruiter.getDateCreated()));
+            insertIntoRecruiter.setDate(5, recruiter.getDateCreated());
             insertIntoRecruiter.setString(6, recruiter.getCompanyName());
             insertIntoRecruiter.setString(7, recruiter.getRecruitingSpecialty());
             insertIntoRecruiter.setString(8, recruiter.getContactNumber());
-            insertIntoRecruiter.setString(9, dateFormat.format(recruiter.getDateOfBirth()));
+            insertIntoRecruiter.setDate(9, recruiter.getDateOfBirth());
             int affectedRows = insertIntoRecruiter.executeUpdate();
             if (affectedRows == 1) {
-                return recruiter.getEmail();
+                return recruiter;
             } else {
                 throw new SQLException("Couldn't insert Recruiter, updated more or less than one row.");
             }

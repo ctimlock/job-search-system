@@ -1,7 +1,7 @@
 package entities;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 
 public class JobSeeker extends User {
     private String currentJobName;

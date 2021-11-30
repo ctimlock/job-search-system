@@ -75,26 +75,26 @@ public class LocationDB implements DBHelper {
      * @return Returns the id of the location once it has been inserted or the id of the of the existing matching location.
      * @throws SQLException Throws an SLQException if the location could not be inserted.
      */
-    public int insertLocation(Location location) throws SQLException {
-        int locationId = getLocationId(location);
-        if (locationId == -1){
+    public Location insertLocation(Location location) throws SQLException {
+        if (getLocationId(location) == -1){
             insertIntoLocation.setString(1, location.getCountry());
             insertIntoLocation.setString(2, location.getState());
             insertIntoLocation.setString(3, location.getCity());
             insertIntoLocation.setString(4, location.getPostcode());
             int affectedRows = insertIntoLocation.executeUpdate();
-
             if (affectedRows != 1) {
                 throw new SQLException("Couldn't insert location, updated more than one row.");
             } else {
                 ResultSet generatedKeys = insertIntoLocation.getGeneratedKeys();
-                if (generatedKeys.next())
-                    return generatedKeys.getInt(1);
+                if (generatedKeys.next()) {
+                    location.setId(generatedKeys.getInt(1));
+                    return location;
+                }
                 else
                     throw new SQLException("Couldn't get id from location after insert.");
             }
         } else {
-            return locationId;
+            return location;
         }
     }
 

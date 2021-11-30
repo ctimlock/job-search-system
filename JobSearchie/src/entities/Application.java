@@ -1,67 +1,97 @@
 package entities;
 
-import java.util.ArrayList;
+import java.sql.Date;
 
 public class Application {
+    private int id;
     private JobSeeker jobSeeker;
-    private String coverLetter;
-    private String resume;
-    private ArrayList<String> questionAnswers;
+    private Job job;
+    private String coverLetterDir;
+    private String resumeDir;
     private String status;
+    private Date applicationDate;
 
     public Application() {
-        jobSeeker = new JobSeeker();
-        coverLetter = "";
-        resume = "";
-        questionAnswers = new ArrayList<String>();
+        id = -1;
+        jobSeeker = null;
+        job = null;
+        coverLetterDir = "";
+        resumeDir = "";
         status = "";
+        applicationDate = null;
     }
 
-    public Application(JobSeeker jobSeeker, String coverLetter, String resume, ArrayList<String> questionAnswers, String status) {
+    public Application(JobSeeker jobSeeker, Job job,  String coverLetterDir, String resumeDir, String status, Date applicationDate) {
+        id = -1;
         this.jobSeeker = jobSeeker;
-        this.coverLetter = coverLetter;
-        this.resume = resume;
-        this.questionAnswers = questionAnswers;
+        this.job = job;
+        this.coverLetterDir = coverLetterDir;
+        this.resumeDir = resumeDir;
         this.status = status;
+        this.applicationDate = applicationDate;
     }
 
-    public String getCoverLetter() {
-        return coverLetter;
+    public Application(int id, JobSeeker jobSeeker, Job job,  String coverLetterDir, String resumeDir, String status, Date applicationDate) {
+        this.id = -1;
+        this.jobSeeker = jobSeeker;
+        this.job = job;
+        this.coverLetterDir = coverLetterDir;
+        this.resumeDir = resumeDir;
+        this.status = status;
+        this.applicationDate = applicationDate;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Job getJob() {
+        return job;
+    }
+
+    public void setJob(Job job) {
+        this.job = job;
+    }
+
+    public String getCoverLetterDir() {
+        return coverLetterDir;
     }
 
     public JobSeeker getJobSeeker() {
         return jobSeeker;
     }
 
-    public String getResume() {
-        return resume;
-    }
-
-    public ArrayList<String> getQuestionAnswers() {
-        return questionAnswers;
+    public String getResumeDir() {
+        return resumeDir;
     }
 
     public String getStatus() {
         return status;
     }
 
-    public void setCoverLetter(String coverLetter) {
-        this.coverLetter = coverLetter;
+    public Date getApplicationDate() {
+        return applicationDate;
+    }
+
+    public void setCoverLetterDir(String coverLetterDir) {
+        this.coverLetterDir = coverLetterDir;
     }
 
     public void setJobSeeker(JobSeeker jobSeeker) {
         this.jobSeeker = jobSeeker;
     }
 
-    public void setResume(String resume) {
-        this.resume = resume;
-    }
-
-    public void setQuestionAnswers(ArrayList<String> questionAnswers) {
-        this.questionAnswers = questionAnswers;
+    public void setResumeDir(String resumeDir) {
+        this.resumeDir = resumeDir;
     }
 
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public void setApplicationDate(Date applicationDate) {this.applicationDate = applicationDate;}
 }

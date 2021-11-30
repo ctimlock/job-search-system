@@ -1,9 +1,6 @@
 package database;
 
-import entities.Admin;
-import entities.Job;
-import entities.JobSeeker;
-import entities.Recruiter;
+import entities.*;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -29,6 +26,7 @@ public class DatabaseManager {
     private final UserKeywordDB userKeywordDB;
     private final JobKeywordDB jobKeywordDB;
     private final JobCategoryDB jobCategoryDB;
+    private final ApplicationDB applicationDB;
 
 
     private Connection conn;
@@ -48,6 +46,7 @@ public class DatabaseManager {
         userKeywordDB = new UserKeywordDB();
         jobKeywordDB = new JobKeywordDB();
         jobCategoryDB = new JobCategoryDB();
+        applicationDB = new ApplicationDB();
 
         try {
             conn = DriverManager.getConnection(CONNECTION_STRING);
@@ -73,6 +72,7 @@ public class DatabaseManager {
             userKeywordDB.close();
             jobKeywordDB.close();
             jobCategoryDB.close();
+            applicationDB.close();
             if (conn != null)
                 conn.close();
         } catch (SQLException e) {
@@ -80,21 +80,12 @@ public class DatabaseManager {
         }
     }
 
-    public void insertJob(Job job) throws SQLException {
-        job.getLocation().setId(locationDB.insertLocation(job.getLocation()));
-        job.getAuthor().setEmail(userDB.insertRecruiter(job.getAuthor()));
-        job.setId(jobDB.insertJob(job));
-        jobKeywordDB.insertJobKeywords(job);
-        jobCategoryDB.insertJobCategories(job);
+    public Job insertJob(Job job) throws SQLException {
+        return jobDB.insertJob(job, userDB, locationDB, jobKeywordDB, jobCategoryDB);
     }
 
     public Job getJob(int id) {
-        Job job = jobDB.getJob(id);
-        job.setAuthor(userDB.getRecruiter(job.getAuthor().getEmail()));
-        job.setLocation(locationDB.getLocation(job.getLocation().getId()));
-        job.setKeywords(jobKeywordDB.getJobKeywords(job.getId()));
-        job.setCategories(jobCategoryDB.getJobCategories(job.getId()));
-        return job;
+        return jobDB.getJob(id, userDB, locationDB, jobKeywordDB, jobCategoryDB);
     }
 
     public Admin getAdmin(String email) {
@@ -102,29 +93,36 @@ public class DatabaseManager {
     }
 
     public JobSeeker getJobSeeker(String email) {
-        JobSeeker jobSeeker = userDB.getJobSeeker(email);
-        jobSeeker.setKeywords(userKeywordDB.getUserKeywords(email));
-        jobSeeker.setLocation(locationDB.getLocation(jobSeeker.getLocation().getId()));
-        return jobSeeker;
+        return userDB.getJobSeeker(email, userKeywordDB, locationDB);
     }
 
     public Recruiter getRecruiter(String email) {
         return userDB.getRecruiter(email);
     }
 
-    public void insertAdmin(Admin admin) throws SQLException {
-        userDB.insertAdmin(admin);
+    public Admin insertAdmin(Admin admin) throws SQLException {
+        return userDB.insertAdmin(admin);
     }
 
-    public void insertJobSeeker(JobSeeker jobSeeker) throws SQLException {
-        jobSeeker.getLocation().setId(locationDB.insertLocation(jobSeeker.getLocation()));
-        userDB.insertJobSeeker(jobSeeker);
-        userKeywordDB.insertJobSeekerKeywords(jobSeeker);
+    public JobSeeker insertJobSeeker(JobSeeker jobSeeker) throws SQLException {
+        return userDB.insertJobSeeker(jobSeeker, locationDB, userKeywordDB);
     }
 
-    public void insertRecruiter(Recruiter recruiter) throws SQLException {
-        userDB.insertRecruiter(recruiter);
+    public Recruiter insertRecruiter(Recruiter recruiter) throws SQLException {
+        return userDB.insertRecruiter(recruiter);
     }
+
+    public Application insertApplication(Application application) throws SQLException {
+        return applicationDB.insertApplication(application, jobDB, jobKeywordDB, jobCategoryDB, userDB, userKeywordDB, locationDB);
+    }
+
+    public Application getApplication(int applicationId) {
+        return applicationDB.getApplication(applicationId, userDB, userKeywordDB, locationDB, jobDB, jobKeywordDB, jobCategoryDB);
+    }
+
+//    public ArrayList<Job> getAllJobs() {
+//        return jobDB.getAllJobs();
+//    }
 
     /**
      * TESTED
@@ -144,6 +142,7 @@ public class DatabaseManager {
             userKeywordDB.open(conn);
             jobKeywordDB.open(conn);
             jobCategoryDB.open(conn);
+            applicationDB.open(conn);
             return true;
         } catch (SQLException e) {
             System.out.println("Couldn't open database: " + e.getMessage());

@@ -1,6 +1,6 @@
 package entities;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Recruiter extends User {
     private String companyName;

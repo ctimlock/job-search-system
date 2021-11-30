@@ -31,29 +31,37 @@ public class JobDB implements DBHelper {
         queryJob = conn.prepareStatement(JobDB.Query.JOB, Statement.RETURN_GENERATED_KEYS);
     }
 
-    public Job getJob(int jobId) {
+    public Job getJob(int jobId, UserDB userDB, LocationDB locationDB, JobKeywordDB jobKeywordDB, JobCategoryDB jobCategoryDB) {
         try {
             queryJob.setInt(1, jobId);
             ResultSet result = queryJob.executeQuery();
-            if (result.next())
-                return parseJob(result);
-            else
-                return null;
+            if (result.next()) {
+                Job job = parseJob(result, userDB, locationDB);
+                if (job != null) {
+                    job.setKeywords(jobKeywordDB.getJobKeywords(job.getId()));
+                    job.setCategories(jobCategoryDB.getJobCategories(job.getId()));
+                    return job;
+                }
+            }
+            return null;
         } catch (SQLException e) {
             System.out.println("Error querying jobId = " + jobId + ": " + e.getMessage());
             return null;
         }
     }
 
-    public int insertJob(Job job) throws SQLException {
-        if (getJob(job.getId()) != null)
-            throw new SQLException("Job already exists in database.");
+    public Job insertJob(Job job, UserDB userDB, LocationDB locationDB, JobKeywordDB jobKeywordDB, JobCategoryDB jobCategoryDB) throws SQLException {
+        if (job.getId()!= -1)
+            return job;
         else {
+            job.setLocation(locationDB.insertLocation(job.getLocation()));
+            job.setAuthor(userDB.insertRecruiter(job.getAuthor()));
+
             insertJob.setString(1, job.getJobTitle());
             insertJob.setString(2, job.getAuthor().getEmail());
-            insertJob.setString(3, dateFormat.format(job.getDateCreated()));
-            insertJob.setString(4, dateFormat.format(job.getDateListed()));
-            insertJob.setString(5, dateFormat.format(job.getDateDeListed()));
+            insertJob.setDate(3, job.getDateCreated());
+            insertJob.setDate(4, job.getDateListed());
+            insertJob.setDate(5, job.getDateDeListed());
             insertJob.setString(6, job.getCompany());
             insertJob.setInt(7, job.getLocation().getId());
             insertJob.setString(8, job.getWorkType());
@@ -66,12 +74,15 @@ public class JobDB implements DBHelper {
             if (affectedRows != 1)
                 throw new SQLException("Error inserting Job Seeker");
             ResultSet generatedKey = insertJob.getGeneratedKeys();
-            if(generatedKey.next())
-                return generatedKey.getInt(1);
+            if(generatedKey.next()) {
+                job.setId(generatedKey.getInt(1));
+                jobKeywordDB.insertJobKeywords(job);
+                jobCategoryDB.insertJobCategories(job);
+                return job;
+            }
             else
                 throw new SQLException("Could not get inserted job Id");
             }
-
     }
 
     public static class View {}
