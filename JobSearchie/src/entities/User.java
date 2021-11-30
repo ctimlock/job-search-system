@@ -46,6 +46,15 @@ public class User {
         this.dateCreated = dateCreated;
     }
 
+    public void display() {
+        System.out.println("accountType: " + accountType);
+        System.out.println("firstName: " + firstName);
+        System.out.println("lastName: " + lastName);
+        System.out.println("email: " + email);
+        System.out.println("password: " + password);
+        System.out.println("dateCreated: " + dateCreated);
+    }
+
     public String getAccountType() {
         return accountType;
     }
