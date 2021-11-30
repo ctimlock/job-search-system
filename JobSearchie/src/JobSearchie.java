@@ -42,13 +42,15 @@ public class JobSearchie {
         try {
             db.insertJob(job);
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Could not insert Job: " + e.getMessage());
         }
+        System.out.println(job.getId());
+
 
         Application app = new Application();
         app.setJob(job);
-        app.setResumeDir("");
-        app.setCoverLetterDir("");
+        app.setResumeDir("resumeDirHere");
+        app.setCoverLetterDir("coverLetterDirHere");
         app.setJobSeeker(jobSeeker);
         app.setApplicationDate(new Date(System.currentTimeMillis()));
         app.setStatus("Pending");

@@ -21,13 +21,18 @@ public class UserKeywordDB implements DBHelper {
      *
      * @see UserKeywordDB.Query
      */
-    private PreparedStatement queryUserKeywords;
+    private final PreparedStatement queryUserKeywords;
     /**
      * Prepared statement that will insert an entry into the user_keyword table given a UserId and KeywordId.
      *
      * @see UserKeywordDB.Insert
      */
-    private PreparedStatement insertUserKeyword;
+    private final PreparedStatement insertUserKeyword;
+
+    public UserKeywordDB(Connection conn) throws SQLException {
+        queryUserKeywords = conn.prepareStatement(UserKeywordDB.Query.USER_KEYWORD, Statement.RETURN_GENERATED_KEYS);
+        insertUserKeyword = conn.prepareStatement(UserKeywordDB.Insert.USER_KEYWORD, Statement.RETURN_GENERATED_KEYS);
+    }
 
     @Override
     public void close() throws SQLException {
@@ -116,12 +121,6 @@ public class UserKeywordDB implements DBHelper {
             if (affectedRows != 1)
                 throw new SQLException("Couldn't insert user keyword.");
         }
-    }
-
-    @Override
-    public void open(Connection conn) throws SQLException {
-        queryUserKeywords = conn.prepareStatement(UserKeywordDB.Query.USER_KEYWORD, Statement.RETURN_GENERATED_KEYS);
-        insertUserKeyword = conn.prepareStatement(UserKeywordDB.Insert.USER_KEYWORD, Statement.RETURN_GENERATED_KEYS);
     }
 
     public static class View {}

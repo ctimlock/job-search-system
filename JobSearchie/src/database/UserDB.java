@@ -20,31 +20,39 @@ public class UserDB implements DBHelper {
      *
      * @see KeywordDB.Query
      */
-    private PreparedStatement queryUserByEmail;
+    private final PreparedStatement queryUserByEmail;
     /**
      * Prepared statement that will insert an Admin to the database.
      *
      * @see KeywordDB.Query
      */
-    private PreparedStatement insertIntoAdmin;
+    private final PreparedStatement insertIntoAdmin;
     /**
      * Prepared statement that will insert a Job Seeker into the user table.
      *
      * @see UserDB.Insert
      */
-    private PreparedStatement insertIntoJobSeeker;
+    private final PreparedStatement insertIntoJobSeeker;
     /**
      * Prepared statement that will insert a Recruiter into the user table.
      *
      * @see UserDB.Insert
      */
-    private PreparedStatement insertIntoRecruiter;
+    private final PreparedStatement insertIntoRecruiter;
     /**
      * Prepared statement that will search for an account type given a user email address.
      *
      * @see KeywordDB.Query
      */
-    private PreparedStatement queryUserAccountTypeByEmail;
+    private final PreparedStatement queryUserAccountTypeByEmail;
+
+    public UserDB(Connection conn) throws SQLException {
+        queryUserAccountTypeByEmail = conn.prepareStatement(UserDB.Query.ACCOUNTTYPE_BY_EMAIL);
+        queryUserByEmail = conn.prepareStatement(UserDB.Query.USER_BY_EMAIL);
+        insertIntoAdmin = conn.prepareStatement(UserDB.Insert.ADMIN);
+        insertIntoJobSeeker = conn.prepareStatement(UserDB.Insert.JOBSEEKER);
+        insertIntoRecruiter = conn.prepareStatement(UserDB.Insert.RECRUITER);
+    }
 
     @Override
     public void close() throws SQLException {
@@ -52,7 +60,6 @@ public class UserDB implements DBHelper {
             queryUserAccountTypeByEmail.close();
         if (insertIntoAdmin != null)
             insertIntoAdmin.close();
-
         if (insertIntoJobSeeker != null)
             insertIntoJobSeeker.close();
         if (insertIntoRecruiter != null)
@@ -177,7 +184,7 @@ public class UserDB implements DBHelper {
             insertIntoAdmin.setString(2, admin.getLastName());
             insertIntoAdmin.setString(3, admin.getEmail());
             insertIntoAdmin.setString(4, admin.getPassword());
-            insertIntoAdmin.setString(5, dateFormat.format(admin.getDateCreated()));
+            insertIntoAdmin.setDate(5, admin.getDateCreated());
             int affectedRows = insertIntoAdmin.executeUpdate();
             if (affectedRows == 1) {
                 return admin;
@@ -249,21 +256,6 @@ public class UserDB implements DBHelper {
                 throw new SQLException("Couldn't insert Recruiter, updated more or less than one row.");
             }
         }
-    }
-
-    /**
-     * The connection is initialised in the constructor and opens a connection to the database. It remains open until the
-     * close method is called.
-     */
-
-    @Override
-    public void open(Connection conn) throws SQLException {
-        queryUserAccountTypeByEmail = conn.prepareStatement(UserDB.Query.ACCOUNTTYPE_BY_EMAIL);
-        queryUserByEmail = conn.prepareStatement(UserDB.Query.USER_BY_EMAIL);
-
-        insertIntoAdmin = conn.prepareStatement(UserDB.Insert.ADMIN);
-        insertIntoJobSeeker = conn.prepareStatement(UserDB.Insert.JOBSEEKER);
-        insertIntoRecruiter = conn.prepareStatement(UserDB.Insert.RECRUITER);
     }
 
     public static class View {}

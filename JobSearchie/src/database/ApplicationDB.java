@@ -15,21 +15,19 @@ public class ApplicationDB implements DBHelper {
      *
      * @see ApplicationDB.Insert
      */
-    private PreparedStatement insertApplication;
-    private PreparedStatement queryApplication;
+    private final PreparedStatement insertApplication;
+    private final PreparedStatement queryApplication;
 
+    public ApplicationDB(Connection conn) throws SQLException {
+        insertApplication = conn.prepareStatement(ApplicationDB.Insert.APPLICATION, Statement.RETURN_GENERATED_KEYS);
+        queryApplication = conn.prepareStatement(ApplicationDB.Query.APPLICATION, Statement.RETURN_GENERATED_KEYS);
+    }
     @Override
     public void close() throws SQLException {
         if (insertApplication != null)
             insertApplication.close();
         if (queryApplication != null)
             queryApplication.close();
-    }
-
-    @Override
-    public void open(Connection conn) throws SQLException {
-        insertApplication = conn.prepareStatement(ApplicationDB.Insert.APPLICATION, Statement.RETURN_GENERATED_KEYS);
-        queryApplication = conn.prepareStatement(ApplicationDB.Query.APPLICATION, Statement.RETURN_GENERATED_KEYS);
     }
 
     public Application getApplication(int applicationId, UserDB userDB, UserKeywordDB userKeywordDB, LocationDB locationDB, JobDB jobDB, JobKeywordDB jobKeywordDB, JobCategoryDB jobCategoryDB) {
@@ -46,30 +44,26 @@ public class ApplicationDB implements DBHelper {
         }
     }
 
-    public Application insertApplication(Application application, JobDB jobDB, JobKeywordDB jobKeywordDB, JobCategoryDB jobCategoryDB, UserDB userDB, UserKeywordDB userKeywordDB, LocationDB locationDB) throws SQLException {
+    public Application insertApplication(Application application) throws SQLException {
         if (application.getId()!= -1)
             return application;
         else {
-            application.setJob(jobDB.insertJob(application.getJob(), userDB, locationDB, jobKeywordDB, jobCategoryDB));
-            application.setJobSeeker(userDB.insertJobSeeker(application.getJobSeeker(), locationDB, userKeywordDB));
-
-            insertApplication.setInt(1, application.getId());
-            insertApplication.setInt(2, application.getJob().getId());
-            insertApplication.setString(3, application.getJobSeeker().getEmail());
-            insertApplication.setString(4, application.getCoverLetterDir());
-            insertApplication.setString(5, application.getResumeDir());
-            insertApplication.setString(6, application.getStatus());
-            insertApplication.setDate(7, application.getApplicationDate());
+            insertApplication.setInt(1, application.getJob().getId());
+            insertApplication.setString(2, application.getJobSeeker().getEmail());
+            insertApplication.setString(3, application.getCoverLetterDir());
+            insertApplication.setString(4, application.getResumeDir());
+            insertApplication.setString(5, application.getStatus());
+            insertApplication.setDate(6, application.getApplicationDate());
             int affectedRows = insertApplication.executeUpdate();
             if (affectedRows != 1)
-                throw new SQLException("Error inserting Application Seeker");
+                throw new SQLException("Error inserting Application");
             ResultSet generatedKey = insertApplication.getGeneratedKeys();
             if(generatedKey.next()) {
                 application.setId(generatedKey.getInt(1));
                 return application;
-            }
-            else
+            } else {
                 throw new SQLException("Could not get inserted application Id");
+            }
         }
     }
 
@@ -90,7 +84,7 @@ public class ApplicationDB implements DBHelper {
     }
 
     public static class Insert {
-        public static final String APPLICATION = "INSERT INTO " + NAME + " (" + ID + ", " + JOBID + ", " + USEREMAIL + ", " + COVERLETTERDIR + ", " + RESUMEDIR + ", " + STATUS + ", " + DATE + ") VALUES (?, ?, ?, ?, ?, ?, ?)";
+        public static final String APPLICATION = "INSERT INTO " + NAME + " (" + JOBID + ", " + USEREMAIL + ", " + COVERLETTERDIR + ", " + RESUMEDIR + ", " + STATUS + ", " + DATE + ") VALUES (?, ?, ?, ?, ?, ?)";
     }
 
     public static class Update {}

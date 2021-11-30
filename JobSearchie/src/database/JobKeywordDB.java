@@ -10,18 +10,22 @@ import static database.KeywordDB.getKeyword;
 import static database.KeywordDB.insertKeyword;
 
 public class JobKeywordDB implements DBHelper {
-
     public static final String NAME = "job_keyword";
 
     /**
      * Prepared statement that will return all keywordId's associated with a given jobId. Used to populate
      * a job keywords.
      */
-    private PreparedStatement queryJobKeywords;
+    private final PreparedStatement queryJobKeywords;
     /**
      * Prepared statement that will insert an entry into the job_keyword table given a jobId and KeywordId.
      */
-    private PreparedStatement insertJobKeyword;
+    private final PreparedStatement insertJobKeyword;
+
+    public JobKeywordDB(Connection conn) throws SQLException {
+        queryJobKeywords = conn.prepareStatement(Query.JOB_KEYWORD, Statement.RETURN_GENERATED_KEYS);
+        insertJobKeyword = conn.prepareStatement(Insert.JOB_KEYWORD, Statement.RETURN_GENERATED_KEYS);
+    }
 
     @Override
     public void close() throws SQLException {
@@ -111,12 +115,6 @@ public class JobKeywordDB implements DBHelper {
             if (affectedRows != 1)
                 throw new SQLException("Couldn't insert job keyword.");
         }
-    }
-
-    @Override
-    public void open(Connection conn) throws SQLException {
-        queryJobKeywords = conn.prepareStatement(JobKeywordDB.Query.JOB_KEYWORD, Statement.RETURN_GENERATED_KEYS);
-        insertJobKeyword = conn.prepareStatement(JobKeywordDB.Insert.JOB_KEYWORD, Statement.RETURN_GENERATED_KEYS);
     }
 
     public static class View {}

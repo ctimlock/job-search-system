@@ -2,21 +2,10 @@ package database;
 
 import entities.*;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class Parser implements DBHelper {
-    @Override
-    public void close() throws SQLException {
-
-    }
-
-    @Override
-    public void open(Connection conn) throws SQLException {
-
-    }
-
+public class Parser {
     /**
      * TESTED
      * Takes a resultSet from a query to the user table and parses the data into an Admin object.

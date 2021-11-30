@@ -22,6 +22,7 @@ public class Job {
     private ArrayList<String> keywords;
 
     public Job() {
+        id = -1;
         jobTitle = "";
         author = null;
         dateCreated = null;
@@ -40,6 +41,7 @@ public class Job {
     }
 
     public Job(String jobTitle, Recruiter author, Date dateCreated, Date dateListed, Date dateDeListed, String company, ArrayList<String> categories, Location location, String workType, String workingArrangement, int compensation, String jobLevel, String description, boolean isAdvertised, ArrayList<String> keywords) {
+        id = -1;
         this.jobTitle = jobTitle;
         this.author = author;
         this.dateCreated = dateCreated;

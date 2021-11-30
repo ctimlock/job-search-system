@@ -28,6 +28,12 @@ public class KeywordDB implements DBHelper {
      */
     private static PreparedStatement queryKeywordId;
 
+    public KeywordDB(Connection conn) throws SQLException {
+        insertKeyword = conn.prepareStatement(KeywordDB.Insert.INSERT_KEYWORD, Statement.RETURN_GENERATED_KEYS);
+        queryKeyword = conn.prepareStatement(KeywordDB.Query.KEYWORD, Statement.RETURN_GENERATED_KEYS);
+        queryKeywordId = conn.prepareStatement(KeywordDB.Query.KEYWORD_ID, Statement.RETURN_GENERATED_KEYS);
+    }
+
     @Override
     public void close() throws SQLException {
         if (queryKeyword != null)
@@ -105,13 +111,6 @@ public class KeywordDB implements DBHelper {
                     throw new SQLException("Couldn't get id from keyword after insert.");
             }
         }
-    }
-
-    @Override
-    public void open(Connection conn) throws SQLException {
-        insertKeyword = conn.prepareStatement(KeywordDB.Insert.INSERT_KEYWORD, Statement.RETURN_GENERATED_KEYS);
-        queryKeyword = conn.prepareStatement(KeywordDB.Query.KEYWORD, Statement.RETURN_GENERATED_KEYS);
-        queryKeywordId = conn.prepareStatement(KeywordDB.Query.KEYWORD_ID, Statement.RETURN_GENERATED_KEYS);
     }
 
     public static class Column {

@@ -9,9 +9,15 @@ import static database.Parser.parseLocation;
 
 public class LocationDB implements DBHelper {
     public static final String NAME = "location";
-    private PreparedStatement queryLocationId;
-    private PreparedStatement queryLocation;
-    private PreparedStatement insertIntoLocation;
+    private final PreparedStatement queryLocationId;
+    private final PreparedStatement queryLocation;
+    private final PreparedStatement insertIntoLocation;
+
+    public LocationDB(Connection conn) throws SQLException {
+        queryLocationId = conn.prepareStatement(LocationDB.Query.LOCATION_ID, Statement.RETURN_GENERATED_KEYS);
+        queryLocation = conn.prepareStatement(LocationDB.Query.LOCATION, Statement.RETURN_GENERATED_KEYS);
+        insertIntoLocation = conn.prepareStatement(LocationDB.Insert.INSERT_LOCATION, Statement.RETURN_GENERATED_KEYS);
+    }
 
     @Override
     public void close() throws SQLException {
@@ -76,7 +82,8 @@ public class LocationDB implements DBHelper {
      * @throws SQLException Throws an SLQException if the location could not be inserted.
      */
     public Location insertLocation(Location location) throws SQLException {
-        if (getLocationId(location) == -1){
+        int locationId = getLocationId(location) ;
+        if (locationId == -1){
             insertIntoLocation.setString(1, location.getCountry());
             insertIntoLocation.setString(2, location.getState());
             insertIntoLocation.setString(3, location.getCity());
@@ -94,15 +101,9 @@ public class LocationDB implements DBHelper {
                     throw new SQLException("Couldn't get id from location after insert.");
             }
         } else {
+            location.setId(locationId);
             return location;
         }
-    }
-
-    @Override
-    public void open(Connection conn) throws SQLException {
-        queryLocationId = conn.prepareStatement(LocationDB.Query.LOCATION_ID, Statement.RETURN_GENERATED_KEYS);
-        queryLocation = conn.prepareStatement(LocationDB.Query.LOCATION, Statement.RETURN_GENERATED_KEYS);
-        insertIntoLocation = conn.prepareStatement(LocationDB.Insert.INSERT_LOCATION, Statement.RETURN_GENERATED_KEYS);
     }
 
     public void populateLocation(Location location) {
