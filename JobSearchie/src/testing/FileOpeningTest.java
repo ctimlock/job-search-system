@@ -30,7 +30,7 @@ public class FileOpeningTest
 
             String fileName = UserIO.getInput();
 
-            if (FileManager.checkFileExists(dirSelection, fileName))
+            if (FileManager.checkFileExistsInStorage(dirSelection, fileName))
             {
                 UserIO.displayBody("Opening file...");
 
