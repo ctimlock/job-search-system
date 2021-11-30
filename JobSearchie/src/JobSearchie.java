@@ -55,6 +55,9 @@ public class JobSearchie {
         app.setApplicationDate(new Date(System.currentTimeMillis()));
         app.setStatus("Pending");
         db.insertApplication(app);
+        System.out.println("Here");
+        ArrayList<Job> allJobs = db.getAllJobs();
+        System.out.println(allJobs.size());
 
         db.close();
     }

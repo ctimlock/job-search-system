@@ -3,6 +3,7 @@ package database;
 import entities.Job;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 import static database.JobDB.Column.*;
 import static database.Parser.parseJob;
@@ -16,11 +17,13 @@ public class JobDB implements DBHelper {
     /**
      * Prepared statement which will query a job and all it's atributes.
      */
-    private final PreparedStatement queryJob;
+    private final PreparedStatement queryJobById;
+    private final PreparedStatement queryAllJobs;
 
     public JobDB(Connection conn) throws SQLException {
-        insertJob = conn.prepareStatement(JobDB.Insert.JOB, Statement.RETURN_GENERATED_KEYS);
-        queryJob = conn.prepareStatement(JobDB.Query.JOB, Statement.RETURN_GENERATED_KEYS);
+        insertJob = conn.prepareStatement(Insert.JOB, Statement.RETURN_GENERATED_KEYS);
+        queryJobById = conn.prepareStatement(Query.JOB_BY_ID);
+        queryAllJobs = conn.prepareStatement(Query.ALL_JOBS);
     }
 
     /**
@@ -31,15 +34,17 @@ public class JobDB implements DBHelper {
     public void close() throws SQLException {
         if (insertJob != null)
             insertJob.close();
-        if (queryJob != null)
-            queryJob.close();
+        if (queryJobById != null)
+            queryJobById.close();
+        if (queryAllJobs != null)
+            queryAllJobs.close();
     }
 
 
     public Job getJob(int jobId, UserDB userDB, LocationDB locationDB, JobKeywordDB jobKeywordDB, JobCategoryDB jobCategoryDB) {
         try {
-            queryJob.setInt(1, jobId);
-            ResultSet result = queryJob.executeQuery();
+            queryJobById.setInt(1, jobId);
+            ResultSet result = queryJobById.executeQuery();
             if (result.next()) {
                 Job job = parseJob(result, userDB, locationDB);
                 if (job != null) {
@@ -51,6 +56,20 @@ public class JobDB implements DBHelper {
             return null;
         } catch (SQLException e) {
             System.out.println("Error querying jobId = " + jobId + ": " + e.getMessage());
+            return null;
+        }
+    }
+
+    public ArrayList<Job> getAllJobs(UserDB userDB, LocationDB locationDB) {
+        try {
+            ArrayList<Job> jobs = new ArrayList<>();
+            ResultSet results = queryAllJobs.executeQuery();
+            while (results.next()) {
+                jobs.add(Parser.parseJob(results, userDB, locationDB));
+            }
+            return jobs;
+        } catch (SQLException e) {
+            System.out.println("Error querying all jobs: " + e.getMessage());
             return null;
         }
     }
@@ -119,7 +138,8 @@ public class JobDB implements DBHelper {
     }
 
     public static class Query {
-        public static final String JOB = "SELECT * FROM " + NAME + " WHERE " + ID + " = ?";
+        public static final String JOB_BY_ID = "SELECT * FROM " + NAME + " WHERE " + ID + " = ?";
+        public static final String ALL_JOBS = "SELECT * FROM " + NAME;
     }
 
     public static class Insert {

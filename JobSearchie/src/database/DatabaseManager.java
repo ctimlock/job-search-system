@@ -5,6 +5,7 @@ import entities.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class DatabaseManager {
     /**
@@ -107,9 +108,9 @@ public class DatabaseManager {
         return userDB.insertRecruiter(recruiter);
     }
 
-//    public ArrayList<Job> getAllJobs() {
-//        return jobDB.getAllJobs();
-//    }
+    public ArrayList<Job> getAllJobs() {
+        return jobDB.getAllJobs(userDB, locationDB);
+    }
 
     /**
      * TESTED
