@@ -11,23 +11,24 @@ public class JobHandler {
 
     public JobHandler() {}
 
-    public Job createJob(){
+    public Job createJob(Recruiter recruiter){
         UserIO.displayHeading("Create a New Job");
         UserIO.displayBody("You are now required to enter the following requested information in order to create a job. At any time you wish to go back to the previous screen, please type ‘back’");
         //Get next job id from database.
         String jobTitle = enterJobTitle();
         String company = enterCompany();
-        String category = enterCategory();
+        ArrayList<String> categories = enterCategories();
         Location location = enterLocation();
         String workType = enterWorkType();
         String workingArrangement = enterWorkingArrangement();
         int compensation = enterCompensation();
-        //TODO: add in keywords and category.
         String jobLevel = enterJobLevel();
         String description = enterDescription();
+        boolean isAdvertised = enterIsAdvertised();
+        ArrayList<String> keywords = enterKeywords();
         UserIO.displayBody("You have now finished providing the required information.");
 
-        return new Job();
+        return new Job(jobTitle, recruiter, new Date(), null, null, company, categories, location, workType, workingArrangement, compensation, jobLevel, description, isAdvertised, keywords);
     }
 
 
@@ -41,8 +42,8 @@ public class JobHandler {
         return UserIO.enterAttribute("Company name", 4, 30);
     }
 
-    public String enterCategory() {
-
+    public ArrayList<String> enterCategories() {
+        ArrayList<String> categories = new ArrayList<>();
         String[] options = {
                 "Agricultural Forestry and Fishing",
                 "Mining",
@@ -64,8 +65,16 @@ public class JobHandler {
                 "Arts and Recreation Services",
                 "Other Services"
         };
+        categories.add(UserIO.menuSelectorValue("Please enter the category of the job:", options));
 
-        return UserIO.menuSelectorValue("Please enter the category of the job:", options);
+        String[] addAnother = {"Yes", "no"};
+        String inputAdd = UserIO.menuSelectorKey("Would you like to add another category", addAnother);
+        while (inputAdd.equals("0")) {
+            categories.add(UserIO.menuSelectorValue("Please enter the category of the job:", options));
+            inputAdd = UserIO.menuSelectorKey("Would you like to add another category", addAnother);
+        }
+
+        return categories;
     }
 
     public Location enterLocation() {
@@ -142,39 +151,48 @@ public class JobHandler {
         return UserIO.menuSelectorValue("Please enter the level of this job:", options);
     }
 
-    public void advertiseJob(Job job) {
+    public boolean enterIsAdvertised() {
+
         String[] options = {
                 "Yes",
                 "No"
         };
         String userInput = UserIO.menuSelectorKey("Would you like to advertise this job?:", options);
 
-        /*
-        switch  (userInput) {
-            case ("1") -> saveJob(job);
-            case ("2") -> home();
-            default ->
-        }
-        */
+        boolean isAdvertised;
 
+        switch  (userInput) {
+            case ("0") -> isAdvertised = true;
+            case ("1") -> isAdvertised = false;
+            default -> isAdvertised = false;
+        }
+        return isAdvertised;
     }
 
-    public void saveJob(Job job) {
+    public void saveJob(Job job) {}
 
-        String jobTitle = job.getJobTitle();
+    public ArrayList<String> enterKeywords() {
 
-        // DatabaseIO dbio = new DatabaseIO();
+        ArrayList<String> keywords = new ArrayList<>();
+        keywords.add(UserIO.enterAttribute("Keyword", 0, 30));
+        String[] addAnother = {"Yes", "no"};
+        String inputAdd = UserIO.menuSelectorKey("Would you like to add another keyword", addAnother);
+        while (inputAdd.equals("0")) {
+            keywords.add(UserIO.enterAttribute("Keyword", 0, 30));
+            inputAdd = UserIO.menuSelectorKey("Would you like to add another keyword", addAnother);
+        }
 
+        return keywords;
     }
 
     public static void main(String[] args) {
 
-        //DatabaseIO db = new DatabaseIO(new FileReader("category.csv"));
+        Recruiter recruiter = new Recruiter("James", "Bond", "james_bond@hotmail.com", "Abcabc123", new Date(), "Seek Pty Ltd", "Computer Science", "0459797824", new Date());
         JobHandler jobHandler = new JobHandler();
-        Job newJob = jobHandler.createJob();
-        //System.out.println("Please review the job details:");
-        //newJob.display();
-        //newJob.setAdvertisingStatus(jobHandler.enterAdvertisingStatus());
+        Job newJob = jobHandler.createJob(recruiter);
+        UserIO.displayHeading("Please review the job details:");
+        newJob.display();
+
     }
 
 }

@@ -21,7 +21,7 @@ public class RecruiterHandler extends UserHandler{
         String userInput = UserIO.menuSelectorKey("Please enter one of the following:", options);
 
         switch (userInput) {
-            case ("1") -> new JobHandler().createJob();
+            //case ("1") -> new JobHandler().createJob();
             //case ("2") -> viewMyJobs();
             //case ("3") -> new MessageHandler().viewMessage();
             //case ("4") -> searchJobSeeker();
