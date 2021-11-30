@@ -56,7 +56,21 @@ public class Validate {
         //return false;
     }
     public boolean isValidLength(String string, int min, int max) {
-        return false;
+        boolean valid = false;
+        int length = string.length();
+        if (length >= min && length <= max) {
+            valid = true;
+        }
+        return valid;
+    }
+
+    public boolean isValidMenuOption(String[] array, int input) {
+        boolean valid = false;
+        int arrayLength = array.length;
+        if (input <= arrayLength && input > 0) {
+            valid = true;
+        }
+        return valid;
     }
 
     /**
