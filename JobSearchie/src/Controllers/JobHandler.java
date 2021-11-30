@@ -24,11 +24,15 @@ public class JobHandler {
         int compensation = enterCompensation();
         String jobLevel = enterJobLevel();
         String description = enterDescription();
-        boolean isAdvertised = enterIsAdvertised();
         ArrayList<String> keywords = enterKeywords();
+        boolean isAdvertised = enterIsAdvertised();
+        Date advertiseDate = null;
+        if (isAdvertised) {
+            advertiseDate = new Date();
+        }
         UserIO.displayBody("You have now finished providing the required information.");
 
-        return new Job(jobTitle, recruiter, new Date(), null, null, company, categories, location, workType, workingArrangement, compensation, jobLevel, description, isAdvertised, keywords);
+        return new Job(jobTitle, recruiter, new Date(), advertiseDate, null, company, categories, location, workType, workingArrangement, compensation, jobLevel, description, isAdvertised, keywords);
     }
 
 
