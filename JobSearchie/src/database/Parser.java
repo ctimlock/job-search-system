@@ -2,6 +2,7 @@ package database;
 
 import entities.*;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -21,15 +22,23 @@ public class Parser {
             return null;
     }
 
+    private static Date parseDate(ResultSet result, String column) {
+        try {
+            return result.getDate(column);
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
     public static Job parseJob(ResultSet result, UserDB userDB, LocationDB locationDB) {
         Job job = new Job();
         try {
             job.setId(result.getInt(JobDB.Column.ID));
             job.setJobTitle(result.getString(JobDB.Column.JOBTITLE));
             job.setAuthor(userDB.getRecruiter(result.getString(JobDB.Column.RECRUITEREMAIL)));
-            job.setDateCreated(result.getDate(JobDB.Column.DATECREATED));
-            job.setDateListed(result.getDate(JobDB.Column.DATELISTED));
-            job.setDateDeListed(result.getDate(JobDB.Column.DATEDELISTED));
+            job.setDateCreated(parseDate(result, JobDB.Column.DATECREATED));
+            job.setDateListed(parseDate(result, JobDB.Column.DATELISTED));
+            job.setDateDeListed(parseDate(result, JobDB.Column.DATEDELISTED));
             job.setCompany(result.getString(JobDB.Column.COMPANYNAME));
             job.setLocation(locationDB.getLocation(result.getInt(JobDB.Column.LOCATIONID)));
             job.setWorkType(result.getString(JobDB.Column.WORKTYPE));
@@ -54,7 +63,7 @@ public class Parser {
                 application.setCoverLetterDir(result.getString(ApplicationDB.Column.COVERLETTERDIR));
                 application.setResumeDir(result.getString(ApplicationDB.Column.RESUMEDIR));
                 application.setStatus(result.getString(ApplicationDB.Column.STATUS));
-                application.setApplicationDate(result.getDate(ApplicationDB.Column.DATE));
+                application.setApplicationDate(parseDate(result, ApplicationDB.Column.DATE));
                 return application;
             } catch (SQLException e) {
                 System.out.println("Error parsing Job Seeker from Result Set: " + e.getMessage());
@@ -79,7 +88,7 @@ public class Parser {
                 jobSeeker.setContactNumber(result.getString(UserDB.Column.CONTACTNUMBER));
                 jobSeeker.setResumeDir(result.getString(UserDB.Column.RESUMEDIR));
                 jobSeeker.setLocation(locationDB.getLocation(result.getInt(UserDB.Column.LOCATIONID)));
-                jobSeeker.setDateOfBirth(result.getDate(UserDB.Column.DATEOFBIRTH));
+                jobSeeker.setDateOfBirth(parseDate(result, UserDB.Column.DATEOFBIRTH));
                 return jobSeeker;
             } catch (SQLException e) {
                 System.out.println("Error parsing Job Seeker from Result Set: " + e.getMessage());
@@ -126,7 +135,7 @@ public class Parser {
                 recruiter.setCompanyName(result.getString(UserDB.Column.COMPANYNAME));
                 recruiter.setRecruitingSpecialty(result.getString(UserDB.Column.RECRUITINGSPECIALTY));
                 recruiter.setContactNumber(result.getString(UserDB.Column.CONTACTNUMBER));
-                recruiter.setDateOfBirth(result.getDate(UserDB.Column.DATEOFBIRTH));
+                recruiter.setDateOfBirth(parseDate(result, UserDB.Column.DATEOFBIRTH));
                 return recruiter;
             } catch (SQLException e) {
                 System.out.println("Error parsing Recruiter from Result Set: " + e.getMessage());
@@ -154,7 +163,7 @@ public class Parser {
                 user.setLastName(result.getString(UserDB.Column.LASTNAME));
                 user.setEmail(result.getString(UserDB.Column.EMAIL));
                 user.setPassword(result.getString(UserDB.Column.PASSWORD));
-                user.setDateCreated(result.getDate(UserDB.Column.DATECREATED));
+                user.setDateCreated(parseDate(result, UserDB.Column.DATECREATED));
                 return user;
             }
         } catch (SQLException e) {
