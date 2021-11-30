@@ -77,17 +77,22 @@ public class Job {
     }
 
     public void display() {
-        System.out.println(jobTitle);
-        System.out.println(dateCreated);
-        System.out.println(company);
+        System.out.println("jobTitle: " + jobTitle);
+        System.out.println("dateCreated: " + dateCreated);
+        System.out.println("dateListed: " + dateListed);
+        System.out.println("dateDeListed: " + dateDeListed);
+        System.out.println("company: " + company);
+        System.out.println("categories: ");
+        categories.forEach(System.out::println);
         System.out.println(location.getCountry() + " " + location.getState() + " " + location.getCity() + " " + location.getPostcode());
-        System.out.println(workType + ",");
-        System.out.println(workingArrangement);
-        System.out.println(compensation);
-        System.out.println(description);
-        System.out.println(isAdvertised);
-        keywords.forEach(System.out::print);
-        categories.forEach(System.out::print);
+        System.out.println("workType: " + workType);
+        System.out.println("workingArrangement: " + workingArrangement);
+        System.out.println("compensation: " + compensation);
+        System.out.println("jobLevel: " + jobLevel);
+        System.out.println("description: " + description);
+        System.out.println("isAdvertised: " + isAdvertised);
+        System.out.println("keywords: ");
+        keywords.forEach(System.out::println);
     }
 
     public Recruiter getAuthor() {
@@ -124,14 +129,6 @@ public class Job {
 
     public int getId() {
         return id;
-    }
-
-    public String getJobLevel() {
-        return jobLevel;
-    }
-
-    public String getJobTitle() {
-        return jobTitle;
     }
 
     public String getJobLevel() {
