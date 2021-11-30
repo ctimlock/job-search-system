@@ -68,12 +68,9 @@ public class JobSearchie {
 
     private void printLoginOrRegisterScreen() {
         UserIO.displayHeading("Login or Register");
-        HashMap<String, String> loginOptions = new HashMap<>();
-        loginOptions.put("1", "Login");
-        loginOptions.put("2", "Register");
-        loginOptions.put("3", "Exit");
-        UserIO.displayOptions(loginOptions);
-        UserIO.displayBody("Please select one of the above options:");
+        UserIO.displayBody("Please select one of the options:");
+        String[] options = {"Login", "Register", "Exit"};
+        UserIO.displayOptions(options);
     }
 
     public void loginOrRegister() {

@@ -18,7 +18,7 @@ public class RecruiterHandler extends UserHandler{
                 "Search for a job seeker",
                 "Profile management"
         };
-        String userInput = UserIO.menuSelectorSwitch("Please enter one of the following:", options);
+        String userInput = UserIO.menuSelectorKey("Please enter one of the following:", options);
 
         switch (userInput) {
             case ("1") -> new JobHandler().createJob();
@@ -37,7 +37,7 @@ public class RecruiterHandler extends UserHandler{
                 "Delete profile",
                 "Home",
         };
-        String userInput = UserIO.menuSelectorSwitch("Please enter one of the following:", options);
+        String userInput = UserIO.menuSelectorKey("Please enter one of the following:", options);
 
         switch (userInput) {
             case ("1") -> updateProfile();
@@ -53,7 +53,7 @@ public class RecruiterHandler extends UserHandler{
                 "Yes",
                 "No"
         };
-        String userInput = UserIO.menuSelectorSwitch("Are you sure you would like to delete your profile?:", options);
+        String userInput = UserIO.menuSelectorKey("Are you sure you would like to delete your profile?:", options);
 
         switch (userInput) {
             case ("1") -> deleteProfileYes();
@@ -103,7 +103,7 @@ public class RecruiterHandler extends UserHandler{
                 "Remove job seeker from search",
                 "Home"
         };
-        String userInput = UserIO.menuSelectorSwitch("Please enter one of the following:", options);
+        String userInput = UserIO.menuSelectorKey("Please enter one of the following:", options);
 
         /*
         switch (userInput) {

@@ -2,6 +2,7 @@ package Controllers;
 
 import entities.*;
 import utilities.UserIO;
+import utilities.Validate;
 
 import java.io.FileReader;
 import java.util.*;
@@ -32,16 +33,12 @@ public class JobHandler {
 
     public String enterJobTitle() {
 
-        UserIO.displayBody("Please enter the name of the job that you would like to create:");
-
-        return UserIO.getInput();
+        return UserIO.enterAttribute("Job title", 4, 30);
     }
 
     public String enterCompany() {
 
-        UserIO.displayBody("Please enter the name of the company:");
-
-        return UserIO.getInput();
+        return UserIO.enterAttribute("Company name", 4, 30);
     }
 
     public String enterCategory() {
@@ -67,21 +64,18 @@ public class JobHandler {
                 "Arts and Recreation Services",
                 "Other Services"
         };
-        return UserIO.menuSelector("Please enter the category of the job:", options);
+
+        return UserIO.menuSelectorValue("Please enter the category of the job:", options);
     }
 
     public Location enterLocation() {
 
-        UserIO.displayBody("Please enter the country:");
-        String country = UserIO.getInput();
-        UserIO.displayBody("Please enter the state:");
-        String state = UserIO.getInput();
-        UserIO.displayBody("Please enter the suburb:");
-        String suburb = UserIO.getInput();
-        UserIO.displayBody("Please enter the post code:");
-        String postcode = UserIO.getInput();
-
-        return new Location(country, state, suburb, postcode);
+        return new Location(
+                UserIO.enterAttribute("Country", 4, 30),
+                UserIO.enterAttribute("State", 1, 30),
+                UserIO.enterAttribute("Suburb", 1, 30),
+                UserIO.enterAttribute("Postcode", 1, 30)
+        );
     }
 
     public String enterWorkType() {
@@ -93,7 +87,7 @@ public class JobHandler {
                 "Casual/ Vacation"
         };
 
-        return UserIO.menuSelector("Please enter the type of work:", options);
+        return UserIO.menuSelectorValue("Please enter the type of work:", options);
     }
 
     public String enterWorkingArrangement() {
@@ -104,22 +98,37 @@ public class JobHandler {
                 "Hybrid"
         };
 
-        return UserIO.menuSelector("Please enter the working arrangement:", options);
+        return UserIO.menuSelectorValue("Please enter the working arrangement:", options);
     }
 
     public String enterDescription() {
 
-        UserIO.displayBody("Please enter a description of this job:");
-
-        return UserIO.getInput();
+        return UserIO.enterAttribute("job description", 4, 2000);
     }
 
     public int enterCompensation() {
 
-        UserIO.displayBody("Please enter the compensation level of this job or leave blank if you don’t wish to include this information:");
+        UserIO.displayBody("Please enter the compensation level of this job or enter 0 if you don’t wish to include this information:");
         System.out.print("$");
+        boolean flag = false;
+        int input = -1;
+        do {
+            try {
+                input = Integer.parseInt(UserIO.getInput().trim());
+                if (input >= 0) {
+                    flag = true;
+                }
+                else {
+                    UserIO.displayBody("Compensation cannot be negative please re-enter");
+                }
+            }
+            catch (Exception e) {
+                UserIO.displayBody("Please enter an integer:");
+            }
+        }
+        while (!flag);
 
-        return Integer.parseInt(UserIO.getInput());
+        return input;
     }
 
     public String enterJobLevel() {
@@ -130,7 +139,7 @@ public class JobHandler {
                 "Senior level"
         };
 
-        return UserIO.menuSelector("Please enter the level of this job:", options);
+        return UserIO.menuSelectorValue("Please enter the level of this job:", options);
     }
 
     public void advertiseJob(Job job) {
@@ -138,12 +147,12 @@ public class JobHandler {
                 "Yes",
                 "No"
         };
-        String userInput = UserIO.menuSelectorSwitch("Would you like to advertise this job?:", options);
+        String userInput = UserIO.menuSelectorKey("Would you like to advertise this job?:", options);
 
         /*
         switch  (userInput) {
             case ("1") -> saveJob(job);
-            case ("2") -> ;
+            case ("2") -> home();
             default ->
         }
         */
@@ -153,7 +162,6 @@ public class JobHandler {
     public void saveJob(Job job) {
 
         String jobTitle = job.getJobTitle();
-
 
         // DatabaseIO dbio = new DatabaseIO();
 

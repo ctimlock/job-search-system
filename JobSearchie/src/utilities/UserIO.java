@@ -35,11 +35,11 @@ public class UserIO {
         displayMain(heading, "-");
     }
 
-    public static void displayOptions(HashMap<String, String> options) {
+    public static void displayOptions(String[] options) {
         //Add in the CHAR_WIDTH functionality
-        options.forEach((key, value) -> {
-            System.out.println("  " + key + ". " + value);
-        });
+        for (int i=1; i<=options.length; i++) {
+            System.out.println(i + ". " + options[i-1]);
+        }
     }
 
     public static void displayTitle(String title) {
@@ -100,23 +100,81 @@ public class UserIO {
         }
     }
 
-    public static String menuSelector(String question, String[] array) {
-        UserIO.displayBody(question);
-        HashMap<String, String> map = new HashMap<>();
-        for (int i = 0; i < array.length; i++) {
-            map.put(String.valueOf(i+1), array[i]);
+    public static String enterAttribute(String attributeName, int minLength, int maxLength) {
+        Validate valid = new Validate();
+        String attributeValue;
+        boolean flag;
+        do {
+            UserIO.displayBody("Please enter the " + attributeName + ":");
+            attributeValue = UserIO.getInput().trim();
+            flag = valid.isValidLength(attributeValue, minLength, maxLength);
+            if (!flag) {
+                UserIO.displayBody("The " + attributeName + " must be between " + minLength + " and " + maxLength + " characters:");
+            }
         }
-        UserIO.displayOptions(map);
-        return map.get(UserIO.getInput());
+        while (!flag);
+        return attributeValue;
     }
 
-    public static String menuSelectorSwitch(String question, String[] array) {
+    public static String menuSelectorValue(String question, String[] options) {
         UserIO.displayBody(question);
-        HashMap<String, String> map = new HashMap<>();
-        for (int i = 0; i < array.length; i++) {
-            map.put(String.valueOf(i+1), array[i]);
+        UserIO.displayOptions(options);
+
+        boolean flag = false;
+        int optionIndex = 0;
+        do {
+            try {
+                String input = UserIO.getInput().trim();
+                optionIndex = Integer.parseInt(input) - 1;
+                if (optionIndex <= options.length-1 && optionIndex >= 0) {
+                    flag = true;
+                }
+                else {
+                    UserIO.displayBody("Please enter an integer between 1 and " + options.length);
+                }
+            }
+            catch (NumberFormatException e) {
+                UserIO.displayBody("Integer parsing error:");
+                UserIO.displayBody("Please enter an integer between 1 and " + options.length);
+            }
+            catch (Exception e) {
+                UserIO.displayBody("Other error");
+                UserIO.displayBody("Please enter an integer between 1 and " + options.length);
+            }
         }
-        UserIO.displayOptions(map);
-        return UserIO.getInput();
+        while (!flag);
+
+        return options[optionIndex];
+    }
+
+    public static String menuSelectorKey(String question, String[] options) {
+        UserIO.displayBody(question);
+        UserIO.displayOptions(options);
+
+        boolean flag = false;
+        int optionIndex = 0;
+        do {
+            try {
+                String input = UserIO.getInput().trim();
+                optionIndex = Integer.parseInt(input) - 1;
+                if (optionIndex <= options.length-1 && optionIndex >= 0) {
+                    flag = true;
+                }
+                else {
+                    UserIO.displayBody("Please enter an integer between 1 and " + options.length);
+                }
+            }
+            catch (NumberFormatException e) {
+                UserIO.displayBody("Integer parsing error:");
+                UserIO.displayBody("Please enter an integer between 1 and " + options.length);
+            }
+            catch (Exception e) {
+                UserIO.displayBody("Other error");
+                UserIO.displayBody("Please enter an integer between 1 and " + options.length);
+            }
+        }
+        while (!flag);
+
+        return String.valueOf(optionIndex);
     }
 }
