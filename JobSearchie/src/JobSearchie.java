@@ -1,66 +1,60 @@
-import Controllers.JobHandler;
 import database.DatabaseManager;
 import entities.*;
 import utilities.UserIO;
 import utilities.Validate;
 
+import java.sql.Date;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 
 public class JobSearchie {
     private Session session;
 
-    public static void main(String[] args) throws SQLException, ParseException {
+    public static void main(String[] args) throws SQLException {
         JobSearchie program = new JobSearchie();
         program.session = new Session();
         program.run();
     }
 
     public void run() throws SQLException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         DatabaseManager db = new DatabaseManager();
         if(!db.open()) {
             System.out.println("Can't open database");
             return;
         }
 
-//        Location loc = new Location("Australia", "Tasmania", "Trowutta", "7330");
-//        ArrayList<String> keywords = new ArrayList<>();
-//        keywords.add("Accounting");
-//        keywords.add("Economics");
-//        keywords.add("Study");
-//        keywords.add("Focus");
-//
-//        ArrayList<String> categories = new ArrayList<>();
-//        categories.add("Accounting");
-//        categories.add("Economics");
-//        categories.add("Study");
-//        categories.add("Accounting");
+        Location loc = new Location("Australia", "Tasmania", "Trowutta", "7330");
+        ArrayList<String> keywords = new ArrayList<>();
+        keywords.add("Accounting");
+        keywords.add("Economics");
+        keywords.add("Study");
+        keywords.add("Focus");
 
-        //Recruiter recruiter = new Recruiter("James", "Bond", "james_bond@hotmail.com", "Abcabc123", new Date(), "Seek Pty Ltd", "Computer Science", "0459797824", new Date());
+        ArrayList<String> categories = new ArrayList<>();
+        categories.add("Accounting");
+        categories.add("Economics");
+        categories.add("Study");
+        categories.add("Accounting");
 
-        //Job job = new Job("Software Dev", recruiter, new Date(), new Date(), new Date(), "Seek Pty Ltf", categories, loc, "Full Time", "WFH", 95625, "Entry Level", "Excellent opportunity as an entry level software developer", true, keywords);
+        Recruiter recruiter = new Recruiter("James", "Bond", "james_bond@hotmail.com", "Abcabc123", new Date(System.currentTimeMillis()), "Seek Pty Ltd", "Computer Science", "0459797824", new Date(System.currentTimeMillis()));
+        JobSeeker jobSeeker = new JobSeeker("Jim", "levinstine", "jim_levinstine@icloud.com", "NONEHAHA", new Date(System.currentTimeMillis()), "CEO", "Execuitive", "0456789845", "", loc, new Date(System.currentTimeMillis()), keywords, 95000);
+        Job job = new Job("Hiphop rapper", recruiter, new Date(System.currentTimeMillis()), null, null, "Seek Pty Ltf", categories, loc, "Full Time", "WFH", 95625, "Entry Level", "Excellent opportunity as an entry level software developer", true, keywords);
+        try {
+            db.insertJob(job);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-        //db.insertJob(job);
+        Application app = new Application();
+        app.setJob(job);
+        app.setResumeDir("");
+        app.setCoverLetterDir("");
+        app.setJobSeeker(jobSeeker);
+        app.setApplicationDate(new Date(System.currentTimeMillis()));
+        app.setStatus("Pending");
+        db.insertApplication(app);
 
-        //JobHandler jobHandler = new JobHandler();
-        //Job newJob = jobHandler.createJob(recruiter);
-        //UserIO.displayHeading("Please review the job details:");
-        //newJob.display();
-        //db.insertJob(newJob);
-
-        //System.out.println(db.getJob(1).getCompany());
-
-        //System.out.println("Here");
         db.close();
-
-        welcomeScreen();
-        loginOrRegister();
-
     }
 
     public void welcomeScreen () {
@@ -81,7 +75,7 @@ public class JobSearchie {
         UserIO.displayOptions(options);
     }
 
-    public void loginOrRegister() throws SQLException {
+    public void loginOrRegister() {
         printLoginOrRegisterScreen();
         Validate validator = new Validate();
         String userInput = UserIO.getInput().strip();
@@ -112,7 +106,8 @@ public class JobSearchie {
     /**
      * This method will collect an email address and password from a new user and save them into the UserDatabase??
      */
-    public void register() throws SQLException {
+    public void register()
+    {
         UserIO.displayBody("Please enter your email address");
         String userEmailInput = UserIO.getInput().strip();
         Validate validator = new Validate();
@@ -156,39 +151,7 @@ public class JobSearchie {
             userPasswordInput = passwordB;
         } while (!passwordA.equals(passwordB));
         //TODO: pass email and password into create user.
-        UserIO.displayHeading("Profile setup");
-        UserIO.displayBody("""
-                It looks like this is the first time you’ve logged into Job Searchie. Please take some time to answer a
-                few questions and assist us in giving you the best opportunity to find your dream job or recruit the
-                perfect employee.
-        """);
-        String[] options = {
-                "Job seeker",
-                "Recruiter"
-        };
-        String accountType = UserIO.menuSelectorValue("Which account type would you like to set up", options);
-        String firstName = UserIO.enterAttribute("first name", 1, 30);
-        String lastName = UserIO.enterAttribute("last name", 1, 30);
-        //User user = new User(accountType, firstName, lastName, userEmailInput, passwordB, new Date());
-        //user.display();
 
-        //TODO: insert user into database
-        DatabaseManager db = new DatabaseManager();
-        if (accountType.equals("1")) {
-            //JobSeeker jobSeeker = new JobSeeker(accountType, firstName, lastName, userEmailInput, passwordB, new Date());
-            //db.insertJobSeeker(jobSeeker);
-            //jobSeeker.display();
-            System.out.println("Finish this later");
-        }
-        else {
-            String company = UserIO.enterAttribute("company", 4, 30);
-            String speciality = UserIO.enterAttribute("recruiting speciality", 4, 30);
-            String contactNumber = UserIO.enterAttribute("contact number", 8, 12);
-            //TODO DOB
-            //Recruiter recruiter = new Recruiter(accountType, firstName, lastName, userEmailInput, passwordB, new Date(), company, speciality, new Date());
-            //db.insertRecruiter(recruiter);
-            //recruiter.display();
-        }
     }
 
     public void exit() {

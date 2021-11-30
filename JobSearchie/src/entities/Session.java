@@ -5,7 +5,7 @@ import Controllers.JobSeekerHandler;
 import Controllers.RecruiterHandler;
 import Controllers.UserHandler;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Session {
     private User user;
@@ -14,8 +14,8 @@ public class Session {
 
     public Session() {
         user = null;
-        loginTime = new Date();
-        logoutTime = new Date();
+        loginTime = null;
+        logoutTime = null;
     }
 
     public Session(User userLoggedIn, Date loginTime, Date logoutTime) {

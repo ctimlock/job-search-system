@@ -1,11 +1,12 @@
 package Controllers;
 
-import entities.*;
+import entities.Job;
+import entities.Location;
+import entities.Recruiter;
 import utilities.UserIO;
-import utilities.Validate;
 
-import java.io.FileReader;
-import java.util.*;
+import java.sql.Date;
+import java.util.ArrayList;
 
 public class JobHandler {
 
@@ -28,11 +29,11 @@ public class JobHandler {
         boolean isAdvertised = enterIsAdvertised();
         Date advertiseDate = null;
         if (isAdvertised) {
-            advertiseDate = new Date();
+            advertiseDate = new Date(System.currentTimeMillis());
         }
         UserIO.displayBody("You have now finished providing the required information.");
 
-        return new Job(jobTitle, recruiter, new Date(), advertiseDate, null, company, categories, location, workType, workingArrangement, compensation, jobLevel, description, isAdvertised, keywords);
+        return new Job(jobTitle, recruiter, new Date(System.currentTimeMillis()), advertiseDate, null, company, categories, location, workType, workingArrangement, compensation, jobLevel, description, isAdvertised, keywords);
     }
 
 
@@ -191,7 +192,7 @@ public class JobHandler {
 
     public static void main(String[] args) {
 
-        Recruiter recruiter = new Recruiter("James", "Bond", "james_bond@hotmail.com", "Abcabc123", new Date(), "Seek Pty Ltd", "Computer Science", "0459797824", new Date());
+        Recruiter recruiter = new Recruiter("James", "Bond", "james_bond@hotmail.com", "Abcabc123", new Date(System.currentTimeMillis()), "Seek Pty Ltd", "Computer Science", "0459797824", new Date(System.currentTimeMillis()));
         JobHandler jobHandler = new JobHandler();
         Job newJob = jobHandler.createJob(recruiter);
         UserIO.displayHeading("Please review the job details:");

@@ -1,6 +1,7 @@
 package database;
 
 import entities.JobSeeker;
+import entities.User;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -42,13 +43,13 @@ public class UserKeywordDB implements DBHelper {
      * Returns a list of the keyword Id's associated with a given userId. May return null if no keywords are associated
      * otherwise will retrun an arraylist of integers which represent the keyword ids associated with a given user.
      *
-     * @param email The user email to be checked against.
+     * @param user The user email to be checked against.
      * @return Returns an ArrayList of keyword ids if 1 or more exist or null of none exist.
      */
-    private ArrayList<Integer> getUserKeywordIds(String email) {
+    private ArrayList<Integer> getUserKeywordIds(User user) {
         ArrayList<Integer> keywordIds = new ArrayList<>();
         try {
-            queryUserKeywords.setString(1, email);
+            queryUserKeywords.setString(1, user.getEmail());
             ResultSet results = queryUserKeywords.executeQuery();
             while (results.next()) {
                 keywordIds.add(results.getInt(UserKeywordDB.Column.KEYWORDID));
@@ -64,13 +65,13 @@ public class UserKeywordDB implements DBHelper {
      * TESTED
      * Gets all the keywords associated with the given user.
      *
-     * @param email The userEmail of who you would like to get all associated keywords.
+     * @param user The userEmail of who you would like to get all associated keywords.
      * @return Returns an ArrayList of strings which represent th users keywords. Returns null if no keywords are
      * associated with the userId.
      * given.
      */
-    public ArrayList<String> getUserKeywords(String email) {
-        ArrayList<Integer> keywordIds = getUserKeywordIds(email);
+    public ArrayList<String> getUserKeywords(User user) {
+        ArrayList<Integer> keywordIds = getUserKeywordIds(user);
         if (keywordIds != null) {
             ArrayList<String> keywords = new ArrayList<>();
             keywordIds.forEach(id -> keywords.add(getKeyword(id)));
@@ -86,10 +87,9 @@ public class UserKeywordDB implements DBHelper {
      * @param jobSeeker The job seeker whos keywords will be added against.
      */
     public void insertJobSeekerKeywords(JobSeeker jobSeeker) {
-        String jobSeekerEmail = jobSeeker.getEmail();
         jobSeeker.getKeywords().forEach(keyword -> {
             try {
-                insertUserKeyword(jobSeekerEmail, keyword);
+                insertUserKeyword(jobSeeker, keyword);
             } catch (SQLException e) {
                 System.out.println("Error inserting user keywords: " + e.getMessage());
             }
@@ -101,16 +101,16 @@ public class UserKeywordDB implements DBHelper {
      * Inserts a user keyword into the user_keyword table. Checks to see if the keyword exists, if not will be added.
      * Then checks to see if userKeyword combonation exists, addes it if not.
      *
-     * @param userEmail The userEmail to match the keyword against.
+     * @param user The userEmail to match the keyword against.
      * @param keyword   The keywordId to associate with the user.
      * @throws SQLException Throws SQLException if the given combination cannot be inserted. Would be thrown if the
      *                      pair already exists, but this shouldn't happen as its already checked.
      */
-    private void insertUserKeyword(String userEmail, String keyword) throws SQLException {
+    private void insertUserKeyword(User user, String keyword) throws SQLException {
         int keywordId = insertKeyword(keyword);
-        ArrayList<Integer> userKeywordIds = getUserKeywordIds(userEmail);
+        ArrayList<Integer> userKeywordIds = getUserKeywordIds(user);
         if (userKeywordIds == null || !userKeywordIds.contains(keywordId)) {
-            insertUserKeyword.setString(1, userEmail);
+            insertUserKeyword.setString(1, user.getEmail());
             insertUserKeyword.setInt(2, keywordId);
             int affectedRows = insertUserKeyword.executeUpdate();
             if (affectedRows != 1)

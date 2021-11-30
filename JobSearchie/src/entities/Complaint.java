@@ -1,5 +1,4 @@
 package entities;
-
 public class Complaint
 {
     private String complaintID;
