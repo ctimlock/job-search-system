@@ -1,3 +1,4 @@
+import Controllers.JobHandler;
 import database.DatabaseManager;
 import entities.Job;
 import entities.Location;
@@ -47,11 +48,17 @@ public class JobSearchie {
 
         Job job = new Job("Software Dev", recruiter, new Date(), new Date(), new Date(), "Seek Pty Ltf", categories, loc, "Full Time", "WFH", 95625, "Entry Level", "Excellent opportunity as an entry level software developer", true, keywords);
 
-        db.insertJob(job);
+        //db.insertJob(job);
 
-        System.out.println(db.getJob(1).getCompany());
+        JobHandler jobHandler = new JobHandler();
+        Job newJob = jobHandler.createJob(recruiter);
+        UserIO.displayHeading("Please review the job details:");
+        newJob.display();
+        db.insertJob(newJob);
 
-        System.out.println("Here");
+        //System.out.println(db.getJob(1).getCompany());
+
+        //System.out.println("Here");
         db.close();
     }
 
