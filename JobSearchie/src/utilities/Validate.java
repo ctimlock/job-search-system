@@ -64,6 +64,16 @@ public class Validate {
         return valid;
     }
 
+    /////New method  TP
+    public boolean isValidIntegerLength(int integer, int min, int max) {
+        boolean valid = false;
+        //int length = integer.length();
+        if (integer >= min && integer <= max) {
+            valid = true;
+        }
+        return valid;
+    }
+
     public boolean isValidMenuOption(String[] array, int input) {
         boolean valid = false;
         int arrayLength = array.length;
