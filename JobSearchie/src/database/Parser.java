@@ -22,8 +22,24 @@ public class Parser {
             return null;
     }
 
-    static Invitation parseInvitation(ResultSet result, UserDB userDB, LocationDB locationDB, JobDB jobDB) {
-        return new Invitation();
+    static Invitation parseInvitation(ResultSet result, UserDB userDB, LocationDB locationDB, JobDB jobDB, UserKeywordDB userKeywordDB, JobKeywordDB jobKeywordDB, JobCategoryDB jobCategoryDB) {
+        Invitation invitation = new Invitation();
+        try {
+            invitation.setId(result.getInt(InvitationDB.Column.ID));
+            invitation.setJobSeeker(userDB.getJobSeeker(result.getString(InvitationDB.Column.JOBSEEKEREMAIL), userKeywordDB, locationDB));
+            invitation.setRecruiter(userDB.getRecruiter(result.getString(InvitationDB.Column.RECRUITEREMAIL)));
+            invitation.setJob(jobDB.getJob(result.getInt(InvitationDB.Column.JOBID),userDB, locationDB, jobKeywordDB, jobCategoryDB));
+            invitation.setDateSent(parseDate(result, InvitationDB.Column.DATESENT));
+            invitation.setDateOfInterview(parseDate(result, InvitationDB.Column.DATEOFINTERVIEW));
+            invitation.setLocationOfInterview(locationDB.getLocation(result.getInt(InvitationDB.Column.LOCATIONID)));
+            invitation.setAttachedMessage(result.getString(InvitationDB.Column.MESSAGE));
+            invitation.setTypeOfInterview(result.getString(InvitationDB.Column.MESSAGE));
+            invitation.setAccepted(result.getBoolean(InvitationDB.Column.ACCEPTED));
+            return invitation;
+        } catch (SQLException e) {
+            System.out.println("Error parsing job: " + e.getMessage());
+            return null;
+        }
     }
 
     private static Date parseDate(ResultSet result, String column) {

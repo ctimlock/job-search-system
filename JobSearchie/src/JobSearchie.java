@@ -72,6 +72,10 @@ public class JobSearchie {
 
         System.out.println(invitation.getId());
 
+        Invitation invi = db.getInvitation(1);
+
+        System.out.println(invi.getJob().getJobTitle());
+
 
         db.close();
     }

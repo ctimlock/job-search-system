@@ -41,12 +41,12 @@ public class InvitationDB implements DBHelper{
     }
 
 
-    public Invitation getInvitation(int invitationId, UserDB userDB, LocationDB locationDB, JobDB jobDB) {
+    public Invitation getInvitation(int invitationId, UserDB userDB, LocationDB locationDB, JobDB jobDB, UserKeywordDB userKeywordDB, JobKeywordDB jobKeywordDB, JobCategoryDB jobCategoryDB) {
         try {
             queryInvitationById.setInt(1, invitationId);
             ResultSet result = queryInvitationById.executeQuery();
             if (result.next())
-                return parseInvitation(result, userDB, locationDB, jobDB);
+                return parseInvitation(result, userDB, locationDB, jobDB, userKeywordDB, jobKeywordDB, jobCategoryDB);
             return null;
         } catch (SQLException e) {
             System.out.println("Error querying invitationId = " + invitationId + ": " + e.getMessage());
@@ -54,12 +54,12 @@ public class InvitationDB implements DBHelper{
         }
     }
 
-    public ArrayList<Invitation> getAllInvitations(UserDB userDB, LocationDB locationDB, JobDB jobDB) {
+    public ArrayList<Invitation> getAllInvitations(UserDB userDB, LocationDB locationDB, JobDB jobDB, UserKeywordDB userKeywordDB, JobKeywordDB jobKeywordDB, JobCategoryDB jobCategoryDB) {
         try {
             ArrayList<Invitation> invitations = new ArrayList<>();
             ResultSet results = queryAllInvitations.executeQuery();
             while (results.next()) {
-                invitations.add(parseInvitation(results, userDB, locationDB, jobDB));
+                invitations.add(parseInvitation(results, userDB, locationDB, jobDB, userKeywordDB, jobKeywordDB, jobCategoryDB));
             }
             return invitations;
         } catch (SQLException e) {

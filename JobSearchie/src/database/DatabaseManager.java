@@ -115,7 +115,7 @@ public class DatabaseManager {
     }
 
     public Invitation getInvitation(int invitationId) {
-        return invitationDB.getInvitation(invitationId, userDB, locationDB, jobDB);
+        return invitationDB.getInvitation(invitationId, userDB, locationDB, jobDB, userKeywordDB, jobKeywordDB, jobCategoryDB);
     }
 
     public Invitation insertInvitation(Invitation invitation) throws SQLException {
@@ -123,7 +123,7 @@ public class DatabaseManager {
     }
 
     public ArrayList<Invitation> getAllInvitations() {
-        return invitationDB.getAllInvitations(userDB, locationDB, jobDB);
+        return invitationDB.getAllInvitations(userDB, locationDB, jobDB, userKeywordDB, jobKeywordDB, jobCategoryDB);
     }
 
     /**
