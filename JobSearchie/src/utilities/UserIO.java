@@ -2,10 +2,8 @@ package utilities;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.lang.ProcessBuilder;
 
 public class UserIO {
     private static final int CHAR_WIDTH = 100;
@@ -148,8 +146,8 @@ public class UserIO {
     }
 
     public static String menuSelectorKey(String question, String[] options) {
-        UserIO.displayBody(question);
         UserIO.displayOptions(options);
+        UserIO.displayBody(question);
 
         boolean flag = false;
         int optionIndex = 0;

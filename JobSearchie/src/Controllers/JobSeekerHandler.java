@@ -1,8 +1,8 @@
 package Controllers;
 
-import entities.JobSeeker;
-import entities.User;
 import utilities.UserIO;
+
+import java.util.HashMap;
 //import src.JobSearchie;    //TODO: fix
 
 
@@ -15,7 +15,7 @@ public class JobSeekerHandler extends UserHandler {
     }
 
     public void home() {
-        UserIO.displayTitleAndBody("Home", "");
+        UserIO.displayTitle("Home");
         String[] options = {
                 "Search for a job",
                 "View watchlist",
@@ -27,33 +27,112 @@ public class JobSeekerHandler extends UserHandler {
                 "Log out"
         };
         String userInput = UserIO.menuSelectorKey("Please enter one of the above options:", options);
-
+        //UserIO.clearScreen();
         switch (userInput) {
-            case ("1") -> jobSearch();
-            case ("2") -> watchlist();
-            //case ("3") -> new MessageHandler().viewMessages();   // TODO : Messages
-            case ("4") -> pendingJobApplications();
-            case ("5") -> jobInterviews();
-            case ("6") -> rejectedJobs();
-            case ("7") -> profileManagement();
-            case ("8") -> logOut();
+            case ("0") -> jobSearch();
+            case ("1") -> watchlist();
+            case ("2") -> messages();   // TODO : Messages
+            case ("3") -> pendingJobApplications();
+            case ("4") -> jobInterviews();
+            case ("5") -> rejectedJobs();
+            case ("6") -> profileManagement();
+            case ("7") -> logOut();
             default -> throw new IllegalStateException("Unexpected value: " + userInput);
         }
     }
 
-    // 1. Job search functions
-
-    public void jobSearch() {
-        initiateJobSearch();
-        sortJobSearchResults();
+    private void messages() {
+        System.out.println("The message selection is not currently working, please try again later.");
     }
 
-    public String initiateJobSearch(){
+    /**
+     * Called when the jobSeeker elects to search for a job.
+     */
+    public void jobSearch() {
+        String searchTerm = getSearchTerm();
+        boolean filterResults = getShouldFilter();
+        //Field, filter
+        HashMap<String, String> filters = filterResults ? getFilters() : null;
+        boolean sortResults = getShouldSort();
+        //Field, (ascending/descending)
+        HashMap<String, String> sort = sortResults ? getSort() : null;
+
+    }
+
+    //TODO: Get filters
+    public HashMap<String, String> getFilters() {
+        HashMap<String, String> filters =  new HashMap<>();
+        while (true) {
+            String[] options = {
+                    "Personal relevance score",
+                    "Compensation",
+                    "Location",
+                    "Days since posted"};
+            UserIO.displayOptions(options);
+            String selectedOption = UserIO.menuSelectorValue("How would you like to filter results?", options);
+
+            //TODO: Up to here
+            switch (selectedOption) {
+//                case "0" -> getPersonalRelevanceScoreFilter();
+//                case "1" -> getCompensationFilter();
+//                case "2" -> getLocationFilter();
+//                case "3" -> getDateFilter();
+            }
+            break;
+        }
+
+
+        return filters;
+    }
+
+
+    public HashMap<String, String> getSort() {
+        return new HashMap<>();
+    }
+
+    //TODO: This can be refactored with getShouldFilter
+    public boolean getShouldSort() {
+        UserIO.displayBody("Would you like to sort to the search results? (yes/no)");
+        //TODO: Maybe we have .toLowerCase() inside the UserIO class?
+        String input = UserIO.getInput().toLowerCase();
+        //TODO: This should be a validate option.
+        int tries = 0;
+        while (!input.equals("yes") && !input.equals("no")) {
+            if(tries++ <= 3) {
+                System.out.println("Please enter either 'yes' or 'no'. You have " + (3 - tries) + " remaining.");
+                input = UserIO.getInput().toLowerCase();
+            } else {
+                exit();
+            }
+        }
+        return input.equals("yes");
+    }
+
+    public boolean getShouldFilter() {
+        UserIO.displayBody("Would you like to apply a filter to the search? (yes/no)");
+        //TODO: Maybe we have .toLowerCase() inside the UserIO class?
+        String input = UserIO.getInput().toLowerCase();
+        //TODO: This should be a validate option.
+        int tries = 0;
+        while (!input.equals("yes") && !input.equals("no")) {
+            if(tries++ <= 3) {
+                System.out.println("Please enter either 'yes' or 'no'. You have " + (3 - tries) + " remaining.");
+                input = UserIO.getInput().toLowerCase();
+            } else {
+                exit();
+            }
+        }
+        return input.equals("yes");
+    }
+
+    private void exit() {
+        System.exit(0);
+    }
+
+    public String getSearchTerm(){
         UserIO.displayTitleAndBody("Job Search", """
             Please enter a job position you would like to search for:""");
-
-        String job = UserIO.getInput();
-        return job;     // TODO : needs fixing - return value goes nowhere.
+        return UserIO.getInput();
     }
 
     public void sortJobSearchResults() {

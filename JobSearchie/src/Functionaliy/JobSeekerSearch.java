@@ -23,15 +23,17 @@ public class JobSeekerSearch {
         program.run();
     }
 
+    public void initDatabase() throws SQLException {
+        insertFiftyJobs();
+    }
+
     public void run() throws SQLException {
         JobSeeker js = getRandomJobSeeker();
         db.insertJobSeeker(js);
         session.setUserLoggedIn(js);
         db.insertSession(session);
         JobSeekerHandler jsh = new JobSeekerHandler();
-        //insertFiftyJobs();
-
-        //jsh.jobSearch();
+        jsh.home();
 
         session.setLogoutTime(new Date(System.currentTimeMillis()));
         db.updateSession(session);
