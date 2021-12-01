@@ -40,6 +40,7 @@ CREATE TABLE IF NOT EXISTS job (
 	FOREIGN KEY (recruiterEmail) REFERENCES user(email) ON DELETE CASCADE ,
 	FOREIGN KEY (locationId) REFERENCES location(id) ON DELETE CASCADE);
 
+DROP TABLE IF EXISTS application;
 DROP TABLE IF EXISTS user;
 CREATE TABLE IF NOT EXISTS user ( 
 	email TEXT NOT NULL PRIMARY KEY, 
@@ -105,3 +106,21 @@ CREATE TABLE IF NOT EXISTS job_category (
 	FOREIGN KEY (jobId) REFERENCES job(id) ON DELETE CASCADE,
 	FOREIGN KEY (categoryId) REFERENCES category(id) ON DELETE CASCADE,
 	PRIMARY KEY (jobId, categoryId));
+	
+DROP TABLE IF EXISTS invitation;
+CREATE TABLE IF NOT EXISTS invitation (
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	jobSeekerId INTEGER NOT NULL,
+    RecruiterId INTEGER NOT NULL,
+    jobId INTEGER NOT NULL,
+    dateSent TEXT NOT NULL,
+    dateOfInterview TEXT,
+    locationOfInterviewId INTEGER,
+    attachedMessage TEXT,
+    typeOfInterview TEXT,
+    accepted TEXT,
+	FOREIGN KEY (jobSeekerId) REFERENCES user(id) ON DELETE CASCADE,
+	FOREIGN KEY (RecruiterId) REFERENCES user(id) ON DELETE CASCADE,
+	FOREIGN KEY (jobId) REFERENCES job(id) ON DELETE CASCADE,
+	FOREIGN KEY (locationOfInterviewId) REFERENCES location(id) ON DELETE CASCADE);
+	

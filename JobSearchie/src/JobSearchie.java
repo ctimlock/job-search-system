@@ -59,7 +59,25 @@ public class JobSearchie {
         ArrayList<Job> allJobs = db.getAllJobs();
         System.out.println(allJobs.size());
 
+        Invitation invitation = new Invitation();
+        invitation.setJob(job);
+        invitation.setLocationOfInterview(loc);
+        invitation.setJobSeeker(jobSeeker);
+        invitation.setRecruiter(recruiter);
+        invitation.setAccepted(false);
+        invitation.setAttachedMessage("Hey we would like to consider you for this job, let arrange a time to meet!.");
+        invitation.setDateOfInterview(new Date(2022-1900+10+15));
+        invitation.setDateSent(new Date(System.currentTimeMillis()));
+        db.insertInvitation(invitation);
+
+        System.out.println(invitation.getId());
+
+
         db.close();
+    }
+
+    public void Test() {
+
     }
 
     public void welcomeScreen () {
