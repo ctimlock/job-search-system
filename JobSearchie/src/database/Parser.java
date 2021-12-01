@@ -22,6 +22,10 @@ public class Parser {
             return null;
     }
 
+    static Invitation parseInvitation(ResultSet result, UserDB userDB, LocationDB locationDB, JobDB jobDB) {
+        return new Invitation();
+    }
+
     private static Date parseDate(ResultSet result, String column) {
         try {
             return result.getDate(column);

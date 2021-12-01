@@ -27,6 +27,7 @@ public class DatabaseManager {
     private JobKeywordDB jobKeywordDB;
     private JobCategoryDB jobCategoryDB;
     private ApplicationDB applicationDB;
+    private InvitationDB invitationDB;
 
 
     private Connection conn;
@@ -61,6 +62,7 @@ public class DatabaseManager {
             jobKeywordDB.close();
             jobCategoryDB.close();
             applicationDB.close();
+            invitationDB.close();
             if (conn != null)
                 conn.close();
         } catch (SQLException e) {
@@ -112,6 +114,18 @@ public class DatabaseManager {
         return jobDB.getAllJobs(userDB, locationDB);
     }
 
+    public Invitation getInvitation(int invitationId) {
+        return invitationDB.getInvitation(invitationId, userDB, locationDB, jobDB);
+    }
+
+    public Invitation insertInvitation(Invitation invitation) throws SQLException {
+        return invitationDB.insertInvitation(invitation, userDB, locationDB, jobDB);
+    }
+
+    public ArrayList<Invitation> getAllInvitations() {
+        return invitationDB.getAllInvitations(userDB, locationDB, jobDB);
+    }
+
     /**
      * TESTED
      * Opens the database and initilises the prepared statements.
@@ -130,6 +144,7 @@ public class DatabaseManager {
             jobKeywordDB = new JobKeywordDB(conn);
             jobCategoryDB = new JobCategoryDB(conn);
             applicationDB = new ApplicationDB(conn);
+            invitationDB = new InvitationDB(conn);
             return true;
         } catch (SQLException e) {
             System.out.println("Couldn't open database: " + e.getMessage());

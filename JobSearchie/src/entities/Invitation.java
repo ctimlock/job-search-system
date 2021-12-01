@@ -1,7 +1,6 @@
 package entities;
 
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
+import java.sql.Date;
 
 /**
  * @author Charlie Timlock
@@ -13,130 +12,130 @@ public class Invitation
     private int id;
     private JobSeeker jobSeeker;
     private Recruiter recruiter;
-    private OffsetDateTime timeStamp;
-    private Location location;
-    private Message message;
-    private String type;
+    private Job job;
+    private Date dateSent;
+    private Date dateOfInterview;
+    private Location locationOfInterview;
+    private String attachedMessage;
+    private String typeOfInterview;
+    private boolean accepted;
 
-
-    //TODO: Javadoc
-    public Invitation()
-    {
-        this.id = 0;
-        this.jobSeeker = new JobSeeker( );
-        this.recruiter = new Recruiter();
-        this.timeStamp = OffsetDateTime.of(0,0,0,0,0,0,0, ZoneOffset.of("+0"));
-        this.location = new Location();
-        this.message = new Message();
-        this.type = "";
+    public Invitation() {
+        id = -1;
+        jobSeeker = null;
+        recruiter = null;
+        job = null;
+        dateSent = null;
+        dateOfInterview = null;
+        locationOfInterview = null;
+        attachedMessage = null;
+        typeOfInterview = null;
+        accepted = false;
     }
 
-    //TODO: Javadoc
-    public Invitation(int id, JobSeeker jobSeeker, Recruiter recruiter, OffsetDateTime timeStamp, Location location, Message message, String type)
-    {
+    public Invitation(JobSeeker jobSeeker, Recruiter recruiter, Job job, Date dateSent, Date dateOfInterview, Location locationOfInterview, String attachedMessage, String typeOfInterview, boolean accepted) {
+        id = -1;
+        this.jobSeeker = jobSeeker;
+        this.recruiter = recruiter;
+        this.job = job;
+        this.dateSent = dateSent;
+        this.dateOfInterview = dateOfInterview;
+        this.locationOfInterview = locationOfInterview;
+        this.attachedMessage = attachedMessage;
+        this.typeOfInterview = typeOfInterview;
+        this.accepted = accepted;
+    }
+
+    public Invitation(int id, JobSeeker jobSeeker, Recruiter recruiter, Job job, Date dateSent, Date dateOfInterview, Location locationOfInterview, String attachedMessage, String typeOfInterview, boolean accepted) {
         this.id = id;
         this.jobSeeker = jobSeeker;
         this.recruiter = recruiter;
-        this.timeStamp = timeStamp;
-        this.location = location;
-        this.message = message;
-        this.type = type;
+        this.job = job;
+        this.dateSent = dateSent;
+        this.dateOfInterview = dateOfInterview;
+        this.locationOfInterview = locationOfInterview;
+        this.attachedMessage = attachedMessage;
+        this.typeOfInterview = typeOfInterview;
+        this.accepted = accepted;
     }
 
-    //TODO: Javadoc
-    public void displayInvitation(OffsetDateTime appliedDate, OffsetDateTime listedDate, String jobTitle, String companyName, String jobCategory)
-    {
-        System.out.println("Job Title: " + jobTitle);
-        System.out.println("Posted: " + listedDate);
-        System.out.println("Applied: " + appliedDate);
-        System.out.println("Company: " + companyName);
-        System.out.println("Category: " + jobCategory);
-        System.out.println("Job Interview Date: " + this.timeStamp);
-        System.out.println("Interviewers: " + this.timeStamp);
-        System.out.println("Meeting location: " + this.location);
-    }
-
-    //TODO: Javadoc
-    public int getId()
-    {
+    public int getId() {
         return id;
     }
 
-    //TODO: Javadoc
-    public JobSeeker getJobSeeker()
-    {
-        return jobSeeker;
-    }
-
-    //TODO: Javadoc
-    public Location getLocation()
-    {
-        return location;
-    }
-
-    //TODO: Javadoc
-    public Message getMessage()
-    {
-        return message;
-    }
-
-    //TODO: Javadoc
-    public Recruiter getRecruiter()
-    {
-        return recruiter;
-    }
-
-    //TODO: Javadoc
-    public OffsetDateTime getTimeStamp()
-    {
-        return timeStamp;
-    }
-
-    //TODO: Javadoc
-    public String getType()
-    {
-        return type;
-    }
-
-    //TODO: Javadoc
-    public void setId(int id)
-    {
+    public void setId(int id) {
         this.id = id;
     }
 
-    //TODO: Javadoc
-    public void setJobSeeker(JobSeeker jobSeeker)
-    {
+    public JobSeeker getJobSeeker() {
+        return jobSeeker;
+    }
+
+    public void setJobSeeker(JobSeeker jobSeeker) {
         this.jobSeeker = jobSeeker;
     }
 
-    //TODO: Javadoc
-    public void setLocation(Location location)
-    {
-        this.location = location;
+    public Recruiter getRecruiter() {
+        return recruiter;
     }
 
-    //TODO: Javadoc
-    public void setMessage(Message message)
-    {
-        this.message = message;
-    }
-
-    //TODO: Javadoc
-    public void setRecruiter(Recruiter recruiter)
-    {
+    public void setRecruiter(Recruiter recruiter) {
         this.recruiter = recruiter;
     }
 
-    //TODO: Javadoc
-    public void setTimeStamp(OffsetDateTime timeStamp)
-    {
-        this.timeStamp = timeStamp;
+    public Job getJob() {
+        return job;
     }
 
-    //TODO: Javadoc
-    public void setType(String type)
-    {
-        this.type = type;
+    public void setJob(Job job) {
+        this.job = job;
+    }
+
+    public Date getDateSent() {
+        return dateSent;
+    }
+
+    public void setDateSent(Date dateSent) {
+        this.dateSent = dateSent;
+    }
+
+    public Date getDateOfInterview() {
+        return dateOfInterview;
+    }
+
+    public void setDateOfInterview(Date dateOfInterview) {
+        this.dateOfInterview = dateOfInterview;
+    }
+
+    public Location getLocationOfInterview() {
+        return locationOfInterview;
+    }
+
+    public void setLocationOfInterview(Location locationOfInterview) {
+        this.locationOfInterview = locationOfInterview;
+    }
+
+    public String getAttachedMessage() {
+        return attachedMessage;
+    }
+
+    public void setAttachedMessage(String attachedMessage) {
+        this.attachedMessage = attachedMessage;
+    }
+
+    public String getTypeOfInterview() {
+        return typeOfInterview;
+    }
+
+    public void setTypeOfInterview(String typeOfInterview) {
+        this.typeOfInterview = typeOfInterview;
+    }
+
+    public boolean isAccepted() {
+        return accepted;
+    }
+
+    public void setAccepted(boolean accepted) {
+        this.accepted = accepted;
     }
 }
