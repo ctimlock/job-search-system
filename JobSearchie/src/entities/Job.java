@@ -1,5 +1,7 @@
 package entities;
 
+import utilities.UserIO;
+
 import java.util.ArrayList;
 import java.sql.Date;
 
@@ -79,21 +81,21 @@ public class Job {
     }
 
     public void display() {
-        System.out.println("jobTitle: " + jobTitle);
-        System.out.println("dateCreated: " + dateCreated);
-        System.out.println("dateListed: " + dateListed);
-        System.out.println("dateDeListed: " + dateDeListed);
-        System.out.println("company: " + company);
-        System.out.println("categories: ");
+        UserIO.displayBody("jobTitle: " + jobTitle);
+        UserIO.displayBody("dateCreated: " + dateCreated);
+        UserIO.displayBody("dateListed: " + dateListed);
+        UserIO.displayBody("dateDeListed: " + dateDeListed);
+        UserIO.displayBody("company: " + company);
+        UserIO.displayBody("categories: ");
         categories.forEach(System.out::println);
-        System.out.println(location.getCountry() + " " + location.getState() + " " + location.getCity() + " " + location.getPostcode());
-        System.out.println("workType: " + workType);
-        System.out.println("workingArrangement: " + workingArrangement);
-        System.out.println("compensation: " + compensation);
-        System.out.println("jobLevel: " + jobLevel);
-        System.out.println("description: " + description);
-        System.out.println("isAdvertised: " + isAdvertised);
-        System.out.println("keywords: ");
+        UserIO.displayBody(location.getCountry() + " " + location.getState() + " " + location.getCity() + " " + location.getPostcode());
+        UserIO.displayBody("workType: " + workType);
+        UserIO.displayBody("workingArrangement: " + workingArrangement);
+        UserIO.displayBody("compensation: " + compensation);
+        UserIO.displayBody("jobLevel: " + jobLevel);
+        UserIO.displayBody("description: " + description);
+        UserIO.displayBody("isAdvertised: " + isAdvertised);
+        UserIO.displayBody("keywords: ");
         keywords.forEach(System.out::println);
     }
 

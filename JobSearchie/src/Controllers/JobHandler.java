@@ -15,7 +15,6 @@ public class JobHandler {
     public Job createJob(Recruiter recruiter){
         UserIO.displayHeading("Create a New Job");
         UserIO.displayBody("You are now required to enter the following requested information in order to create a job. At any time you wish to go back to the previous screen, please type ‘back’");
-        //Get next job id from database.
         String jobTitle = enterJobTitle();
         String company = enterCompany();
         ArrayList<String> categories = enterCategories();
@@ -179,11 +178,11 @@ public class JobHandler {
     public ArrayList<String> enterKeywords() {
 
         ArrayList<String> keywords = new ArrayList<>();
-        keywords.add(UserIO.enterAttribute("Keyword", 0, 30));
+        keywords.add(UserIO.enterAttribute("Keyword", 4, 30));
         String[] addAnother = {"Yes", "no"};
         String inputAdd = UserIO.menuSelectorKey("Would you like to add another keyword", addAnother);
         while (inputAdd.equals("0")) {
-            keywords.add(UserIO.enterAttribute("Keyword", 0, 30));
+            keywords.add(UserIO.enterAttribute("Keyword", 4, 30));
             inputAdd = UserIO.menuSelectorKey("Would you like to add another keyword", addAnother);
         }
 
