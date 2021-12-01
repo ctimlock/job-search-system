@@ -8,17 +8,43 @@ import Controllers.UserHandler;
 import java.sql.Date;
 
 public class Session {
+    private int id;
     private User user;
     private Date loginTime;
     private Date logoutTime;
 
     public Session() {
+        id = -1;
         user = null;
         loginTime = null;
         logoutTime = null;
     }
 
     public Session(User userLoggedIn, Date loginTime, Date logoutTime) {
+        id = -1;
+        this.user = userLoggedIn;
+        this.loginTime = loginTime;
+        this.logoutTime = logoutTime;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Session(int id, User userLoggedIn, Date loginTime, Date logoutTime) {
+        this.id = id;
         this.user = userLoggedIn;
         this.loginTime = loginTime;
         this.logoutTime = logoutTime;
