@@ -28,6 +28,7 @@ public class DatabaseManager {
     private JobCategoryDB jobCategoryDB;
     private ApplicationDB applicationDB;
     private InvitationDB invitationDB;
+    private SessionDB sessionDB;
 
 
     private Connection conn;
@@ -63,6 +64,7 @@ public class DatabaseManager {
             jobCategoryDB.close();
             applicationDB.close();
             invitationDB.close();
+            sessionDB.close();
             if (conn != null)
                 conn.close();
         } catch (SQLException e) {
@@ -126,6 +128,14 @@ public class DatabaseManager {
         return invitationDB.getAllInvitations(userDB, locationDB, jobDB, userKeywordDB, jobKeywordDB, jobCategoryDB);
     }
 
+    public Session insertSession(Session session) throws SQLException {
+        return sessionDB.insertSession(session);
+    }
+
+    public Session updateSession(Session session) throws SQLException {
+        return sessionDB.updateSession(session);
+    }
+
     /**
      * TESTED
      * Opens the database and initilises the prepared statements.
@@ -145,6 +155,7 @@ public class DatabaseManager {
             jobCategoryDB = new JobCategoryDB(conn);
             applicationDB = new ApplicationDB(conn);
             invitationDB = new InvitationDB(conn);
+            sessionDB = new SessionDB(conn);
             return true;
         } catch (SQLException e) {
             System.out.println("Couldn't open database: " + e.getMessage());

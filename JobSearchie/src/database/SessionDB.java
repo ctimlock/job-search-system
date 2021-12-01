@@ -17,15 +17,20 @@ public class SessionDB implements DBHelper{
      */
     private static PreparedStatement insertSession;
 
+    private static PreparedStatement updateSession;
+
 
     public SessionDB(Connection conn) throws SQLException {
         insertSession = conn.prepareStatement(SessionDB.Insert.SESSION, Statement.RETURN_GENERATED_KEYS);
+        updateSession = conn.prepareStatement(SessionDB.Update.SESSION, Statement.RETURN_GENERATED_KEYS);
     }
 
     @Override
     public void close() throws SQLException {
         if (insertSession != null)
             insertSession.close();
+        if (updateSession != null)
+            updateSession.close();
     }
 
     /**
@@ -36,7 +41,7 @@ public class SessionDB implements DBHelper{
      * @return The id of the session once it has been inserted or the id of the matching session.
      * @throws SQLException Throws an SQLException if the method cannot insert the session.
      */
-    public static Session insertSession(Session session) throws SQLException {
+    public Session insertSession(Session session) throws SQLException {
         if (session.getId() != -1)
             return session;
         else {
@@ -57,6 +62,18 @@ public class SessionDB implements DBHelper{
         }
     }
 
+    public Session updateSession(Session session) throws SQLException {
+        updateSession.setDate(1, session.getLogoutTime());
+        updateSession.setInt(2, session.getId());
+        int affectedRows = updateSession.executeUpdate();
+        if (affectedRows != 1) {
+            throw new SQLException("Couldn't update session, updated more than one row.");
+        } else {
+            return session;
+        }
+
+    }
+
     public static class Column {
         public static final String ID = "id";
         public static final String USERID = "UserID";
@@ -68,10 +85,12 @@ public class SessionDB implements DBHelper{
     }
 
     public static class Insert {
-        public static final String SESSION = "INSERT INTO " + NAME + " (" + USERID + ", " + LOGINTIME + ", " + LOGOUTTIME  + ") VALUES (?, ?, ?, ?)";
+        public static final String SESSION = "INSERT INTO " + NAME + " (" + USERID + ", " + LOGINTIME + ", " + LOGOUTTIME  + ") VALUES (?, ?, ?)";
     }
 
-    public static class Update {}
+    public static class Update {
+        public static final String SESSION = "UPDATE " + NAME + " SET " + LOGOUTTIME + " = ? WHERE " + ID + " = ?";
+    }
 
     public static class Delete {}
 }
