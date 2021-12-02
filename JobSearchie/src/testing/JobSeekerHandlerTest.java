@@ -2,6 +2,7 @@ package testing;
 
 import Controllers.JobSeekerHandler;
 
+/*
 public class JobSeekerHandlerTest {
     private JobSeekerHandler jsh;
     public static void main(String[] args) {
@@ -30,3 +31,4 @@ public class JobSeekerHandlerTest {
         System.out.println("-".repeat(50));
     }
 }
+*/
