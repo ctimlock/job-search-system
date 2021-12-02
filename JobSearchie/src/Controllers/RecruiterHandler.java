@@ -249,6 +249,8 @@ public class RecruiterHandler extends UserHandler{
             UserIO.displayBody("Cover letter:" + application.getCoverLetterDir());
             UserIO.displayBody("Resume: " + application.getResumeDir());
             UserIO.displayBody("Application date: " + application.getApplicationDate());
+            UserIO.displayBody("Recruiter ID: " + application.getJob().getAuthor().getEmail());
+            UserIO.displayBody("Applicant: " + application.getJobSeeker().getEmail());
             System.out.println();
         }
         viewMyJobsMenu(recruiter, db, job);
