@@ -16,6 +16,11 @@ import java.util.ArrayList;
 
 public class UserHandler
 {
+    /**
+     * This method will run the process for login in or registering as a user, and will pass back the user account.
+     * @param db The database manager object being used.
+     * @return The logged in user as a User derived object.
+     */
     public User beginLoginOrRegistration(DatabaseManager db)
     {
         JFrame jFrame = new JFrame();
@@ -31,7 +36,100 @@ public class UserHandler
         return sessionUser;
     }
 
-    public User login(String email, DatabaseManager db)
+    private User createUser(String emailAddress, DatabaseManager db)
+    {
+
+        String sectionTitle = "Registration";
+        UserIO.clearScreenAndAddTitle(sectionTitle);
+
+        String password = setPassword();
+
+        UserIO.clearScreenAndAddTitle(sectionTitle);
+
+        String firstName = UserIO.enterAttribute("your first name", 1, 30);
+
+        UserIO.clearScreenAndAddTitle(sectionTitle);
+
+        String lastName = UserIO.enterAttribute("your last name", 1, 30);
+
+        UserIO.clearScreenAndAddTitle(sectionTitle);
+
+        String accTypeSelection = UserIO.menuSelectorKey("Please select the type of account you'd like to create.", new String[]{"Job Seeker", "Recruiter"});
+
+        switch (accTypeSelection)
+        {
+            case "0" -> {return registerJobSeeker(firstName, lastName, emailAddress, password, db);}
+            case "1" -> {return registerRecruiter(firstName, lastName, emailAddress, password, db);}
+            default -> throw new IllegalStateException("Unexpected value: " + accTypeSelection);
+        }
+    }
+
+    private int enterCompensation()
+    {
+        UserIO.displayBody("Please enter your expected yearly salary:");
+        System.out.print("$");
+        boolean flag = false;
+        int input = -1;
+        do {
+            try {
+                input = Integer.parseInt(UserIO.getInput().trim());
+                if (input >= 0) {
+                    flag = true;
+                }
+                else {
+                    UserIO.displayBody("Compensation cannot be negative please re-enter");
+                }
+            }
+            catch (Exception e) {
+                UserIO.displayBody("Please enter an integer:");
+            }
+        }
+        while (!flag);
+
+        return input;
+
+    }
+
+    private String enterEmail()
+    {
+        Validate validator = new Validate();
+        UserIO.displayBody("Please enter your email address:");
+        String email = UserIO.getInput();
+        while (!validator.isValidEmail(email))
+        {
+            UserIO.displayBody("""
+                        Invalid email entered.
+                        Please try again:""");
+            email = UserIO.getInput();
+        }
+        return email;
+    }
+
+    private ArrayList<String> enterKeywords()
+    {
+        ArrayList<String> keywords = new ArrayList<>();
+        UserIO.displayBody("""
+                Please enter at least one keyword which you identify with or align to.
+                These keywords will help us match you to relevant jobs.
+                Multiple keywords should be seperated by a single comma.
+                
+                An example could be: Funny, Excel, Finance, Foody, Excercise, Professional
+                """);
+        keywords.add(UserIO.enterAttribute(" one or more keywords", 0, 120));
+        String[] addAnother = {"Yes", "No"};
+        String inputAdd;
+        do {
+            UserIO.clearScreenAndAddTitle("Keywords");
+            inputAdd = UserIO.menuSelectorKey("Would you like to add another keyword", addAnother);
+            if (inputAdd.equals("0"))
+            {
+                keywords.add(UserIO.enterAttribute("Keyword", 0, 120));
+            }
+        } while (inputAdd.equals("0"));
+        return keywords;
+    }
+
+    private User login(String email, DatabaseManager db)
     {
 
         String sectionTitle = "Login";
@@ -43,7 +141,7 @@ public class UserHandler
 
             email = UserIO.getInput();
         }
-        
+
         String accType = db.getUserType(email);
 
         if (accType == null)
@@ -61,7 +159,7 @@ public class UserHandler
         }
 
         User retrievedUser;
-        
+
         switch (accType)
         {
             case "Recruiter" -> {retrievedUser = db.getRecruiter(email);}
@@ -96,31 +194,6 @@ public class UserHandler
         return retrievedUser;
     }
 
-    public String enterEmail()
-    {
-        Validate validator = new Validate();
-        UserIO.displayBody("Please enter your email address:");
-        String email = UserIO.getInput();
-        while (!validator.isValidEmail(email))
-        {
-            UserIO.displayBody("""
-                        Invalid email entered.
-                        Please try again:""");
-            email = UserIO.getInput();
-        }
-        return email;
-    }
-
-    public void welcomeScreen () {
-        UserIO.displayTitleAndBody("Welcome to Job Searchie", """
-                Job Searchie is a job listing market place.  We aim to provide a superb experience for both job seekers and recruiters.
-
-                Enjoy searching for your next dream job or finding the perfect employee.
-
-                Press enter to be redirected to the registration and login page""");
-        UserIO.getInput();
-    }
-
     private String loginOrRegisterSelector()
     {
         UserIO.clearScreenAndAddTitle("Login or Register");
@@ -128,7 +201,7 @@ public class UserHandler
         return UserIO.menuSelectorValue("Please select one of the options", options);
     }
 
-    public User register(String emailAddress, DatabaseManager db)
+    private User register(String emailAddress, DatabaseManager db)
     {
         Validate val = new Validate();
 
@@ -155,34 +228,6 @@ public class UserHandler
         } else
         {
             return createUser(emailAddress, db);
-        }
-    }
-
-    private User createUser(String emailAddress, DatabaseManager db)
-    {
-
-        String sectionTitle = "Registration";
-        UserIO.clearScreenAndAddTitle(sectionTitle);
-
-        String password = setPassword();
-
-        UserIO.clearScreenAndAddTitle(sectionTitle);
-
-        String firstName = UserIO.enterAttribute("your first name", 1, 30);
-
-        UserIO.clearScreenAndAddTitle(sectionTitle);
-
-        String lastName = UserIO.enterAttribute("your last name", 1, 30);
-
-        UserIO.clearScreenAndAddTitle(sectionTitle);
-
-        String accTypeSelection = UserIO.menuSelectorKey("Please select the type of account you'd like to create.", new String[]{"Job Seeker", "Recruiter"});
-
-        switch (accTypeSelection)
-        {
-            case "0" -> {return registerJobSeeker(firstName, lastName, emailAddress, password, db);}
-            case "1" -> {return registerRecruiter(firstName, lastName, emailAddress, password, db);}
-            default -> throw new IllegalStateException("Unexpected value: " + accTypeSelection);
         }
     }
 
@@ -267,56 +312,6 @@ public class UserHandler
         return insertedRecruiter;
     }
 
-    private int enterCompensation()
-    {
-        UserIO.displayBody("Please enter your expected yearly salary:");
-        System.out.print("$");
-        boolean flag = false;
-        int input = -1;
-        do {
-            try {
-                input = Integer.parseInt(UserIO.getInput().trim());
-                if (input >= 0) {
-                    flag = true;
-                }
-                else {
-                    UserIO.displayBody("Compensation cannot be negative please re-enter");
-                }
-            }
-            catch (Exception e) {
-                UserIO.displayBody("Please enter an integer:");
-            }
-        }
-        while (!flag);
-
-        return input;
-
-    }
-
-    private ArrayList<String> enterKeywords()
-    {
-        ArrayList<String> keywords = new ArrayList<>();
-        UserIO.displayBody("""
-                Please enter at least one keyword which you identify with or align to.
-                These keywords will help us match you to relevant jobs.
-                Multiple keywords should be seperated by a single comma.
-                
-                An example could be: Funny, Excel, Finance, Foody, Excercise, Professional
-                """);
-        keywords.add(UserIO.enterAttribute(" one or more keywords", 0, 120));
-        String[] addAnother = {"Yes", "No"};
-        String inputAdd;
-        do {
-            UserIO.clearScreenAndAddTitle("Keywords");
-            inputAdd = UserIO.menuSelectorKey("Would you like to add another keyword", addAnother);
-            if (inputAdd.equals("0"))
-            {
-                keywords.add(UserIO.enterAttribute("Keyword", 0, 120));
-            }
-        } while (inputAdd.equals("0"));
-        return keywords;
-    }
-
     private String selectJobLevel()
     {
         String[] jobLevel = {
@@ -381,6 +376,16 @@ public class UserHandler
         } while (!inputPassword.equals(confirmedPassword));
 
         return confirmedPassword;
+    }
+
+    private void welcomeScreen () {
+        UserIO.displayTitleAndBody("Welcome to Job Searchie", """
+                Job Searchie is a job listing market place.  We aim to provide a superb experience for both job seekers and recruiters.
+
+                Enjoy searching for your next dream job or finding the perfect employee.
+
+                Press enter to be redirected to the registration and login page""");
+        UserIO.getInput();
     }
 
 

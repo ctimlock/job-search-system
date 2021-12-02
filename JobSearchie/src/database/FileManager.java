@@ -185,25 +185,62 @@ public abstract class FileManager
      */
     public static String selectFilePath(String dialogueTitle, String[] fileTypes)
     {
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setAcceptAllFileFilterUsed(false);
-        fileChooser.setDialogTitle(dialogueTitle);
-        String description = "." + String.join(", .", fileTypes);
-        FileNameExtensionFilter restrict = new FileNameExtensionFilter(description, fileTypes);
-        fileChooser.addChoosableFileFilter(restrict);
-        int returnCode = fileChooser.showOpenDialog(null);
         String path = null;
-        switch (returnCode)
+        String osName = System.getProperty("os.name");
+        String homeDir = System.getProperty("user.home");
+        if (osName.equals("Mac OS X"))
         {
-            case JFileChooser.APPROVE_OPTION -> path = fileChooser.getSelectedFile().getAbsolutePath();
-            case JFileChooser.CANCEL_OPTION ->
-                    {
-                        String retry = UserIO.menuSelectorValue("Upload cancelled. Do you wish to try again?", new String[]{"Yes", "No"});
-                        if (retry.equals("Yes")) {path = FileManager.selectFilePath(dialogueTitle, fileTypes);}
-                    }
+            System.setProperty("apple.awt.fileDialogForDirectories", "true");
+            Frame frame = new Frame();
+            do
+            {
+                FileDialog fileDialog = new FileDialog(frame,"Choose a .pdf, .docx, .doc, or .txt file", FileDialog.LOAD);
+                fileDialog.setDirectory(homeDir);
+                fileDialog.setVisible(true);
+                fileDialog.setMultipleMode(false);
 
+                path = fileDialog.getFile();
+                if (path == null)
+                {
+                    String retry = UserIO.menuSelectorValue("Upload cancelled. Do you wish to try again?", new String[]{"Yes", "No"});
+                    if (retry.equals("No"))
+                    {
+                        return null;
+                    }
+                }
+                if (path != null)
+                {
+                    if (!path.endsWith(".pdf") || !path.endsWith(".doc") || !path.endsWith(".docx") || !path.endsWith(".txt"))
+                    {
+                        UserIO.displayBody("Invalid file type selected. Please try again.");
+                        path = null;
+                    }
+                }
+            } while (path == null);
+            System.setProperty("apple.awt.fileDialogForDirectories", "true");
+        } else
+        {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setAcceptAllFileFilterUsed(false);
+            fileChooser.setDialogTitle(dialogueTitle);
+            String description = "." + String.join(", .", fileTypes);
+            FileNameExtensionFilter restrict = new FileNameExtensionFilter(description, fileTypes);
+            fileChooser.addChoosableFileFilter(restrict);
+            int returnCode = fileChooser.showOpenDialog(null);
+            switch (returnCode)
+            {
+                case JFileChooser.APPROVE_OPTION -> path = fileChooser.getSelectedFile().getAbsolutePath();
+                case JFileChooser.CANCEL_OPTION -> {
+                    String retry = UserIO.menuSelectorValue("Upload cancelled. Do you wish to try again?", new String[]{"Yes", "No"});
+                    if (retry.equals("Yes"))
+                    {
+                        path = FileManager.selectFilePath(dialogueTitle, fileTypes);
+                    }
+                }
+
+            }
+            fileChooser.setVisible(false);
         }
-        fileChooser.setVisible(false);
         return path;
     }
 
