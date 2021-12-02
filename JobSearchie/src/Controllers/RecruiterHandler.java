@@ -143,7 +143,7 @@ public class RecruiterHandler extends UserHandler{
         String userInput = UserIO.menuSelectorKey("Please select an option", options);
 
         switch (userInput) {
-            case ("0") -> viewJobApplicants(db, job);
+            case ("0") -> viewJobApplicants(recruiter, db, job);
             case ("1") -> searchJobSeeker();
             case ("2") -> updateAdvertisingStatus(recruiter, db, job);
             case ("3") -> updateJob(recruiter, db, job);
@@ -241,8 +241,17 @@ public class RecruiterHandler extends UserHandler{
         profileManagement(recruiter, db);
     }
 
-    public void viewJobApplicants(DatabaseManager db, Job job) {
-        Application applications = db.getApplication(job.getId());
+    public void viewJobApplicants(Recruiter recruiter, DatabaseManager db, Job job) throws SQLException {
+        UserIO.displayHeading("Displaying applicants for " + job.getJobTitle());
+        ArrayList<Application> applications = db.getJobApplications(job);
+        for (Application application: applications) {
+            UserIO.displayBody("id: " + application.getId());
+            UserIO.displayBody("Cover letter:" + application.getCoverLetterDir());
+            UserIO.displayBody("Resume: " + application.getResumeDir());
+            UserIO.displayBody("Application date: " + application.getApplicationDate());
+            System.out.println();
+        }
+        viewMyJobsMenu(recruiter, db, job);
     }
 
 }
