@@ -78,7 +78,7 @@ public class Parser {
             try {
                 Application application = new Application();
                 application.setId(result.getInt(ApplicationDB.Column.ID));
-                application.setJobSeeker(userDB.getJobSeeker(ApplicationDB.Column.USEREMAIL, userKeywordDB, locationDB));
+                application.setJobSeeker(userDB.getJobSeeker(result.getString(ApplicationDB.Column.USEREMAIL), userKeywordDB, locationDB));
                 application.setJob(jobDB.getJob(result.getInt(ApplicationDB.Column.JOBID),userDB, locationDB, jobKeywordDB, jobCategoryDB));
                 application.setCoverLetterDir(result.getString(ApplicationDB.Column.COVERLETTERDIR));
                 application.setResumeDir(result.getString(ApplicationDB.Column.RESUMEDIR));

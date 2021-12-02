@@ -24,7 +24,7 @@ public class DatabaseTest {
     }
 
     private Job insertAndGetJob(Recruiter recruiter) {
-        Job job = RandomGen.getRandomJob();
+        Job job = RandomGen.getRandomJob(recruiter);
         try {
             return db.insertJob(job);
         } catch (SQLException e) {
@@ -125,9 +125,7 @@ public class DatabaseTest {
     public static void main(String[] args) throws SQLException {
         DatabaseTest dbt = new DatabaseTest();
         dbt.db = new DatabaseManager();
-        //dbt.getAllApplicationsById();
-        //dbt.run();
-        dbt.testGetJob();
+        dbt.run();
     }
 
     private void run() {
