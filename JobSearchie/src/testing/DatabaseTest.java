@@ -90,6 +90,37 @@ public class DatabaseTest {
         System.out.println(db.getJobApplications(job).size());
     }
 
+    public void testGetJob() {
+        try {
+            for (int i = 0; i < 200; i++) {
+                Recruiter recruiter = RandomGen.getRandomRecruiter();
+                Job job1 = RandomGen.getRandomJob(recruiter);
+                Job job2 = db.insertJob(job1);
+                if (!job1.getJobTitle().equals(job2.getJobTitle())) {
+                    System.out.println("Titles don't match");
+                    throw new Exception("TEST getJob: FAILED");
+                }
+                if (!job1.getDateCreated().equals(job2.getDateCreated())) {
+                    System.out.println("Date created doesn't match");
+                    throw new Exception("TEST getJob: FAILED");
+                }
+                if (job1.getDateListed() != job2.getDateListed()) {
+                    System.out.println("Date listed doesn't match");
+                    throw new Exception("TEST getJob: FAILED");
+                }
+                if (job1.getDateDeListed() != job2.getDateDeListed()) {
+                    System.out.println("Date de listed doesn't match");
+                    throw new Exception("TEST getJob: FAILED");
+                }
+            }
+            System.out.println("TEST 'getJob': PASSED");
+        } catch (SQLException throwables) {
+            System.out.println("Error getting job");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) throws SQLException {
         DatabaseTest dbt = new DatabaseTest();
         dbt.db = new DatabaseManager();
