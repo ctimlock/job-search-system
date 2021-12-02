@@ -1,50 +1,105 @@
 package testing;
 
 import database.DatabaseManager;
-import entities.*;
+import entities.Application;
+import entities.Job;
+import entities.JobSeeker;
+import entities.Recruiter;
 
-import java.sql.Date;
 import java.sql.SQLException;
 
 public class DatabaseTest {
-    private void run() throws SQLException {
-        System.out.println(RandomGen.getRandomPhoneNumber());
-        System.exit(1);
-        DatabaseManager db = new DatabaseManager();
+    private DatabaseManager db;
 
-        Recruiter recruiter = RandomGen.getRandomRecruiter();
-        JobSeeker jobSeeker = RandomGen.getRandomJobSeeker();
+    private Application insertAndGetApplication(Job job, JobSeeker jobSeeker) {
+        Application application = RandomGen.getRandomApplication(job, jobSeeker);
+        try {
+            return db.insertApplication(application);
+        } catch (SQLException e) {
+            System.out.println("Error inserting application" + e.getMessage());
+            application.display();
+            System.exit(1);
+            return null;
+        }
+    }
+
+    private Job insertAndGetJob(Recruiter recruiter) {
         Job job = RandomGen.getRandomJob();
-        db.insertJob(job);
+        try {
+            return db.insertJob(job);
+        } catch (SQLException e) {
+            System.out.println("Error inserting job" + e.getMessage());
+            job.display();
+            System.exit(1);
+            return null;
+        }
+    }
 
-        System.out.println(job.getId());
+    private JobSeeker insertAndGetJobSeeker() {
+        JobSeeker jobSeeker = RandomGen.getRandomJobSeeker();
+        try {
+            return db.insertJobSeeker(jobSeeker);
+        } catch (SQLException e) {
+            System.out.println("Error inserting job seeker" + e.getMessage());
+            jobSeeker.display();
+            System.exit(1);
+            return null;
+        }
+    }
 
+    private Recruiter insertAndGetRecruiter() {
+        Recruiter recruiter = RandomGen.getRandomRecruiter();
+        try {
+            return db.insertRecruiter(recruiter);
+        } catch (SQLException e) {
+            System.out.println("Error inserting recruiter" + e.getMessage());
+            recruiter.display();
+            System.exit(1);
+            return null;
+        }
+    }
 
-        Application app = RandomGen.getRandomApplication();
+    private void insertApplication(Application application) {
+        try {
+            db.insertApplication(application);
+        } catch (SQLException e) {
+            System.out.println("Error inserting application" + e.getMessage());
+            application.display();
+            System.exit(1);
+        }
 
-        Invitation invitation = new Invitation();
-        invitation.setJob(job);
-        invitation.setLocationOfInterview(RandomGen.getRandomLocation());
-        invitation.setJobSeeker(jobSeeker);
-        invitation.setRecruiter(recruiter);
-        invitation.setAccepted(false);
-        invitation.setAttachedMessage("Hey we would like to consider you for this job, let arrange a time to meet!.");
-        invitation.setDateOfInterview(new Date(2022-1900+10+15));
-        invitation.setDateSent(new Date(System.currentTimeMillis()));
-        db.insertInvitation(invitation);
+    }
 
-        System.out.println(invitation.getId());
+    private void insertManyJobApplications() {
+        for (int i = 0; i < 10; i++) {
+            Recruiter recruiter = insertAndGetRecruiter();
+            Job job = insertAndGetJob(recruiter);
 
-        Invitation invi = db.getInvitation(1);
+            for (int j = 0; j < 3; j++) {
+                JobSeeker jobSeeker = insertAndGetJobSeeker();
+                insertApplication(RandomGen.getRandomApplication(job, jobSeeker));
+            }
 
-        System.out.println(invi.getJob().getJobTitle());
+        }
+    }
 
+    public void getAllApplicationsById() {
+        Job job = db.getJob(146);
 
-        db.close();
+        System.out.println(job.getJobTitle());
+        System.out.println(db.getJobApplications(job).size());
     }
 
     public static void main(String[] args) throws SQLException {
-        new DatabaseTest().run();
+        DatabaseTest dbt = new DatabaseTest();
+        dbt.db = new DatabaseManager();
+        dbt.getAllApplicationsById();
+        //dbt.run();
+    }
+
+    private void run() {
+        insertManyJobApplications();
+        db.close();
     }
 
 

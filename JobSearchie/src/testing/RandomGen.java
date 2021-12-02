@@ -51,7 +51,6 @@ public class RandomGen {
         status.add("Pending");
         status.add("Job Offered");
         status.add("Rejected");
-        status.add(null);
         status.add("Interview Offered");
         return status.get(new Random().nextInt(status.size()));
     }
@@ -309,7 +308,7 @@ public class RandomGen {
     public static Date getRandomDate() {
         Random rand = new Random();
         long now = System.currentTimeMillis();
-        long change = (long) new Random().nextInt(54635458);
+        long change = new Random().nextInt(54635458);
         if (rand.nextInt(2) == 1)
             return new Date(now + change);
         else
@@ -488,13 +487,14 @@ public class RandomGen {
     public static String getRandomDescription() {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < new Random().nextInt(50) + 50; i++) {
-            sb.append(getRandomKeyword());
+            sb.append(getRandomKeyword()).append(" ");
         }
         return sb.toString();
     }
 
     public static Job getRandomJob(Recruiter recruiter) {
         Job job = new Job();
+        job.setJobTitle(getRandomJobTitle());
         job.setLocation(getRandomLocation());
         job.setAuthor(recruiter);
         job.setJobLevel(getRandomJobLevel());
@@ -515,6 +515,7 @@ public class RandomGen {
     public static Job getRandomJob() {
         Job job = new Job();
         job.setLocation(getRandomLocation());
+        job.setJobTitle(getRandomJobTitle());
         job.setAuthor(getRandomRecruiter());
         job.setJobLevel(getRandomJobLevel());
         job.setCompany(getRandomCompany());

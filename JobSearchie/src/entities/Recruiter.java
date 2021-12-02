@@ -40,6 +40,14 @@ public class Recruiter extends User {
         this.dateOfBirth = dateOfBirth;
     }
 
+    public void display() {
+        super.display();
+        System.out.println("companyName: " + companyName);
+        System.out.println("recruitingSpecialty: " + recruitingSpecialty);
+        System.out.println("contactNumber: " + contactNumber);
+        System.out.println("dateOfBirth: " + dateOfBirth);
+    }
+
     public String getCompanyName() {
         return companyName;
     }

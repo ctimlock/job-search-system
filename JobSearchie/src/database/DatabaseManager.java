@@ -141,6 +141,10 @@ public class DatabaseManager {
         return sessionDB.updateSession(session);
     }
 
+    public ArrayList<Application> getJobApplications(Job job) {
+        return applicationDB.getJobApplications(job, userDB, userKeywordDB, locationDB, jobDB, jobKeywordDB, jobCategoryDB);
+    }
+
     /**
      * TESTED
      * Opens the database and initilises the prepared statements.
