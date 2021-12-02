@@ -1,19 +1,24 @@
 package Controllers;
 
+import database.DatabaseManager;
+import entities.Application;
+import entities.Job;
 import entities.JobSeeker;
+import entities.Recruiter;
 import utilities.UserIO;
 
+import javax.xml.crypto.Data;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class RecruiterHandler extends UserHandler{
 
-    public void home() {
-
+    public void home(Recruiter recruiter, DatabaseManager db) throws SQLException {
+        UserIO.displayHeading("Home Page");
         String[] options = {
                 "Create a job listing",
                 "View my jobs",
-                "Messages",
+                "Messages (coming soon)",
                 "Offer interview",
                 "Search for a job seeker",
                 "Profile management"
@@ -21,56 +26,119 @@ public class RecruiterHandler extends UserHandler{
         String userInput = UserIO.menuSelectorKey("Please enter one of the following:", options);
 
         switch (userInput) {
-            //case ("1") -> new JobHandler().createJob();
-            //case ("2") -> viewMyJobs();
-            //case ("3") -> new MessageHandler().viewMessage();
+            case ("0") -> postJob(recruiter, db);
+            case ("1") -> viewMyJobs(recruiter, db);
+            case ("2") -> sendMessage(recruiter, db);
+            //case ("3") -> offerInterview(recruiter, db);
             //case ("4") -> searchJobSeeker();
-            case ("5") -> profileManagement();
+            case ("5") -> profileManagement(recruiter, db);
             default -> throw new IllegalStateException("Unexpected value: " + userInput);
         }
     }
 
-    public void profileManagement() {
+    public void deleteJob(Recruiter recruiter, DatabaseManager db, Job job) throws SQLException {
+        UserIO.displayHeading("Deleting job");
+        UserIO.displayBody("This option is not yet implemented coming soon.");
+        UserIO.displayBody("Returning to view my jobs.");
+        viewMyJobsMenu(recruiter, db, job);
+    }
+
+    public void deleteProfile(Recruiter recruiter, DatabaseManager db) throws SQLException {
 
         String[] options = {
-                "Update profile",
+                "Yes (coming soon)",
+                "No",
+                "Back",
+                "Home"
+        };
+        String userInput = UserIO.menuSelectorKey("Are you sure you would like to delete your profile?:", options);
+
+        switch (userInput) {
+            case ("0") -> deleteProfileYes(recruiter, db);
+            case ("1") -> deleteProfileNo(recruiter, db);
+            case ("2") -> profileManagement(recruiter, db);
+            case ("3") -> home(recruiter, db);
+
+        }
+    }
+
+    public void deleteProfileNo(Recruiter recruiter, DatabaseManager db) throws SQLException {
+        UserIO.displayBody("Your profile has NOT been deleted.");
+        UserIO.displayBody("Returning to profile management");
+        profileManagement(recruiter, db);
+    }
+
+    public void deleteProfileYes(Recruiter recruiter, DatabaseManager db) throws SQLException {
+        UserIO.displayBody("This option is not yet implemented coming soon");
+        UserIO.displayBody("Returning to profile management");
+        profileManagement(recruiter, db);
+    }
+
+    public void postJob(Recruiter recruiter, DatabaseManager db) throws SQLException {
+        Job job = new JobHandler().createJob(recruiter);
+        db.insertJob(job);
+    }
+
+    public void profileManagement(Recruiter recruiter, DatabaseManager db) throws SQLException {
+        UserIO.displayHeading("Profile Management");
+        String[] options = {
+                "Update profile (coming soon)",
                 "Delete profile",
+                "Back",
                 "Home",
         };
         String userInput = UserIO.menuSelectorKey("Please enter one of the following:", options);
 
         switch (userInput) {
-            case ("1") -> updateProfile();
-            case ("2") -> deleteProfile();
-            case ("3") -> home();
+            case ("0") -> updateProfile(recruiter, db);
+            case ("1") -> deleteProfile(recruiter, db);
+            case ("2") -> home(recruiter, db);
+            case ("3") -> home(recruiter, db);
             default -> throw new IllegalStateException("Unexpected value: " + userInput);
         }
     }
 
-    public void deleteProfile() {
+    public void viewMyJobs(Recruiter recruiter, DatabaseManager db) throws SQLException {
+        UserIO.displayHeading("Viewing my jobs");
+        ArrayList<Job> jobs = db.getAllJobs();
+        ArrayList<String> optionsList = new ArrayList<>();
+        for (Job job : jobs) {
+            optionsList.add(job.getJobTitle() + " - " + job.getCompany() +" - "+ job.getDateListed());
+        }
+        String[] options = new String[optionsList.size()];
+        options = optionsList.toArray(options);
+        int userInput = Integer.parseInt(UserIO.menuSelectorKey("Please select the job you wish to view", options));
+        Job job = jobs.get(userInput);
+        UserIO.displayHeading("Displaying job details");
+        job.display();
+        viewMyJobsMenu(recruiter, db, job);
+    }
+
+    public void viewMyJobsMenu(Recruiter recruiter, DatabaseManager db, Job job) throws SQLException {
+
+        UserIO.displayHeading("Options for job");
 
         String[] options = {
-                "Yes",
-                "No"
+                "View job applicants",
+                "Search for highly ranked job seekers",
+                "Change advertising status of this job (coming soon)",
+                "Update this job (coming soon)",
+                "Delete this job (coming soon)",
+                "Back",
+                "Home"
         };
-        String userInput = UserIO.menuSelectorKey("Are you sure you would like to delete your profile?:", options);
+
+        String userInput = UserIO.menuSelectorKey("Please select an option", options);
 
         switch (userInput) {
-            case ("1") -> deleteProfileYes();
-            case ("2") -> deleteProfileNo();
-            case ("3") -> home();
-            default -> throw new IllegalStateException("Unexpected value: " + userInput);
-
+            case ("0") -> viewJobApplicants(db, job);
+            case ("1") -> searchJobSeeker();
+            case ("2") -> updateAdvertisingStatus(recruiter, db, job);
+            case ("3") -> updateJob(recruiter, db, job);
+            case ("4") -> deleteJob(recruiter, db, job);
+            case ("5") -> viewMyJobs(recruiter, db);
+            case ("6") -> home(recruiter, db);
         }
-    }
-
-    public void deleteProfileNo() {
-        UserIO.displayBody("Your profile has NOT been deleted.");
-        profileManagement();
-    }
-
-    public void deleteProfileYes() {
-        UserIO.displayBody("Your profile has been deleted. You will now be redirected to the JobSearchie welcome screen");
     }
 
     public void searchJobSeeker() {
@@ -119,13 +187,37 @@ public class RecruiterHandler extends UserHandler{
         */
     }
 
-    public void updateProfile() {
-        UserIO.displayBody("Please enter the number corresponding to the field you would like to change:");
+    public void sendMessage (Recruiter recruiter, DatabaseManager db) throws SQLException {
+        UserIO.displayHeading("Sending message");
+        UserIO.displayBody("This option is not yet implemented coming soon");
+        UserIO.displayBody("Returning to home.");
+        home(recruiter, db);
     }
 
-    public static void main(String[] args) {
+    public void updateAdvertisingStatus (Recruiter recruiter, DatabaseManager db, Job job) throws SQLException {
+        UserIO.displayHeading("Updating job advertising status");
+        UserIO.displayBody("This option is not yet implemented coming soon");
+        UserIO.displayBody("Returning to view my jobs.");
+        viewMyJobsMenu(recruiter, db, job);
+    }
+
+    public void updateJob (Recruiter recruiter, DatabaseManager db, Job job) throws SQLException {
+        UserIO.displayHeading("Updating job details");
+        UserIO.displayBody("This option is not yet implemented coming soon");
+        UserIO.displayBody("Returning to view my jobs.");
+        viewMyJobsMenu(recruiter, db, job);
+    }
 
 
+    public void updateProfile(Recruiter recruiter, DatabaseManager db) throws SQLException {
+        UserIO.displayHeading("Updating profile");
+        UserIO.displayBody("This option is not yet implemented coming soon");
+        UserIO.displayBody("Returning to profile management");
+        profileManagement(recruiter, db);
+    }
+
+    public void viewJobApplicants(DatabaseManager db, Job job) {
+        Application applications = db.getApplication(job.getId());
     }
 
 }
