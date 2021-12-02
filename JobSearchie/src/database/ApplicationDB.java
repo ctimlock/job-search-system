@@ -1,8 +1,10 @@
 package database;
 
 import entities.Application;
+import entities.Job;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 import static database.ApplicationDB.Column.*;
 import static database.Parser.parseApplication;
@@ -17,17 +19,22 @@ public class ApplicationDB implements DBHelper {
      */
     private final PreparedStatement insertApplication;
     private final PreparedStatement queryApplication;
+    private final PreparedStatement queryApplicationByJob;
 
     public ApplicationDB(Connection conn) throws SQLException {
         insertApplication = conn.prepareStatement(ApplicationDB.Insert.APPLICATION, Statement.RETURN_GENERATED_KEYS);
         queryApplication = conn.prepareStatement(ApplicationDB.Query.APPLICATION, Statement.RETURN_GENERATED_KEYS);
+        queryApplicationByJob = conn.prepareStatement(Query.APPLICATION_BY_JOB);
     }
+
     @Override
     public void close() throws SQLException {
         if (insertApplication != null)
             insertApplication.close();
         if (queryApplication != null)
             queryApplication.close();
+        if (queryApplicationByJob != null)
+            queryApplicationByJob.close();
     }
 
     public Application getApplication(int applicationId, UserDB userDB, UserKeywordDB userKeywordDB, LocationDB locationDB, JobDB jobDB, JobKeywordDB jobKeywordDB, JobCategoryDB jobCategoryDB) {
@@ -67,6 +74,21 @@ public class ApplicationDB implements DBHelper {
         }
     }
 
+    public ArrayList<Application> getJobApplications(Job job, UserDB userDB, UserKeywordDB userKeywordDB, LocationDB locationDB, JobDB jobDB, JobKeywordDB jobKeywordDB, JobCategoryDB jobCategoryDB) {
+        ArrayList<Application> applications = new ArrayList<>();
+        try {
+            queryApplicationByJob.setInt(1, job.getId());
+            ResultSet result = queryApplicationByJob.executeQuery();
+            while (result.next()) {
+                applications.add(parseApplication(result, userDB, userKeywordDB, locationDB, jobDB, jobKeywordDB, jobCategoryDB));
+            }
+            return applications;
+        } catch (SQLException e) {
+            System.out.println("Error querying applicationId = " + job.getId() + ": " + e.getMessage());
+            return null;
+        }
+    }
+
     public static class View {}
 
     public static class Column {
@@ -81,6 +103,7 @@ public class ApplicationDB implements DBHelper {
 
     public static class Query {
         public static final String APPLICATION = "SELECT * FROM " + NAME + " WHERE " + ID + " = ?";
+        public static final String APPLICATION_BY_JOB = "SELECT * FROM " + NAME + " WHERE " + JOBID + " = ?";
     }
 
     public static class Insert {

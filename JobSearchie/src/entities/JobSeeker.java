@@ -49,6 +49,18 @@ public class JobSeeker extends User {
         this.expectedCompensation = expectedCompensation;
     }
 
+    public void display() {
+        super.display();
+        System.out.println("currentJobName: ");
+        System.out.println("currentJobLevel: ");
+        System.out.println("contactNumber: ");
+        System.out.println("resumeDir: ");
+        System.out.println("location: ");
+        System.out.println("dateOfBirth: ");
+        System.out.println("keywords: ");
+        System.out.println("expectedCompensation: ");
+    }
+
     public String getContactNumber() {
         return contactNumber;
     }

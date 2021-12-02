@@ -41,6 +41,17 @@ public class Application {
         this.applicationDate = applicationDate;
     }
 
+    public void display() {
+        System.out.println("id: " + id);
+        System.out.println("coverLetterDir: " + coverLetterDir);
+        System.out.println("resumeDir: " + resumeDir);
+        System.out.println("status: " + status);
+        System.out.println("applicationDate: " + applicationDate);
+        System.out.println("JOB SEEKER--");
+        jobSeeker.display();
+        System.out.println("JOB--");
+        job.display();
+    }
     public int getId() {
         return id;
     }
