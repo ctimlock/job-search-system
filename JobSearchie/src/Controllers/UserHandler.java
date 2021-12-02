@@ -4,6 +4,7 @@ import database.DatabaseManager;
 import database.FileManager;
 import entities.JobSeeker;
 import entities.Location;
+import entities.Recruiter;
 import entities.User;
 import utilities.UserIO;
 import utilities.Validate;
@@ -87,6 +88,26 @@ public class UserHandler
         return email;
     }
 
+    public void welcomeScreen () {
+        UserIO.displayTitleAndBody("Welcome to Job Searchie", """
+                Job Searchie is a job listing market place.  We aim to provide a superb experience for both job seekers and recruiters.
+
+                At any time you may enter `exit` if you would like to exit the program.
+
+                Enjoy searching for your next dream job or finding the perfect employee.
+
+                Press enter to be redirected to the registration and login page""");
+        UserIO.getInput();
+    }
+
+    private void printLoginOrRegisterScreen()
+    {
+        UserIO.displayHeading("Login or Register");
+        UserIO.displayBody("Please select one of the options:");
+        String[] options = {"Login", "Register", "Exit"};
+        UserIO.displayOptions(options);
+    }
+
     public User beginRegistration(String emailAddress, DatabaseManager db)
     {
         Validate val = new Validate();
@@ -138,7 +159,7 @@ public class UserHandler
         switch (accTypeSelection)
         {
             case "0" -> {return registerJobSeeker(firstName, lastName, emailAddress, password, db);}
-            //case "1" -> {return registerRecruiter(emailAddress, password, db);}
+            case "1" -> {return registerRecruiter(firstName, lastName, emailAddress, password, db);}
             default -> throw new IllegalStateException("Unexpected value: " + accTypeSelection);
         }
     }
@@ -182,16 +203,42 @@ public class UserHandler
         UserIO.displayBody("Thank you, your account has now been set up. Press \"Enter\" to be redirected to the home page.");
 
         JobSeeker newJobSeeker = new JobSeeker(fName, lName, emailAddress, password, new Date(System.currentTimeMillis()), jobName, jobLevel, contactNumber, resume, location, dateOfBirth, keywords, expectedCompensation);
+        JobSeeker insertedJobseeker = null;
         try
         {
-            return db.insertJobSeeker(newJobSeeker);
+            insertedJobseeker = db.insertJobSeeker(newJobSeeker);
         } catch (SQLException e)
         {
             e.printStackTrace();
-        } finally
-        {
-            return null;
         }
+        return insertedJobseeker;
+    }
+
+    private User registerRecruiter(String fName, String lName, String emailAddress, String password, DatabaseManager db)
+    {
+        String sectionTitle = "Registration";
+        UserIO.clearScreenAndAddTitle(sectionTitle);
+        UserIO.displayBody("Please enter your date of birth in the form of dd/mm/yyyy");
+        Date dateOfBirth = UserIO.enterSQLDate();
+        UserIO.clearScreenAndAddTitle(sectionTitle);
+        String contactNumber = UserIO.enterAttribute("your preferred contact number", 8, 12);
+        UserIO.clearScreenAndAddTitle(sectionTitle);
+        String companyName = UserIO.enterAttribute("the company you work for", 3, 30);
+        UserIO.clearScreenAndAddTitle(sectionTitle);
+        String recruitingSpecialty = UserIO.enterAttribute("your recruiting specialty", 3, 30);
+        UserIO.clearScreenAndAddTitle(sectionTitle);
+        UserIO.displayBody("Thank you, your account has now been set up. Press \"Enter\" to be redirected to the home page.");
+
+        Recruiter newRecruiter = new Recruiter(fName, lName, emailAddress, password, new Date(System.currentTimeMillis()),companyName,recruitingSpecialty,contactNumber,dateOfBirth);
+        Recruiter insertedRecruiter = null;
+        try
+        {
+            insertedRecruiter = db.insertRecruiter(newRecruiter);
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return insertedRecruiter;
     }
 
     private int enterCompensation()
