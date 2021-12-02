@@ -1,5 +1,6 @@
 package testing;
 
+import Controllers.Login;
 import Controllers.UserHandler;
 import database.DatabaseManager;
 
@@ -9,9 +10,9 @@ public class LoginAndRegistrationTest
 {
     public static void main(String[] args)
     {
-        UserHandler userHandler = new UserHandler();
+        Login login = new Login();
         DatabaseManager db = new DatabaseManager();
         JFrame frame = new JFrame();
-        userHandler.beginLoginOrRegistration(db);
+        login.beginLoginOrRegistration(db);
     }
 }
