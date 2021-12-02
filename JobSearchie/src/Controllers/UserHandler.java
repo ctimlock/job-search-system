@@ -7,7 +7,6 @@ import entities.Location;
 import entities.User;
 import utilities.UserIO;
 import utilities.Validate;
-
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -159,20 +158,18 @@ public class UserHandler
         UserIO.clearScreenAndAddTitle(sectionTitle);
         ArrayList<String> keywords = enterKeywords();
         UserIO.clearScreenAndAddTitle(sectionTitle);
-        String addResume = UserIO.menuSelectorValue("Do you wish to upload a resume to help recruiters find you?", new String[]{"Yes", "No"});
+        String userChoice = UserIO.menuSelectorKey("Do you wish to upload a resume to help recruiters find you?", new String[]{"Yes", "No"});
         String resume = null;
-        if (addResume.equals("Yes"))
-        {
-            String path = FileManager.selectFilePath("Please select a resume file", new String[]{"pdf", "docx", "doc", "txt"});
-            try
+            if ("0".equals(userChoice))
             {
-                assert path != null;
-                resume = FileManager.readFileToString(path);
-            } catch (IOException e)
-            {
-                e.printStackTrace();
+                try
+                {
+                    resume =  database.FileManager.returnSelectedFileAsString("Please select a resume file");
+                } catch (IOException e)
+                {
+                    UserIO.displayBody("There was an error in uploading your resume.");
+                }
             }
-        }
         UserIO.clearScreenAndAddTitle(sectionTitle);
         int expectedCompensation = enterCompensation();
         UserIO.clearScreenAndAddTitle(sectionTitle);

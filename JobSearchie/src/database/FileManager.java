@@ -185,24 +185,31 @@ public abstract class FileManager
      */
     public static String selectFilePath(String dialogueTitle, String[] fileTypes)
     {
-        JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView());
+        JFileChooser fileChooser = new JFileChooser();
         fileChooser.setAcceptAllFileFilterUsed(false);
         fileChooser.setDialogTitle(dialogueTitle);
         String description = "." + String.join(", .", fileTypes);
         FileNameExtensionFilter restrict = new FileNameExtensionFilter(description, fileTypes);
         fileChooser.addChoosableFileFilter(restrict);
-        int save = fileChooser.showOpenDialog(null);
+        int returnCode = fileChooser.showOpenDialog(null);
         String path = null;
-        switch (save)
+        switch (returnCode)
         {
             case JFileChooser.APPROVE_OPTION -> path = fileChooser.getSelectedFile().getAbsolutePath();
             case JFileChooser.CANCEL_OPTION ->
-                {
-                    String retry = UserIO.menuSelectorValue("Upload cancelled. Do you wish to try again?", new String[]{"Yes", "No"});
-                    if (retry.equals("Yes")) {path = FileManager.selectFilePath(dialogueTitle, fileTypes);}
-                }
+                    {
+                        String retry = UserIO.menuSelectorValue("Upload cancelled. Do you wish to try again?", new String[]{"Yes", "No"});
+                        if (retry.equals("Yes")) {path = FileManager.selectFilePath(dialogueTitle, fileTypes);}
+                    }
 
         }
+        fileChooser.setVisible(false);
         return path;
+    }
+
+    public static String returnSelectedFileAsString(String dialogueTitle) throws IOException
+    {
+        String path = FileManager.selectFilePath(dialogueTitle, new String[]{"pdf", "docx", "doc", "txt"});
+        return FileManager.readFileToString(path);
     }
 }
