@@ -5,6 +5,7 @@ import org.apache.pdfbox.text.PDFTextStripper;
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import utilities.UserIO;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -182,7 +183,8 @@ public abstract class FileManager
      * @param fileTypes     A whitelist of selectable file types. Any file type not in this list will not appear inside the selection window.
      * @return The selected file's location, as a String.
      */
-    public static String selectFilePath(String dialogueTitle, String[] fileTypes) {
+    public static String selectFilePath(String dialogueTitle, String[] fileTypes)
+    {
         JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView());
         fileChooser.setAcceptAllFileFilterUsed(false);
         fileChooser.setDialogTitle(dialogueTitle);
@@ -190,13 +192,17 @@ public abstract class FileManager
         FileNameExtensionFilter restrict = new FileNameExtensionFilter(description, fileTypes);
         fileChooser.addChoosableFileFilter(restrict);
         int save = fileChooser.showOpenDialog(null);
-        if (save == JFileChooser.APPROVE_OPTION) {
-            // set the label to the path of the selected file
-            return fileChooser.getSelectedFile().getAbsolutePath();
+        String path = null;
+        switch (save)
+        {
+            case JFileChooser.APPROVE_OPTION -> path = fileChooser.getSelectedFile().getAbsolutePath();
+            case JFileChooser.CANCEL_OPTION ->
+                {
+                    String retry = UserIO.menuSelectorValue("Upload cancelled. Do you wish to try again?", new String[]{"Yes", "No"});
+                    if (retry.equals("Yes")) {path = FileManager.selectFilePath(dialogueTitle, fileTypes);}
+                }
+
         }
-        // if the user cancelled the operation
-        else {
-            return null;
-        }
+        return path;
     }
 }

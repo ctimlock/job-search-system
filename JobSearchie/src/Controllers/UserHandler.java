@@ -1,12 +1,14 @@
 package Controllers;
 
 import database.DatabaseManager;
+import database.FileManager;
 import entities.JobSeeker;
 import entities.Location;
 import entities.User;
 import utilities.UserIO;
 import utilities.Validate;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -157,6 +159,21 @@ public class UserHandler
         UserIO.clearScreenAndAddTitle(sectionTitle);
         ArrayList<String> keywords = enterKeywords();
         UserIO.clearScreenAndAddTitle(sectionTitle);
+        String addResume = UserIO.menuSelectorValue("Do you wish to upload a resume to help recruiters find you?", new String[]{"Yes", "No"});
+        String resume = null;
+        if (addResume.equals("Yes"))
+        {
+            String path = FileManager.selectFilePath("Please select a resume file", new String[]{"pdf", "docx", "doc", "txt"});
+            try
+            {
+                assert path != null;
+                resume = FileManager.readFileToString(path);
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        UserIO.clearScreenAndAddTitle(sectionTitle);
         int expectedCompensation = enterCompensation();
         UserIO.clearScreenAndAddTitle(sectionTitle);
         String country = UserIO.enterAttribute(" which country you live in", 4, 30);
@@ -165,10 +182,9 @@ public class UserHandler
         String postcode = UserIO.enterAttribute(" your postcode", 3, 6);
         Location location = new Location(country, state, city, postcode);
         UserIO.clearScreenAndAddTitle(sectionTitle);
-        String resumeDir = null; //TODO: add resume chooser UI
         UserIO.displayBody("Thank you, your account has now been set up. Press \"Enter\" to be redirected to the home page.");
 
-        JobSeeker newJobSeeker = new JobSeeker(fName, lName, emailAddress, password, new Date(System.currentTimeMillis()), jobName, jobLevel, contactNumber, resumeDir, location, dateOfBirth, keywords, expectedCompensation);
+        JobSeeker newJobSeeker = new JobSeeker(fName, lName, emailAddress, password, new Date(System.currentTimeMillis()), jobName, jobLevel, contactNumber, resume, location, dateOfBirth, keywords, expectedCompensation);
         try
         {
             return db.insertJobSeeker(newJobSeeker);
@@ -217,14 +233,17 @@ public class UserHandler
                 
                 An example could be: Funny, Excel, Finance, Foody, Excercise, Professional
                 """);
-        keywords.add(UserIO.enterAttribute(" one or more keywords:", 0, 30));
+        keywords.add(UserIO.enterAttribute(" one or more keywords", 0, 120));
         String[] addAnother = {"Yes", "No"};
-        String inputAdd = UserIO.menuSelectorKey("Would you like to add another keyword", addAnother);
-        while (inputAdd.equals("0")) {
+        String inputAdd;
+        do {
             UserIO.clearScreenAndAddTitle("Keywords");
-            keywords.add(UserIO.enterAttribute("Keyword", 0, 30));
             inputAdd = UserIO.menuSelectorKey("Would you like to add another keyword", addAnother);
-        }
+            if (inputAdd.equals("0"))
+            {
+                keywords.add(UserIO.enterAttribute("Keyword", 0, 120));
+            }
+        } while (inputAdd.equals("0"));
         return keywords;
     }
 

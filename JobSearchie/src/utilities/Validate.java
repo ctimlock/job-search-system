@@ -90,7 +90,7 @@ public class Validate {
      */
     public boolean isValidPassword(String password) {
         checkAttempts();
-        Pattern passwordPattern = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", Pattern.CASE_INSENSITIVE);
+        Pattern passwordPattern = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[$&+,:;=?@#|'<>.^*()%!~`{}/-])[A-Za-z\\d$&+,:;=?@#|'<>.^*()%!~`{}/-]{8,}$", Pattern.CASE_INSENSITIVE);
         Matcher matcher = passwordPattern.matcher(password);
         return matcher.find();
     }
