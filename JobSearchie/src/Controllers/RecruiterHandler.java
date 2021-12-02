@@ -7,7 +7,6 @@ import entities.JobSeeker;
 import entities.Recruiter;
 import utilities.UserIO;
 
-import javax.xml.crypto.Data;
 import java.sql.SQLException;
 import java.util.ArrayList;
 

@@ -60,6 +60,7 @@ public class JobDB implements DBHelper {
         }
     }
 
+    //TODO: fix this
     public ArrayList<Job> getAllJobs(UserDB userDB, LocationDB locationDB) {
         try {
             ArrayList<Job> jobs = new ArrayList<>();
@@ -69,6 +70,7 @@ public class JobDB implements DBHelper {
             }
             return jobs;
         } catch (SQLException e) {
+            System.out.println("Error thrown here");
             System.out.println("Error querying all jobs: " + e.getMessage());
             return null;
         }
@@ -139,7 +141,7 @@ public class JobDB implements DBHelper {
 
     public static class Query {
         public static final String JOB_BY_ID = "SELECT * FROM " + NAME + " WHERE " + ID + " = ?";
-        public static final String ALL_JOBS = "SELECT * FROM " + NAME;
+        public static final String ALL_JOBS = "SELECT * FROM " + NAME + ";";
     }
 
     public static class Insert {

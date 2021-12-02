@@ -92,10 +92,11 @@ public class DatabaseTest {
 
     public void testGetJob() {
         try {
-            for (int i = 0; i < 200; i++) {
+            for (int i = 0; i < 10; i++) {
                 Recruiter recruiter = RandomGen.getRandomRecruiter();
                 Job job1 = RandomGen.getRandomJob(recruiter);
                 Job job2 = db.insertJob(job1);
+                System.out.println(job2.getDateCreated());
                 if (!job1.getJobTitle().equals(job2.getJobTitle())) {
                     System.out.println("Titles don't match");
                     throw new Exception("TEST getJob: FAILED");
@@ -124,8 +125,9 @@ public class DatabaseTest {
     public static void main(String[] args) throws SQLException {
         DatabaseTest dbt = new DatabaseTest();
         dbt.db = new DatabaseManager();
-        dbt.getAllApplicationsById();
+        //dbt.getAllApplicationsById();
         //dbt.run();
+        dbt.testGetJob();
     }
 
     private void run() {

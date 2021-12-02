@@ -44,7 +44,7 @@ public class Parser {
 
     private static Date parseDate(ResultSet result, String column) {
         try {
-            return result.getDate(column);
+            return new Date(result.getLong(column));
         } catch (SQLException e) {
             return null;
         }
@@ -67,6 +67,7 @@ public class Parser {
             job.setJobLevel(result.getString(JobDB.Column.JOBLEVEL));
             job.setDescription(result.getString(JobDB.Column.DESCRIPTION));
             job.setIsAdvertised(result.getBoolean(JobDB.Column.ISADVERTISED));
+            System.out.println(job.getDateCreated());
             return job;
         } catch (SQLException e) {
             System.out.println("Error parsing job: " + e.getMessage());
