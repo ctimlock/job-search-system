@@ -75,6 +75,8 @@ public class RecruiterHandler extends UserHandler{
 
     public void postJob(Recruiter recruiter, DatabaseManager db) throws SQLException {
         Job job = new JobHandler().createJob(recruiter);
+        UserIO.displayHeading("Please review the job details:");
+        job.display();
         db.insertJob(job);
     }
 
