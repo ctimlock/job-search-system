@@ -70,7 +70,6 @@ public class JobDB implements DBHelper {
             }
             return jobs;
         } catch (SQLException e) {
-            System.out.println("Error thrown here");
             System.out.println("Error querying all jobs: " + e.getMessage());
             return null;
         }

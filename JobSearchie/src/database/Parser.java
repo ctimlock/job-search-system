@@ -67,7 +67,6 @@ public class Parser {
             job.setJobLevel(result.getString(JobDB.Column.JOBLEVEL));
             job.setDescription(result.getString(JobDB.Column.DESCRIPTION));
             job.setIsAdvertised(result.getBoolean(JobDB.Column.ISADVERTISED));
-            System.out.println(job.getDateCreated());
             return job;
         } catch (SQLException e) {
             System.out.println("Error parsing job: " + e.getMessage());
