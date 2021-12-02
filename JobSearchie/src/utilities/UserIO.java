@@ -2,12 +2,24 @@ package utilities;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class UserIO {
     private static final int CHAR_WIDTH = 100;
+
+    public static <E> void displayArrayList(ArrayList<E> arrayList) {
+        try {
+            for (E e: arrayList){
+                System.out.println(e);
+            }
+        }
+        catch (NullPointerException n) {
+            System.out.print("");
+        }
+    }
 
     public static void displayBody(String body) {
         StringBuilder sb = new StringBuilder();
@@ -108,7 +120,7 @@ public class UserIO {
     public static Date enterSQLDate()
     {
         Scanner scanner = new Scanner(System.in).useDelimiter("/");
-        Boolean success = false;
+        boolean success = false;
         Date date = Date.valueOf("1901-01-01");
         do
         {

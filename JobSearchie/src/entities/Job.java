@@ -81,22 +81,22 @@ public class Job {
     }
 
     public void display() {
-        UserIO.displayBody("jobTitle: " + jobTitle);
-        UserIO.displayBody("dateCreated: " + dateCreated);
-        UserIO.displayBody("dateListed: " + dateListed);
-        UserIO.displayBody("dateDeListed: " + dateDeListed);
-        UserIO.displayBody("company: " + company);
-        UserIO.displayBody("categories: ");
-        categories.forEach(System.out::println);
-        UserIO.displayBody(location.getCountry() + " " + location.getState() + " " + location.getCity() + " " + location.getPostcode());
-        UserIO.displayBody("workType: " + workType);
-        UserIO.displayBody("workingArrangement: " + workingArrangement);
-        UserIO.displayBody("compensation: " + compensation);
-        UserIO.displayBody("jobLevel: " + jobLevel);
-        UserIO.displayBody("description: " + description);
-        UserIO.displayBody("isAdvertised: " + isAdvertised);
-        UserIO.displayBody("keywords: ");
-        keywords.forEach(System.out::println);
+        UserIO.displayBody("Job title: " + jobTitle);
+        UserIO.displayBody("Date created: " + dateCreated);
+        UserIO.displayBody("Date listed: " + dateListed);
+        UserIO.displayBody("Date de-listed: " + dateDeListed);
+        UserIO.displayBody("Company: " + company);
+        UserIO.displayBody("Categories: ");
+        UserIO.displayArrayList(categories);
+        UserIO.displayBody("Location: " + location.getCountry() + " " + location.getState() + " " + location.getCity() + " " + location.getPostcode());
+        UserIO.displayBody("Work type: " + workType);
+        UserIO.displayBody("Working arrangement: " + workingArrangement);
+        UserIO.displayBody("Compensation: " + compensation);
+        UserIO.displayBody("Job level: " + jobLevel);
+        UserIO.displayBody("Description: " + description);
+        UserIO.displayBody("Currently advertised: " + isAdvertised);
+        UserIO.displayBody("Keywords: ");
+        UserIO.displayArrayList(keywords);
     }
 
     public Recruiter getAuthor() {
