@@ -212,4 +212,8 @@ public class JobHandler {
 
     }
 
+    public String getJobAsString(Job job)
+    {
+        return job.getJobTitle() + " " +job.getCompany() + " " + String.join(" ", job.getKeywords() + " " + job.getDescription());
+    }
 }
