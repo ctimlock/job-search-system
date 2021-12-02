@@ -208,8 +208,8 @@ public class UserIO {
     }
 
     public static String menuSelectorKey(String question, String[] options) {
-        UserIO.displayOptions(options);
         UserIO.displayBody(question);
+        UserIO.displayOptions(options);
 
         boolean flag = false;
         int optionIndex = 0;

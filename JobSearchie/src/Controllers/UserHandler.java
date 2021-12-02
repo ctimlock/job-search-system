@@ -1,13 +1,14 @@
 package Controllers;
 
 import database.DatabaseManager;
-import database.FileManager;
 import entities.JobSeeker;
 import entities.Location;
 import entities.Recruiter;
 import entities.User;
 import utilities.UserIO;
 import utilities.Validate;
+
+import javax.swing.*;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -15,12 +16,29 @@ import java.util.ArrayList;
 
 public class UserHandler
 {
+    public User beginLoginOrRegistration(DatabaseManager db)
+    {
+        JFrame jFrame = new JFrame();
+        User sessionUser = null;
+        welcomeScreen();
+        String userAction = loginOrRegisterSelector();
+        switch (userAction)
+        {
+            case "Login" -> sessionUser = login(null, db);
+            case "Register" -> sessionUser = register(null, db);
+            case "Exit" -> System.exit(0);
+        }
+        return sessionUser;
+    }
+
     public User login(String email, DatabaseManager db)
     {
-        UserIO.displayTitle("Login");
+
+        String sectionTitle = "Login";
 
         if (email == null)
         {
+            UserIO.clearScreenAndAddTitle(sectionTitle);
             UserIO.displayBody("Please enter your email address.");
 
             email = UserIO.getInput();
@@ -30,12 +48,13 @@ public class UserHandler
 
         if (accType == null)
         {
+            UserIO.clearScreenAndAddTitle(sectionTitle);
             String sel = UserIO.menuSelectorKey("""
                     There was no account found linked with that email address.
-                    Do you wish to register an account?""", new String[]{"Yes", "No"});
+                    Do you wish to register an account or enter your email again?""", new String[]{"Register", "Login"});
             switch (sel)
             {
-                case "0" -> {return beginRegistration(email, db);}
+                case "0" -> {return register(email, db);}
                 case "1" -> {return login(null, db);}
                 default -> throw new IllegalStateException("Unexpected value: " + sel);
             }
@@ -46,13 +65,14 @@ public class UserHandler
         switch (accType)
         {
             case "Recruiter" -> {retrievedUser = db.getRecruiter(email);}
-            case "JobSeeker" -> {retrievedUser = db.getJobSeeker(email);}
+            case "Job Seeker" -> {retrievedUser = db.getJobSeeker(email);}
 
             default -> throw new IllegalStateException("Unexpected account type: " + accType);
         }
 
 
-        UserIO.displayTitleAndBody("Login", "Please enter your password.");
+        UserIO.clearScreenAndAddTitle(sectionTitle);
+        UserIO.displayBody("Please enter your password.");
         String enteredPassword = UserIO.getInput();
         int attempts = 3;
 
@@ -65,11 +85,14 @@ public class UserHandler
                 UserIO.getInput();
                 System.exit(0);
             }
-            UserIO.displayTitleAndBody("Login", "Incorrect password. You have " + attempts + " attempts remaining. Please try again.");
+            UserIO.clearScreenAndAddTitle(sectionTitle);
+            UserIO.displayBody("Incorrect password. You have " + attempts + " attempts remaining. Please try again.");
+
             enteredPassword = UserIO.getInput();
         }
-
-        UserIO.displayBody("Login successful. You will now be directed to the Home page.");
+        UserIO.clearScreenAndAddTitle(sectionTitle);
+        UserIO.displayBody("Login successful. Press \"Enter\" to be redirected to the Home page.");
+        UserIO.getInput();
         return retrievedUser;
     }
 
@@ -92,34 +115,33 @@ public class UserHandler
         UserIO.displayTitleAndBody("Welcome to Job Searchie", """
                 Job Searchie is a job listing market place.  We aim to provide a superb experience for both job seekers and recruiters.
 
-                At any time you may enter `exit` if you would like to exit the program.
-
                 Enjoy searching for your next dream job or finding the perfect employee.
 
                 Press enter to be redirected to the registration and login page""");
         UserIO.getInput();
     }
 
-    private void printLoginOrRegisterScreen()
+    private String loginOrRegisterSelector()
     {
-        UserIO.displayHeading("Login or Register");
-        UserIO.displayBody("Please select one of the options:");
+        UserIO.clearScreenAndAddTitle("Login or Register");
         String[] options = {"Login", "Register", "Exit"};
-        UserIO.displayOptions(options);
+        return UserIO.menuSelectorValue("Please select one of the options", options);
     }
 
-    public User beginRegistration(String emailAddress, DatabaseManager db)
+    public User register(String emailAddress, DatabaseManager db)
     {
         Validate val = new Validate();
-        UserIO.displayTitle("Registration");
 
         if (emailAddress == null)
         {
+            UserIO.displayTitle("Registration");
             emailAddress = enterEmail();
         }
 
         if (db.getUserType(emailAddress) != null)
         {
+            UserIO.clearScreenAndAddTitle("Registration");
+
             String loginChoice = UserIO.menuSelectorKey("""
                     An account with that email address already exists.
                     Would you like to try to log in, or enter a different email address?""", new String[]{"Log In", "Re-enter email address"});
@@ -127,7 +149,7 @@ public class UserHandler
             switch (loginChoice)
             {
                 case "0" -> {return login(emailAddress, db);}
-                case "1" -> {return beginRegistration(emailAddress, db);}
+                case "1" -> {return register(emailAddress, db);}
                 default -> throw new IllegalStateException("Unexpected value: " + loginChoice);
             }
         } else
@@ -199,8 +221,6 @@ public class UserHandler
         String city = UserIO.enterAttribute(" which suburb you live in", 4, 30);
         String postcode = UserIO.enterAttribute(" your postcode", 3, 6);
         Location location = new Location(country, state, city, postcode);
-        UserIO.clearScreenAndAddTitle(sectionTitle);
-        UserIO.displayBody("Thank you, your account has now been set up. Press \"Enter\" to be redirected to the home page.");
 
         JobSeeker newJobSeeker = new JobSeeker(fName, lName, emailAddress, password, new Date(System.currentTimeMillis()), jobName, jobLevel, contactNumber, resume, location, dateOfBirth, keywords, expectedCompensation);
         JobSeeker insertedJobseeker = null;
@@ -211,6 +231,11 @@ public class UserHandler
         {
             e.printStackTrace();
         }
+
+
+        UserIO.clearScreenAndAddTitle(sectionTitle);
+        UserIO.displayBody("Thank you, your account has now been set up. Press \"Enter\" to be redirected to the home page.");
+        UserIO.getInput();
         return insertedJobseeker;
     }
 
@@ -226,8 +251,6 @@ public class UserHandler
         String companyName = UserIO.enterAttribute("the company you work for", 3, 30);
         UserIO.clearScreenAndAddTitle(sectionTitle);
         String recruitingSpecialty = UserIO.enterAttribute("your recruiting specialty", 3, 30);
-        UserIO.clearScreenAndAddTitle(sectionTitle);
-        UserIO.displayBody("Thank you, your account has now been set up. Press \"Enter\" to be redirected to the home page.");
 
         Recruiter newRecruiter = new Recruiter(fName, lName, emailAddress, password, new Date(System.currentTimeMillis()),companyName,recruitingSpecialty,contactNumber,dateOfBirth);
         Recruiter insertedRecruiter = null;
@@ -238,6 +261,9 @@ public class UserHandler
         {
             e.printStackTrace();
         }
+        UserIO.clearScreenAndAddTitle(sectionTitle);
+        UserIO.displayBody("Thank you, your account has now been set up. Press \"Enter\" to be redirected to the home page.");
+        UserIO.getInput();
         return insertedRecruiter;
     }
 
