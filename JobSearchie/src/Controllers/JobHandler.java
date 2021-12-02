@@ -83,12 +83,25 @@ public class JobHandler {
 
     public Location enterLocation() {
 
-        return new Location(
-                UserIO.enterAttribute("Country", 4, 30),
-                UserIO.enterAttribute("State", 1, 30),
-                UserIO.enterAttribute("Suburb", 1, 30),
-                UserIO.enterAttribute("Postcode", 1, 30)
-        );
+        String[] countries = {
+                "Australia"
+        };
+        String country = UserIO.menuSelectorValue("Please select the country", countries);
+        String[] states = {
+                "ACT",
+                "NSW",
+                "NT",
+                "QLD",
+                "SA",
+                "TAS",
+                "VIC",
+                "WA"
+        };
+        String state = UserIO.menuSelectorValue("Please select the state", states);
+        String suburb = UserIO.enterAttribute("Suburb", 1, 30);
+        String postcode = UserIO.enterAttribute("Postcode", 4, 4);
+
+        return new Location(country, state, suburb, postcode);
     }
 
     public String enterWorkType() {
