@@ -1,18 +1,20 @@
 package Controllers;
 
 import database.DatabaseManager;
+import database.FileManager;
 import entities.Application;
 import entities.Job;
 import entities.JobSeeker;
 import entities.Recruiter;
 import utilities.UserIO;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class RecruiterHandler extends UserHandler{
 
-    public void home(Recruiter recruiter, DatabaseManager db) throws SQLException {
+    public void home(Recruiter recruiter, DatabaseManager db) throws SQLException, IOException {
         UserIO.displayHeading("Home Page");
         String[] options = {
                 "Create a job listing",
@@ -35,14 +37,14 @@ public class RecruiterHandler extends UserHandler{
         }
     }
 
-    public void deleteJob(Recruiter recruiter, DatabaseManager db, Job job) throws SQLException {
+    public void deleteJob(Recruiter recruiter, DatabaseManager db, Job job) throws SQLException, IOException {
         UserIO.displayHeading("Deleting job");
         UserIO.displayBody("This option is not yet implemented coming soon.");
         UserIO.displayBody("Returning to view my jobs.");
         viewMyJobsMenu(recruiter, db, job);
     }
 
-    public void deleteProfile(Recruiter recruiter, DatabaseManager db) throws SQLException {
+    public void deleteProfile(Recruiter recruiter, DatabaseManager db) throws SQLException, IOException {
 
         String[] options = {
                 "Yes (coming soon)",
@@ -61,19 +63,19 @@ public class RecruiterHandler extends UserHandler{
         }
     }
 
-    public void deleteProfileNo(Recruiter recruiter, DatabaseManager db) throws SQLException {
+    public void deleteProfileNo(Recruiter recruiter, DatabaseManager db) throws SQLException, IOException {
         UserIO.displayBody("Your profile has NOT been deleted.");
         UserIO.displayBody("Returning to profile management");
         profileManagement(recruiter, db);
     }
 
-    public void deleteProfileYes(Recruiter recruiter, DatabaseManager db) throws SQLException {
+    public void deleteProfileYes(Recruiter recruiter, DatabaseManager db) throws SQLException, IOException {
         UserIO.displayBody("This option is not yet implemented coming soon");
         UserIO.displayBody("Returning to profile management");
         profileManagement(recruiter, db);
     }
 
-    public void postJob(Recruiter recruiter, DatabaseManager db) throws SQLException {
+    public void postJob(Recruiter recruiter, DatabaseManager db) throws SQLException, IOException {
         Job job = new JobHandler().createJob(recruiter);
         UserIO.displayHeading("Please review the job details:");
         job.display();
@@ -91,7 +93,7 @@ public class RecruiterHandler extends UserHandler{
         }
     }
 
-    public void profileManagement(Recruiter recruiter, DatabaseManager db) throws SQLException {
+    public void profileManagement(Recruiter recruiter, DatabaseManager db) throws SQLException, IOException {
         UserIO.displayHeading("Profile Management");
         String[] options = {
                 "Update profile (coming soon)",
@@ -110,7 +112,7 @@ public class RecruiterHandler extends UserHandler{
         }
     }
 
-    public void viewMyJobs(Recruiter recruiter, DatabaseManager db) throws SQLException {
+    public void viewMyJobs(Recruiter recruiter, DatabaseManager db) throws SQLException, IOException {
         UserIO.displayHeading("Viewing my jobs");
         ArrayList<Job> jobs = db.getAllJobs();
         ArrayList<String> optionsList = new ArrayList<>();
@@ -126,7 +128,7 @@ public class RecruiterHandler extends UserHandler{
         viewMyJobsMenu(recruiter, db, job);
     }
 
-    public void viewMyJobsMenu(Recruiter recruiter, DatabaseManager db, Job job) throws SQLException {
+    public void viewMyJobsMenu(Recruiter recruiter, DatabaseManager db, Job job) throws SQLException, IOException {
 
         UserIO.displayHeading("Options for job");
 
@@ -199,34 +201,34 @@ public class RecruiterHandler extends UserHandler{
         */
     }
 
-    public void sendMessage (Recruiter recruiter, DatabaseManager db) throws SQLException {
+    public void sendMessage (Recruiter recruiter, DatabaseManager db) throws SQLException, IOException {
         UserIO.displayHeading("Sending message");
         UserIO.displayBody("This option is not yet implemented coming soon");
         UserIO.displayBody("Returning to home.");
         home(recruiter, db);
     }
 
-    public void submitJobYes(Recruiter recruiter, DatabaseManager db, Job job) throws SQLException {
+    public void submitJobYes(Recruiter recruiter, DatabaseManager db, Job job) throws SQLException, IOException {
         db.insertJob(job);
         UserIO.displayBody("You have submitted the job. Thank you for using Job Searchie.");
         UserIO.displayBody("Returning to home screen now");
         home(recruiter, db);
     }
 
-    public void submitJobNo(Recruiter recruiter, DatabaseManager db) throws SQLException {
+    public void submitJobNo(Recruiter recruiter, DatabaseManager db) throws SQLException, IOException {
         UserIO.displayBody("You have not submitted");
         UserIO.displayBody("Returning to home screen now");
         home(recruiter, db);
     }
 
-    public void updateAdvertisingStatus (Recruiter recruiter, DatabaseManager db, Job job) throws SQLException {
+    public void updateAdvertisingStatus (Recruiter recruiter, DatabaseManager db, Job job) throws SQLException, IOException {
         UserIO.displayHeading("Updating job advertising status");
         UserIO.displayBody("This option is not yet implemented coming soon");
         UserIO.displayBody("Returning to view my jobs.");
         viewMyJobsMenu(recruiter, db, job);
     }
 
-    public void updateJob (Recruiter recruiter, DatabaseManager db, Job job) throws SQLException {
+    public void updateJob (Recruiter recruiter, DatabaseManager db, Job job) throws SQLException, IOException {
         UserIO.displayHeading("Updating job details");
         UserIO.displayBody("This option is not yet implemented coming soon");
         UserIO.displayBody("Returning to view my jobs.");
@@ -234,14 +236,14 @@ public class RecruiterHandler extends UserHandler{
     }
 
 
-    public void updateProfile(Recruiter recruiter, DatabaseManager db) throws SQLException {
+    public void updateProfile(Recruiter recruiter, DatabaseManager db) throws SQLException, IOException {
         UserIO.displayHeading("Updating profile");
         UserIO.displayBody("This option is not yet implemented coming soon");
         UserIO.displayBody("Returning to profile management");
         profileManagement(recruiter, db);
     }
 
-    public void viewJobApplicants(Recruiter recruiter, DatabaseManager db, Job job) throws SQLException {
+    public void viewJobApplicants(Recruiter recruiter, DatabaseManager db, Job job) throws SQLException, IOException {
         UserIO.displayHeading("Displaying applicants for " + job.getJobTitle());
         ArrayList<Application> applications = db.getJobApplications(job);
         for (Application application: applications) {
@@ -252,8 +254,10 @@ public class RecruiterHandler extends UserHandler{
             UserIO.displayBody("Recruiter ID: " + application.getJob().getAuthor().getEmail());
             UserIO.displayBody("Applicant: " + application.getJobSeeker().getEmail());
             System.out.println();
+            //FileManager.openFileFromJS("resume", application.getId() + application.getResumeDir());
         }
         viewMyJobsMenu(recruiter, db, job);
+
     }
 
 }

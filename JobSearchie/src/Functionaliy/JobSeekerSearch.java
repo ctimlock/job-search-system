@@ -1,3 +1,4 @@
+/*
 package Functionaliy;
 
 import Controllers.JobSeekerHandler;
@@ -52,3 +53,4 @@ public class JobSeekerSearch {
 
     }
 }
+*/
