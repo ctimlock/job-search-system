@@ -1,54 +1,54 @@
 package Controllers;
 
+import database.DatabaseManager;
+import entities.JobSeeker;
 import utilities.UserIO;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.HashMap;
-//import src.JobSearchie;    //TODO: fix
 
 
 
 public class JobSeekerHandler extends UserHandler {
 
-    public void startJobSeekerHandler() {
-        JobSeekerHandler jsh = new JobSeekerHandler();
-        jsh.home();
-    }
-
-    public void home() {
+    public void home(JobSeeker jobSeeker, DatabaseManager db) throws SQLException, IOException {
         UserIO.displayTitle("Home");
         String[] options = {
                 "Search for a job",
-                "View watchlist",
-                "Messages",               //                  TODO : How are we doing messages?
-                "View pending job applications",
+                "View watchlist (coming soon)",
+                "Messages (coming soon)",
+                "View pending job applications (coming soon)",
                 "View job interviews",
-                "View rejected jobs",
                 "Profile management",
                 "Log out"
         };
+
         String userInput = UserIO.menuSelectorKey("Please enter one of the above options:", options);
-        //UserIO.clearScreen();
+
         switch (userInput) {
-            case ("0") -> jobSearch();
-            case ("1") -> watchlist();
-            case ("2") -> messages();   // TODO : Messages
-            case ("3") -> pendingJobApplications();
-            case ("4") -> jobInterviews();
-            case ("5") -> rejectedJobs();
-            case ("6") -> profileManagement();
-            case ("7") -> logOut();
+            case ("0") -> jobSearch(jobSeeker, db);
+            case ("1") -> watchlist(jobSeeker, db);
+            case ("2") -> sendMessage(jobSeeker, db);
+            case ("3") -> pendingJobApplications(jobSeeker, db);
+            case ("4") -> jobInterviews(jobSeeker, db);
+            case ("5") -> profileManagement(jobSeeker, db);
+            case ("6") -> logOut();
             default -> throw new IllegalStateException("Unexpected value: " + userInput);
         }
     }
 
-    private void messages() {
-        System.out.println("The message selection is not currently working, please try again later.");
+    public void sendMessage (JobSeeker jobSeeker, DatabaseManager db) throws SQLException, IOException {
+        UserIO.displayHeading("Sending message");
+        UserIO.displayBody("This option is not yet implemented coming soon");
+        UserIO.displayBody("Returning to home.");
+        home(jobSeeker, db);
     }
 
     /**
      * Called when the jobSeeker elects to search for a job.
      */
-    public void jobSearch() {
+    public void jobSearch(JobSeeker jobSeeker, DatabaseManager db) {
         String searchTerm = getSearchTerm();
         boolean filterResults = getShouldFilter();
         //Field, filter
@@ -60,6 +60,7 @@ public class JobSeekerHandler extends UserHandler {
     }
 
     //TODO: Get filters
+
     public HashMap<String, String> getFilters() {
         HashMap<String, String> filters =  new HashMap<>();
         while (true) {
@@ -73,10 +74,10 @@ public class JobSeekerHandler extends UserHandler {
 
             //TODO: Up to here
             switch (selectedOption) {
-//                case "0" -> getPersonalRelevanceScoreFilter();
-//                case "1" -> getCompensationFilter();
-//                case "2" -> getLocationFilter();
-//                case "3" -> getDateFilter();
+                // case "0" -> getPersonalRelevanceScoreFilter();
+                // case "1" -> getCompensationFilter();
+                // case "2" -> getLocationFilter();
+                // case "3" -> getDateFilter();
             }
             break;
         }
@@ -135,7 +136,7 @@ public class JobSeekerHandler extends UserHandler {
         return UserIO.getInput();
     }
 
-    public void sortJobSearchResults() {
+    public void sortJobSearchResults(JobSeeker jobSeeker, DatabaseManager db) throws SQLException, IOException {
         UserIO.displayBody("How would you like to sort results?: ");
         String[] options = {
                 "Personal relevance score",
@@ -147,26 +148,26 @@ public class JobSeekerHandler extends UserHandler {
         String userInput = UserIO.menuSelectorKey("Please enter one of the above options:", options);
 
         switch (userInput) {
-            //case ("1") -> personal relevance score
-            case ("2") -> resultsCompensationRange();
-            case ("3") -> resultsCompensationRange();
-            //case ("4") ->    days since posted ascending
-            //case ("5") ->    days since posted descending
+            //case ("0") -> personal relevance score
+            case ("1") -> resultsCompensationRange(jobSeeker, db);
+            case ("2") -> resultsCompensationRange(jobSeeker, db);
+            //case ("3") ->    days since posted ascending
+            //case ("4") ->    days since posted descending
             default -> throw new IllegalStateException("Unexpected value: " + userInput);
         }
     }
 
-    public void resultsCompensationRange(){
+    public void resultsCompensationRange(JobSeeker jobSeeker, DatabaseManager db) throws SQLException, IOException {
         UserIO.displayBody("What is the minimum compensation you would like to consider? ");
         String minCompensation = UserIO.getInput();
 
         UserIO.displayBody("What is the maximum compensation you would like to consider? ");
         String maxCompensation = UserIO.getInput();
 
-        additionalSearchFilter();
+        additionalSearchFilter(jobSeeker, db);
     }
 
-    public void additionalSearchFilter() {
+    public void additionalSearchFilter(JobSeeker jobSeeker, DatabaseManager db) throws SQLException, IOException {
         UserIO.displayBody("Would you like to another filter? ");
         String[] options = {
             "Yes",
@@ -176,13 +177,13 @@ public class JobSeekerHandler extends UserHandler {
         String userInput = UserIO.menuSelectorKey("Please enter one of the above options:", options);
 
         switch (userInput) {
-            case ("1") -> sortJobSearchResults();
-            case ("2") -> displayJobSearchResults();
+            case ("0") -> sortJobSearchResults(jobSeeker, db);
+            case ("1") -> displayJobSearchResults(jobSeeker, db);
             default -> throw new IllegalStateException("Unexpected value: " + userInput);
         }
     }
 
-    public void displayJobSearchResults() {
+    public void displayJobSearchResults(JobSeeker jobSeeker, DatabaseManager db) throws SQLException, IOException {
         UserIO.displayBody("Here is a list of jobs that match your search");
         String[] options = {
             "Example - Finance Officer - Seek Pty Ltd - Applied today",
@@ -194,62 +195,59 @@ public class JobSeekerHandler extends UserHandler {
         String userInput = UserIO.menuSelectorKey("Please select number corresponding to a job to see its details", options);
 
         switch (userInput) {
+           // case ("0") -> displayJob(); // TODO : CALL JOB
            // case ("1") -> displayJob(); // TODO : CALL JOB
-           // case ("2") -> displayJob(); // TODO : CALL JOB
-           // case ("3") -> // more 1 - TODO : TO SEE MORE JOB applications on my watchlist - IF NO MORE JOB applications, DISPLAY A MESSAGE THAT INDICATES THIS.
-            case ("4") -> home();
+           // case ("2") -> // more 1 - TODO : TO SEE MORE JOB applications on my watchlist - IF NO MORE JOB applications, DISPLAY A MESSAGE THAT INDICATES THIS.
+            case ("3") -> home(jobSeeker, db);
             default -> throw new IllegalStateException("Unexpected value: " + userInput);
         }
     }
 
     ///////////////////////////////
-    public void displayJobSearchJob() {
+    public void displayJobSearchJob(JobSeeker jobSeeker, DatabaseManager db) throws SQLException, IOException {
             // TODO : display particular job here.
          String[] options = {
             "Apply for this job",
             "Add to watchlist",
-            "View company",
-            "Report job",
+            "View company (coming soon)",
+            "Report job (coming soon)",
             "Go back"
          };
 
          String userInput = UserIO.menuSelectorKey("Please enter one of the above options", options);
 
          switch (userInput) {
-            case ("1") -> jobApplication();
-            case ("2") -> addJob();
-            case ("3") -> viewJobSearchJobCompany();
-            case ("4") -> reportJobSearchJob();
-            case ("5") -> displayJobSearchResults();
+            case ("0") -> jobApplication(jobSeeker, db);
+            case ("1") -> addJob(jobSeeker, db);
+            case ("2") -> viewJobSearchJobCompany(jobSeeker, db);
+            case ("3") -> reportJobSearchJob(jobSeeker, db);
+            case ("4") -> displayJobSearchResults(jobSeeker, db);
          }
     }
 
-    public void jobApplication() {   //cover letter, resume, question answers
+    public void jobApplication(JobSeeker jobSeeker, DatabaseManager db) throws SQLException, IOException {   //cover letter, resume, question answers
         UserIO.displayBody("Please advise why you are interested in this particular job.?");
         UserIO.getInput();
         UserIO.displayBody("Please attach your cover letter and resume.");
         UserIO.displayBody("Congratualions! You have successfully applied for this job.");
         //  Add application date to job descrition.  use method to add job to pending applications list.
-        displayJobSearchResults();
+        displayJobSearchResults(jobSeeker, db);
     }
 
-
-    public void addJob() {
+    public void addJob(JobSeeker jobSeeker, DatabaseManager db) throws SQLException, IOException {
         //Update pending watchlist    TO DO : how to select a particular job. Update watchlist
         UserIO.displayBody("This job has been added to your watchlist.");
-        displayJobSearchJob();
+        displayJobSearchJob(jobSeeker, db);
     }
 
-    public void reportJobSearchJob() {    // TODO : Where does the report go to?  Updates pending job application?
-            UserIO.displayBody("What is your complaint?");
-            UserIO.getInput();
-            UserIO.displayBody("Thank you for reporting this job, we will look into it. Redirecting you to your job search results.");
-            displayJobSearchResults();
+    public void reportJobSearchJob(JobSeeker jobSeeker, DatabaseManager db) throws SQLException, IOException {    // TODO : Where does the report go to?  Updates pending job application?
+        UserIO.displayBody("What is your complaint?");
+        UserIO.getInput();
+        UserIO.displayBody("Thank you for reporting this job, we will look into it. Redirecting you to your job search results.");
+        displayJobSearchResults(jobSeeker, db);
     }
 
-
-
-    public void viewJobSearchJobCompany() {
+    public void viewJobSearchJobCompany(JobSeeker jobSeeker, DatabaseManager db) throws SQLException, IOException {
             // TODO : display particular company relating to a job search job here.
         String[] options = {
             "View all jobs by this company",
@@ -260,214 +258,64 @@ public class JobSeekerHandler extends UserHandler {
         String userInput = UserIO.menuSelectorKey("Please enter one of the above options", options);
 
         switch (userInput) {
-            case ("1") -> viewCompanyJobs();
-            case ("2") -> reportJobSearchJobCompany();
-            case ("3") -> displayJobSearchJob();
+            //case ("0") -> viewCompanyJobs(jobSeeker, db);
+            case ("1") -> reportJobSearchJobCompany(jobSeeker, db);
+            case ("2") -> displayJobSearchJob(jobSeeker, db);
         }
     }
 
-    public void reportJobSearchJobCompany() {    // TODO : Where does the report go to?  Updates pending job application?
+    public void reportJobSearchJobCompany(JobSeeker jobSeeker, DatabaseManager db) throws SQLException, IOException {    // TODO : Where does the report go to?  Updates pending job application?
         UserIO.displayBody("What is your complaint?");
         UserIO.getInput();
         UserIO.displayBody("Thank you for reporting this company, we will look into it. Redirecting you to your job search results.");
-        displayJobSearchResults();
+        displayJobSearchResults(jobSeeker, db);
     }
 
     // 2. VIEW WATCHLIST
 
-    public void watchlist(){
-        UserIO.displayTitleAndBody("Watchlist", "");
-        String[] options = {
-                "Example - Finance Officer - Seek Pty Ltd - Applied today",
-                "Example - Finance Officer - Seek Pty Ltd - Applied today",
-                "TO SEE MORE JOBS ON YOUR WATCHLIST",
-                "TO REMOVE A JOB FROM YOUR WATCHLIST",
-                "TO RETURN HOME"
-        };
-
-        String userInput = UserIO.menuSelectorKey("Please select number corresponding to a job to see its details", options);
-
-        switch (userInput) {
-            case ("1") -> displayWatchlistJob(); // TODO : CALL JOB
-            case ("2") -> displayWatchlistJob(); // TODO : CALL JOB
-           // case ("3") -> // more 1 - TODO : TO SEE MORE JOB applications on my watchlist - IF NO MORE JOB applications, DISPLAY A MESSAGE THAT INDICATES THIS.
-            case ("4") -> removeWatchlistJob();
-            case ("5") -> home();
-            default -> throw new IllegalStateException("Unexpected value: " + userInput);
-        }
+    public void watchlist(JobSeeker jobSeeker, DatabaseManager db) throws SQLException, IOException {
+        UserIO.displayHeading("Watchlist");
+        UserIO.displayBody("This option is not yet implemented coming soon.");
+        UserIO.displayBody("Returning to view my jobs.");
+        home(jobSeeker, db);
     }
 
-    public void displayWatchlistJob() {
-        // TODO : display particular job here.
-        String[] options = {
-                "View compnay",
-                "Remove job",
-                "Report job",
-                "TO GO BACK",
-                "TO RETURN HOME"
-        };
+    // 4. VIEW PENDING JOB APPLICATIONS
 
-        String userInput = UserIO.menuSelectorKey("Please enter one of the above options", options);
-
-        switch (userInput) {
-            case ("1") -> viewWatchlistJobCompany();
-            case ("2") -> removeWatchlistJob();
-            case ("3") -> reportWatchlistJob();
-            case ("4") -> watchlist();
-            case ("5") -> home();
-        }
+    public void pendingJobApplications(JobSeeker jobSeeker, DatabaseManager db) throws SQLException, IOException {
+        UserIO.displayHeading("Viewing pending job applications");
+        UserIO.displayBody("This option is not yet implemented coming soon.");
+        UserIO.displayBody("Returning to view my jobs.");
+        home(jobSeeker, db);
     }
-
-    public void reportWatchlistJob() {    // TODO : Where does the report go to?  Updates pending job application?
-        UserIO.displayBody("What is your complaint?");
-        UserIO.getInput();
-        UserIO.displayBody("Thank you for reporting this job, we will look into it. Redirecting you to your watchlist.");
-        watchlist();
-    }
-
-    public void removeWatchlistJob() {
-        //Update pending watchlist    TO DO : how to select a particular job.
-        UserIO.displayBody("This job has been removed from your watchlist. Returning you to your watchlist.");
-        watchlist();
-    }
-
-    public void viewWatchlistJobCompany() {
-        // TODO : display particular company relating to a pending job application here.
-        String[] options = {
-            "View all jobs by this company",
-            "Report company",
-            "GO BACK"
-        };
-
-        String userInput = UserIO.menuSelectorKey("Please enter one of the above options", options);
-
-        switch (userInput) {
-             case ("1") -> viewCompanyJobs();
-             case ("2") -> reportWatchlistJobCompany();
-             case ("3") -> displayWatchlistJob();
-        }
-    }
-
-    public void reportWatchlistJobCompany() {    // TODO : Where does the report go to?  Updates watchlist?
-        UserIO.displayBody("What is your complaint?");
-        UserIO.getInput();
-        UserIO.displayBody("Thank you for reporting this job, we will look into it. Redirecting you to your watchlist.");
-        watchlist();
-    }
-
-
-    // 4. VIEW PENDING JOB APPLICATIONS      (NEEDS MORE FUNCTIONALITY COMPARED WITH OPTION 5?)
-
-    public void pendingJobApplications() {
-        UserIO.displayTitleAndBody("Pending job applications", "");
-        String[] options = {
-                "Example - Finance Officer - Seek Pty Ltd - Applied today",
-                "Example - Finance Officer - Seek Pty Ltd - Applied today",
-                "TO SEE MORE JOB PENDING JOB APPLICATIONS ON YOUR WATCHLIST",
-                "TO REMOVE A PENDING JOB APPLICATION ON YOUR WATCHLIST",
-                "TO RETURN HOME"
-        };
-
-        String userInput = UserIO.menuSelectorKey("Please select number corresponding to job interview to see its details", options);
-
-        switch (userInput) {
-            case ("1") -> displayPendingJobApplication(); // TODO : CALL JOB
-            case ("2") -> displayPendingJobApplication(); // TODO : CALL JOB
-           // case ("3") -> // more 1 - TODO : TO SEE MORE JOB applications on my watchlist - IF NO MORE JOB applications, DISPLAY A MESSAGE THAT INDICATES THIS.
-            case ("4") -> removePendingJobApplication();
-            case ("5") -> home();
-            default -> throw new IllegalStateException("Unexpected value: " + userInput);
-        }
-    }
-
-    public void displayPendingJobApplication() {
-        // TODO : display particular job application here.
-        String[] options = {
-                "View compnay",
-                "Remove application",
-                "Report job",
-                "TO GO BACK",
-                "TO RETURN HOME"
-        };
-
-        String userInput = UserIO.menuSelectorKey("Please enter one of the above options", options);
-
-        switch (userInput) {
-            case ("1") -> viewCompany();
-            case ("2") -> removePendingJobApplication();
-            case ("3") -> reportJob();
-            case ("4") -> pendingJobApplications();
-            case ("5") -> home();
-        }
-    }
-
-    public void removePendingJobApplication() {
-        //Update pending job applications list
-        UserIO.displayBody("This job application has been removed from your watchlist. Returning you to your list of pending job applications.");
-        pendingJobApplications();
-    }
-
-    public void viewCompany() {
-        // TODO : display particular company relating to a pending job application here.
-        String[] options = {
-                "View all jobs by this company",
-                "Report company",
-                "GO BACK"
-        };
-
-        String userInput = UserIO.menuSelectorKey("Please enter one of the above options", options);
-
-        switch (userInput) {
-            case ("1") -> viewCompanyJobs();
-            case ("2") -> reportCompany();
-            case ("3") -> displayPendingJobApplication();
-        }
-    }
-
-    public void reportCompany() {    // TODO : Where does the report go to?  Updates pending job application?
-        UserIO.displayBody("What is your complaint?");
-        UserIO.getInput();
-        UserIO.displayBody("Thank you for reporting this company, we will look into it. Redirecting you to your pending job applications list.");
-        pendingJobApplications();
-    }
-
-    public void viewCompanyJobs() {
-        // TODO : Display jobs related to a particular company
-    }
-
-    public void reportJob() {    // TODO : Where does the report go to?  Updates pending job application?
-        UserIO.displayBody("What is your complaint?");
-        UserIO.getInput();
-        UserIO.displayBody("Thank you for reporting this job, we will look into it. Redirecting you to your pending job applications list.");
-        pendingJobApplications();
-    }
-
 
     // 5. VIEW JOB INTERVIEWS FUNCTIONS
 
-    public void jobInterviews() {
-        UserIO.displayTitleAndBody("Job interviews", "");
-        String[] options = {
-                "Example - Finance Officer - Seek Pty Ltd - Applied today",
-                "Example - Finance Officer - Seek Pty Ltd - Applied today",
-                "TO SEE MORE JOB INTERVIEWS ON YOUR WATCHLIST",
-                "TO REMOVE A JOB INTERVIEW ON YOUR WATCHLIST",
-                "TO RETURN HOME"
-        };//display rejecteJobs
+    public void jobInterviews(JobSeeker jobSeeker, DatabaseManager db) {
+        UserIO.displayHeading("Viewing job interviews");
 
-        String userInput = UserIO.menuSelectorKey("Please select number corresponding to job interview to see its details", options);
 
-        switch (userInput) {
-            case ("1") -> displayJobInterviewDetails(); // TODO : CALL JOB
-            case ("2") -> displayJobInterviewDetails(); // TODO : CALL JOB
-           // case ("3") -> // more 1 - TODO : TO SEE MORE JOB interviews on my watchlist - IF NO MORE JOB interview, DISPLAY A MESSAGE THAT INDICATES THIS.
-            case ("4") -> removeJobInterview();
-            case ("5") -> home();
-            default -> throw new IllegalStateException("Unexpected value: " + userInput);
-        }
+//        String[] options = {
+//                "Example - Finance Officer - Seek Pty Ltd - Applied today",
+//                "Example - Finance Officer - Seek Pty Ltd - Applied today",
+//                "TO SEE MORE JOB INTERVIEWS ON YOUR WATCHLIST",
+//                "TO REMOVE A JOB INTERVIEW ON YOUR WATCHLIST",
+//                "TO RETURN HOME"
+//        };//display rejecteJobs
+//
+//        String userInput = UserIO.menuSelectorKey("Please select number corresponding to job interview to see its details", options);
+//
+//        switch (userInput) {
+//            case ("1") -> displayJobInterviewDetails(); // TODO : CALL JOB
+//            case ("2") -> displayJobInterviewDetails(); // TODO : CALL JOB
+//           // case ("3") -> // more 1 - TODO : TO SEE MORE JOB interviews on my watchlist - IF NO MORE JOB interview, DISPLAY A MESSAGE THAT INDICATES THIS.
+//            case ("4") -> removeJobInterview();
+//            case ("5") -> home();
+//            default -> throw new IllegalStateException("Unexpected value: " + userInput);
+//        }
     }
 
-    public void displayJobInterviewDetails() {
+    public void displayJobInterviewDetails(JobSeeker jobSeeker, DatabaseManager db) throws SQLException, IOException {
         // TODO : display particular job interview here.
         String[] options = {
                 "Cancel application and interview",
@@ -478,138 +326,85 @@ public class JobSeekerHandler extends UserHandler {
         String userInput = UserIO.menuSelectorKey("Please enter one of the above options", options);
 
         switch (userInput) {
-            case ("1") -> cancelApplicationPlusInterview();
-            case ("2") -> jobInterviews();
-            case ("3") -> home();
+            case ("0") -> cancelApplicationPlusInterview(jobSeeker, db);
+            case ("1") -> jobInterviews(jobSeeker, db);
+            case ("2") -> home(jobSeeker, db);
         }
     }
 
-    public void removeJobInterview() {
+    public void removeJobInterview(JobSeeker jobSeeker, DatabaseManager db) {
         UserIO.displayBody("This job interview has been removed from your watchlist. Returning you to your list of job interviews.");
         //Update job interviews
-        jobInterviews();
+        jobInterviews(jobSeeker, db);
     }
 
-    public void cancelApplicationPlusInterview() {
+    public void cancelApplicationPlusInterview(JobSeeker jobSeeker, DatabaseManager db) {
         UserIO.displayBody("This job application and its associated interview have been cancelled. Returning you to your list of job interviews.");
         //Update job interviews
-        jobInterviews();
+        jobInterviews(jobSeeker, db);
     }
 
-    // 6. VIEW REJECTED JOBS
-    public void rejectedJobs() {
-        UserIO.displayTitleAndBody("Rejected jobs", "");
-        String[] options = {
-                "Carpenter",
-                "Software designer",
-                "TO SEE MORE REJECTED JOBS",
-                "TO RETURN HOME"
-        };//display rejecteJobs
 
-        String userInput = UserIO.menuSelectorKey("Please select number corresponding to job to see its details", options);
+    // 6. PROFILE MANAGEMENT FUNCTIONS
+
+    public void profileManagement(JobSeeker jobSeeker, DatabaseManager db) throws SQLException, IOException {
+        UserIO.displayHeading("Profile Management");
+        String[] options = {
+                "Update profile (coming soon)",
+                "Delete profile",
+                "Back",
+                "Home",
+        };
+        String userInput = UserIO.menuSelectorKey("Please enter one of the following:", options);
 
         switch (userInput) {
-            case ("1") -> displayRejectedJob(); //TODO : CALL JOB
-            case ("2") -> displayRejectedJob(); //TODO : CALL JOB
-            //case ("3") -> //TODO : SEE MORE JOBS - IF NO MORE JOBS, DISPLAY A MESSAGE THAT INDICATES THIS.
-            case ("4") -> home();
+            case ("0") -> updateProfile(jobSeeker, db);
+            case ("1") -> deleteProfile(jobSeeker, db);
+            case ("2") -> home(jobSeeker, db);
+            case ("3") -> home(jobSeeker, db);
             default -> throw new IllegalStateException("Unexpected value: " + userInput);
         }
     }
 
-    public void displayRejectedJob() {
-        // TODO : display particular job here.
+    public void deleteProfile(JobSeeker jobSeeker, DatabaseManager db) throws SQLException, IOException {
+
         String[] options = {
-                "TO GO BACK",
-                "TO RETURN HOME"
-        };
-
-        String userInput = UserIO.menuSelectorKey("Please enter one of the above options", options);
-
-        switch (userInput) {
-            case ("1") -> rejectedJobs();
-            case ("2") -> home();
-        }
-    }
-
-    // 7. PROFILE MANAGEMENT FUNCTIONS
-
-    public void profileManagement() {
-        UserIO.displayTitleAndBody("Profile Management", "");
-                //*TODO: DISPLAY USER'S PROFILE*// """);             //TODO: Display user's profile
-        String[] options = {
-                "Modify details",
-                "Delete profile",
+                "Yes (coming soon)",
+                "No",
+                "Back",
                 "Home"
         };
-
-        String userInput = UserIO.menuSelectorKey("Please enter one of the above options:", options);
+        String userInput = UserIO.menuSelectorKey("Are you sure you would like to delete your profile?:", options);
 
         switch (userInput) {
-            case ("1") -> editProfile();
-            case ("2") -> deleteProfile();
-            case ("3") -> home();
-            default -> throw new IllegalStateException("Unexpected value: " + userInput);
+            case ("0") -> deleteProfileYes(jobSeeker, db);
+            case ("1") -> deleteProfileNo(jobSeeker, db);
+            case ("2") -> profileManagement(jobSeeker, db);
+            case ("3") -> home(jobSeeker, db);
+
         }
     }
 
-    public void deleteProfile() {
-        String[] options = {
-                "Yes",
-                "No"
-        };
-
-        String userInput = UserIO.menuSelectorKey("Are you sure your would like to delete your profile? ", options);
-
-        switch (userInput) {
-            case ("1") -> deleteProfileYes();
-            case ("2") -> deleteProfileNo();
-            default -> throw new IllegalStateException("Unexpected value: " + userInput);
-        }
+    public void deleteProfileNo(JobSeeker jobSeeker, DatabaseManager db) throws SQLException, IOException {
+        UserIO.displayBody("Your profile has NOT been deleted.");
+        UserIO.displayBody("Returning to profile management");
+        profileManagement(jobSeeker, db);
     }
 
-    public void deleteProfileYes() {
-            UserIO.displayBody("Your profile has been deleted. Your will now be redirected to the Job Searchie Welcome screen.");
+    public void deleteProfileYes(JobSeeker jobSeeker, DatabaseManager db) throws SQLException, IOException {
+        UserIO.displayBody("This option is not yet implemented coming soon");
+        UserIO.displayBody("Returning to profile management");
+        profileManagement(jobSeeker, db);
     }
 
-    public void deleteProfileNo() {
-            UserIO.displayBody("Your profile has not been deleted.");
-            profileManagement();
+    public void updateProfile(JobSeeker jobSeeker, DatabaseManager db) throws SQLException, IOException {
+        UserIO.displayHeading("Updating profile");
+        UserIO.displayBody("This option is not yet implemented coming soon");
+        UserIO.displayBody("Returning to profile management");
+        profileManagement(jobSeeker, db);
     }
 
-    public void editProfile() {
-        String[] options = {
-                "Name",
-                "Date of birth",
-                "Email",
-                "Contact number",
-                "Location",
-                "Current or most recent job level",
-                "Current or most recent title",
-                "Identifiable keyword(s)",
-                "Expected compensation",
-                "TO GO HOME",
-                "TO GO BACK"
-        };
-
-        String userInput = UserIO.menuSelectorKey("Please enter one of the above options:", options);
-
-        /*switch (userInput) {     //TODO: FUNCTIONALITY NEEDS TO BE INCLUDED
-            case ("1") -> User.setFirstName().setLastName();   // TODO :What would you like to changes your name to?, etc
-            case ("2") -> User.setDate();
-            case ("3") -> User.setEmail();
-            case ("4") -> User.setContactNumber();
-            case ("5") -> User.setLocation();
-            case ("6") -> JobSeeker.setCurrentJobLevel();
-            case ("7") -> JobSeeker.setCurrentJobName();
-            case ("8") -> JobSeeker.setKeywords();
-            case ("home") -> home();
-            case ("back") -> ??
-            default -> throw new IllegalStateException("Unexpected value: " + userInput);
-        }*/
-    }
-
-    // 8. Logout
+    // 7. Logout
 
     public void logOut() {
         UserIO.displayBody("You have now been logged out.  You will now be redirected to the Job Searchie Welcome Screen.");
