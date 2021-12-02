@@ -16,7 +16,7 @@ public class Session {
     public Session() {
         id = -1;
         user = null;
-        loginTime = null;
+        loginTime = new Date(System.currentTimeMillis());
         logoutTime = null;
     }
 
