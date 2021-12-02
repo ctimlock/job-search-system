@@ -92,6 +92,11 @@ public class DatabaseManager {
         return userDB.getRecruiter(email);
     }
 
+    public String getUserType(String email)
+    {
+        return userDB.getUserAccountType(email);
+    }
+
     public Admin insertAdmin(Admin admin) throws SQLException {
         return userDB.insertAdmin(admin);
     }

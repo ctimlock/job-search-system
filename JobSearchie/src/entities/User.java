@@ -37,6 +37,15 @@ public class User {
         dateCreated = null;
     }
 
+    public User(String email, String password, Date dateCreated) {
+        this.accountType = null;
+        this.firstName = null;
+        this.lastName = null;
+        this.email = email;
+        this.password = password;
+        this.dateCreated = dateCreated;
+    }
+
     public User(String accountType, String firstName, String lastName, String email, String password, Date dateCreated) {
         this.accountType = accountType;
         this.firstName = firstName;

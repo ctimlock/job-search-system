@@ -1,6 +1,7 @@
 package utilities;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -72,47 +73,91 @@ public class UserIO {
         displayLineBreak("=");
     }
 
-
-    public static void displayHeadingAndBody(String heading, String body) {}
-
+    //TODO: Make this work nicely :'(
     public static void clearScreen()
     {
-        String operatingSystem = System.getProperty("os.name");
-
-        try
+        for (int i = 0; i < 5; i++)
         {
-            if (operatingSystem.contains("Windows"))
-            {
-                ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "cls");
-                Process startProcess = pb.inheritIO().start();
-                startProcess.waitFor();
-            } else
-            {
-                ProcessBuilder pb = new ProcessBuilder("clear");
-                Process startProcess = pb.inheritIO().start();
-
-                startProcess.waitFor();
-            }
-        } catch (IOException | InterruptedException ignored)
-        {
+            System.out.println();
         }
     }
 
-    public static String enterAttribute(String attributeName, int minLength, int maxLength) {
+    public static void clearScreenAndAddTitle(String title)
+    {
+        UserIO.clearScreen();
+
+        UserIO.displayTitle(title);
+    }
+
+    public static String enterAttribute(String attributeString, int minLength, int maxLength) {
         Validate valid = new Validate();
         String attributeValue;
         boolean flag;
         do {
-            UserIO.displayBody("Please enter the " + attributeName + ":");
+            UserIO.displayBody("Please enter " + attributeString + ":");
             attributeValue = UserIO.getInput().trim();
             flag = valid.isValidLength(attributeValue, minLength, maxLength);
             if (!flag) {
-                UserIO.displayBody("The " + attributeName + " must be between " + minLength + " and " + maxLength + " characters:");
+                UserIO.displayBody("The " + attributeString + " must be between " + minLength + " and " + maxLength + " characters:");
             }
         }
         while (!flag);
         return attributeValue;
     }
+
+    public static Date enterSQLDate()
+    {
+        Scanner scanner = new Scanner(System.in).useDelimiter("/");
+        Boolean success = false;
+        Date date = Date.valueOf("1901-01-01");
+        do
+        {
+            try
+            {
+                String input = scanner.nextLine();
+
+                String[] chunk = input.split("[/-]");
+
+                String dateString = chunk[2] + "-" + chunk[1] + "-" + chunk[0];
+
+                date = Date.valueOf(dateString);
+                success = true;
+            } catch (Exception e)
+            {
+                UserIO.displayBody("Invalid date entered. Please try again.");
+            }
+
+        } while (!success);
+        return date;
+    }
+
+
+
+
+
+    private static int getNumericInput() {
+        Scanner scanner = new Scanner(System.in);
+        return scanner.nextInt();
+    }
+
+    public static int getNumericAttribute(String attributeName, int minLength, int maxLength) {
+        Validate valid = new Validate();
+        int numbericValue;
+        boolean flag;
+        do {
+            UserIO.displayBody("Please enter " + attributeName + ":");
+            numbericValue = UserIO.getNumericInput();
+            flag = valid.isValidIntegerLength(numbericValue, minLength, maxLength);
+            if (!flag) {
+                UserIO.displayBody("The " + attributeName + " must be between " + minLength + " and " + maxLength + " characters:");
+            }
+        }
+        while (!flag);
+        return numbericValue;
+    }
+
+
+    ///////////
 
     public static String menuSelectorValue(String question, String[] options) {
         UserIO.displayBody(question);
