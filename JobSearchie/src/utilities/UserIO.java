@@ -173,16 +173,17 @@ public class UserIO {
                     flag = true;
                 }
                 else {
-                    UserIO.displayBody("Please enter an integer between 1 and " + options.length);
+                    UserIO.displayBody("An invalid option has been selected");
+                    UserIO.displayBody("Please select an option between 1 and " + options.length);
                 }
             }
             catch (NumberFormatException e) {
-                UserIO.displayBody("Integer parsing error:");
-                UserIO.displayBody("Please enter an integer between 1 and " + options.length);
+                UserIO.displayBody("You have not entered a number.");
+                UserIO.displayBody("Please select an option between 1 and " + options.length);
             }
             catch (Exception e) {
-                UserIO.displayBody("Other error");
-                UserIO.displayBody("Please enter an integer between 1 and " + options.length);
+                UserIO.displayBody("An error has occurred.");
+                UserIO.displayBody("Please select an option between 1 and " + options.length);
             }
         }
         while (!flag);
@@ -204,16 +205,17 @@ public class UserIO {
                     flag = true;
                 }
                 else {
-                    UserIO.displayBody("Please enter an integer between 1 and " + options.length);
+                    UserIO.displayBody("An invalid option has been selected");
+                    UserIO.displayBody("Please select an option between 1 and " + options.length);
                 }
             }
             catch (NumberFormatException e) {
-                UserIO.displayBody("Integer parsing error:");
-                UserIO.displayBody("Please enter an integer between 1 and " + options.length);
+                UserIO.displayBody("You have not entered a number.");
+                UserIO.displayBody("Please select an option between 1 and " + options.length);
             }
             catch (Exception e) {
-                UserIO.displayBody("Other error");
-                UserIO.displayBody("Please enter an integer between 1 and " + options.length);
+                UserIO.displayBody("An error has occurred.");
+                UserIO.displayBody("Please select an option between 1 and " + options.length);
             }
         }
         while (!flag);
