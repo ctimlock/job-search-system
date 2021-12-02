@@ -1,3 +1,5 @@
+import Controllers.Login;
+import Controllers.UserHandler;
 import database.DatabaseManager;
 import entities.Session;
 
@@ -15,8 +17,10 @@ public class JobSearchie
         JobSearchie program = new JobSearchie();
         program.frameInit = new JFrame();
         program.db = new DatabaseManager();
-        program.session = new Session();
-        program.run();
+        Login loginRegistration = new Login();
+        program.session = new Session(loginRegistration.beginLoginOrRegistration(program.db));
+        UserHandler userHandler = program.session.getUserHandler();
+        //program.run();
     }
 
     public void run() {

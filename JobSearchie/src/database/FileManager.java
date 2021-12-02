@@ -186,9 +186,9 @@ public abstract class FileManager
     public static String selectFilePath(String dialogueTitle, String[] fileTypes)
     {
         String path = null;
-        String osName = System.getProperty("os.name");
+        String osName = System.getProperty("os.name").toLowerCase();
         String homeDir = System.getProperty("user.home");
-        if (osName.equals("Mac OS X"))
+        if (osName.contains("mac"))
         {
             System.setProperty("apple.awt.fileDialogForDirectories", "true");
             Frame frame = new Frame();

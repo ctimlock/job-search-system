@@ -20,6 +20,14 @@ public class Session {
         logoutTime = null;
     }
 
+    public Session(User userLoggedIn)
+    {
+        id = -1;
+        user = userLoggedIn;
+        loginTime = new Date(System.currentTimeMillis());
+        logoutTime = null;
+    }
+
     public Session(User userLoggedIn, Date loginTime, Date logoutTime) {
         id = -1;
         this.user = userLoggedIn;
