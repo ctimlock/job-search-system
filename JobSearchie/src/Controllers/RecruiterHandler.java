@@ -75,7 +75,20 @@ public class RecruiterHandler extends UserHandler{
 
     public void postJob(Recruiter recruiter, DatabaseManager db) throws SQLException {
         Job job = new JobHandler().createJob(recruiter);
-        db.insertJob(job);
+        UserIO.displayHeading("Please review the job details:");
+        job.display();
+
+        String[] options = {
+                "Yes",
+                "Return home"
+        };
+        UserIO.displayHeading("Confirm Submission");
+        String option = UserIO.menuSelectorKey("Please confirm if you like to submit this job?", options);
+
+        switch (option) {
+            case ("0") -> submitJobYes(recruiter, db, job);
+            case ("1") -> submitJobNo(recruiter, db);
+        }
     }
 
     public void profileManagement(Recruiter recruiter, DatabaseManager db) throws SQLException {
@@ -190,6 +203,19 @@ public class RecruiterHandler extends UserHandler{
         UserIO.displayHeading("Sending message");
         UserIO.displayBody("This option is not yet implemented coming soon");
         UserIO.displayBody("Returning to home.");
+        home(recruiter, db);
+    }
+
+    public void submitJobYes(Recruiter recruiter, DatabaseManager db, Job job) throws SQLException {
+        db.insertJob(job);
+        UserIO.displayBody("You have submitted the job. Thank you for using Job Searchie.");
+        UserIO.displayBody("Returning to home screen now");
+        home(recruiter, db);
+    }
+
+    public void submitJobNo(Recruiter recruiter, DatabaseManager db) throws SQLException {
+        UserIO.displayBody("You have not submitted");
+        UserIO.displayBody("Returning to home screen now");
         home(recruiter, db);
     }
 
