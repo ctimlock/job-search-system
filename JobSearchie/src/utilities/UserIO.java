@@ -116,11 +116,15 @@ public class UserIO {
             {
                 String input = scanner.nextLine();
 
-                String[] chunk = input.split("[/-]");
+                String[] chunk = input.split("[./-]");
 
                 String dateString = chunk[2] + "-" + chunk[1] + "-" + chunk[0];
 
                 date = Date.valueOf(dateString);
+                if (date.after(new Date(System.currentTimeMillis())) || date.before(Date.valueOf("1901-01-01")))
+                {
+                    throw new Exception();
+                }
                 success = true;
             } catch (Exception e)
             {
