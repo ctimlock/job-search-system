@@ -14,6 +14,12 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * Controller class to allow the user to login into JobSearchie.
+ *
+ * @author Charlie Timlock, Levi Quilliam, Tim Perkins, and Merrill Nguyen
+ * @version ver1.0.0
+ */
 public class Login
 {
     /**
@@ -37,7 +43,12 @@ public class Login
     }
 
 
-
+    /**
+     * Creates the account set up screen for JobSeeker and Recruiter.
+     * @param emailAddress the email address of the user as a String
+     * @param db The database manager object being used.
+     * @return a User object
+     */
     private User createUser(String emailAddress, DatabaseManager db)
     {
 
@@ -66,6 +77,10 @@ public class Login
         }
     }
 
+    /**
+     * Enter method to ask the user to input their expected salary.
+     * @return their expected compensation as an int.
+     */
     private int enterCompensation()
     {
         UserIO.displayBody("Please enter your expected yearly salary:");
@@ -92,6 +107,10 @@ public class Login
 
     }
 
+    /**
+     * Enter method to ask the user to enter their email address.
+     * @return the user's email address as a String.
+     */
     private String enterEmail()
     {
         Validate validator = new Validate();
@@ -107,6 +126,10 @@ public class Login
         return email;
     }
 
+    /**
+     * Enter method to ask the user to enter a list of keywords.
+     * @return keywords as an ArrayList<String>.
+     */
     private ArrayList<String> enterKeywords()
     {
         ArrayList<String> keywords = new ArrayList<>();
@@ -131,6 +154,12 @@ public class Login
         return keywords;
     }
 
+    /**
+     * Method that allows the user to login
+     * @param email email address of the user as a String.
+     * @param db The database manager object being used.
+     * @return User object.
+     */
     private User login(String email, DatabaseManager db)
     {
 
@@ -196,6 +225,10 @@ public class Login
         return retrievedUser;
     }
 
+    /**
+     * Method to ask the user to select either "Login", "Register" or "Exit".
+     * @return the option selected as a String.
+     */
     private String loginOrRegisterSelector()
     {
         UserIO.clearScreenAndAddTitle("Login or Register");
@@ -203,6 +236,12 @@ public class Login
         return UserIO.menuSelectorValue("Please select one of the options", options);
     }
 
+    /**
+     * Method to ask the user to register, or login if the email address already exist.
+     * @param emailAddress email address of the User as a String.
+     * @param db The database manager object being used.
+     * @return User object.
+     */
     private User register(String emailAddress, DatabaseManager db)
     {
         if (emailAddress == null)
@@ -231,6 +270,15 @@ public class Login
         }
     }
 
+    /**
+     * Method to create an account for a job seeker.
+     * @param fName first name of the job seeker as a String.
+     * @param lName last name of the job seeker as a String.
+     * @param emailAddress email address of the User as a String.
+     * @param password password for the account as a String.
+     * @param db The database manager object being used.
+     * @return User object.
+     */
     private User registerJobSeeker(String fName, String lName, String emailAddress, String password, DatabaseManager db)
     {
         String sectionTitle = "Registration";
@@ -284,6 +332,15 @@ public class Login
         return insertedJobseeker;
     }
 
+    /**
+     * Method to create an account for the recruiter.
+     * @param fName first name of the recruiter as a String.
+     * @param lName last name of the recruiter as a String.
+     * @param emailAddress email address of the User as a String.
+     * @param password password for the account as a String.
+     * @param db The database manager object being used.
+     * @return User object.
+     */
     private User registerRecruiter(String fName, String lName, String emailAddress, String password, DatabaseManager db)
     {
         String sectionTitle = "Registration";
@@ -312,6 +369,10 @@ public class Login
         return insertedRecruiter;
     }
 
+    /**
+     * Enter method to ask the user to select a job level.
+     * @return Job level as a String.
+     */
     private String selectJobLevel()
     {
         String[] jobLevel = {
@@ -340,6 +401,10 @@ public class Login
         return userInput;
     }
 
+    /**
+     * Creates the screen for the User to set a password.
+     * @return the password as a String.
+     */
     public String setPassword()
     {
         Validate validator = new Validate();
@@ -378,6 +443,9 @@ public class Login
         return confirmedPassword;
     }
 
+    /**
+     * Welcome screen for JobSearchie.
+     */
     private void welcomeScreen () {
         UserIO.displayTitleAndBody("Welcome to Job Searchie", """
                 Job Searchie is a job listing market place.  We aim to provide a superb experience for both job seekers and recruiters.

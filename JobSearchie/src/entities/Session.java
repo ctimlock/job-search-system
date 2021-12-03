@@ -161,19 +161,8 @@ public class Session {
         this.logoutTime = logoutTime;
     }
 
-    /**
-     * This method handles the type of user object to be instansiated.
-     *
-     * @return  The type of user as its respective user object data type.
-     */
-    public UserHandler getUserHandler() {
-        UserHandler userHandler;
-        switch (user.getClass().toString().split("\\.")[1]) {
-            case ("Admin") -> userHandler = new AdminHandler();
-            case ("Recruiter") -> userHandler = new RecruiterHandler();
-            case ("JobSeeker") -> userHandler = new JobSeekerHandler();
-            default -> throw new IllegalStateException("Unexpected value: " + user.getClass().toString().split("\\.")[1] + "Session class - getUserHandler.");
-        }
-        return userHandler;
+    public String getUserType()
+    {
+        return user.getClass().toString().split("\\.")[1];
     }
 }
