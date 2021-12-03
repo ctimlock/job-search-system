@@ -8,10 +8,24 @@ import utilities.UserIO;
 import java.sql.Date;
 import java.util.ArrayList;
 
+/**
+ * Controller class for Job entity.
+ *
+ * @author Charlie Timlock, Levi Quilliam, Tim Perkins, and Merrill Nguyen
+ * @version ver1.0.0
+ */
 public class JobHandler {
 
+    /**
+     * Default constructor class.
+     */
     public JobHandler() {}
 
+    /**
+     * Allows the recruiter class to create a job.
+     * @param recruiter The Recruiter object who creates the job.
+     * @return job as a Job class.
+     */
     public Job createJob(Recruiter recruiter){
         UserIO.displayHeading("Create a New Job");
         UserIO.displayBody("You are now required to enter the following requested information in order to create a job. At any time you wish to go back to the previous screen, please type ‘back’");
@@ -35,17 +49,28 @@ public class JobHandler {
         return new Job(jobTitle, recruiter, new Date(System.currentTimeMillis()), advertiseDate, null, company, categories, location, workType, workingArrangement, compensation, jobLevel, description, isAdvertised, keywords);
     }
 
-
+    /**
+     * Enter method to ask the user to input job title.
+     * @return job title as a String.
+     */
     public String enterJobTitle() {
 
         return UserIO.enterAttribute("Job title", 4, 30);
     }
 
+    /**
+     * Enter method to ask the user to input company name.
+     * @return company name as a String.
+     */
     public String enterCompany() {
 
         return UserIO.enterAttribute("Company name", 4, 30);
     }
 
+    /**
+     * Enter method to ask the user to select categories.
+     * @return categories as an ArrayList<String>.
+     */
     public ArrayList<String> enterCategories() {
         ArrayList<String> categories = new ArrayList<>();
         String[] options = {
@@ -81,6 +106,10 @@ public class JobHandler {
         return categories;
     }
 
+    /**
+     * Enter method to ask the user to enter location.
+     * @return location as a Location object.
+     */
     public Location enterLocation() {
 
         String[] countries = {
@@ -104,6 +133,10 @@ public class JobHandler {
         return new Location(country, state, suburb, postcode);
     }
 
+    /**
+     * Enters method to ask the user to select the work type.
+     * @return work type as a String.
+     */
     public String enterWorkType() {
 
         String[] options = {
@@ -116,6 +149,10 @@ public class JobHandler {
         return UserIO.menuSelectorValue("Please enter the type of work:", options);
     }
 
+    /**
+     * Enter method to ask the user to select the working arrangement.
+     * @return working arrangement as a String.
+     */
     public String enterWorkingArrangement() {
 
         String[] options = {
@@ -127,11 +164,19 @@ public class JobHandler {
         return UserIO.menuSelectorValue("Please enter the working arrangement:", options);
     }
 
+    /**
+     * Enter method to ask the user to enter the job description.
+     * @return job description as a String.
+     */
     public String enterDescription() {
 
         return UserIO.enterAttribute("job description", 4, 2000);
     }
 
+    /**
+     * Enter method to ask the user to enter compensation.
+     * @return compensation as an int.
+     */
     public int enterCompensation() {
 
         UserIO.displayBody("Please enter the compensation level of this job or enter 0 if you don’t wish to include this information:");
@@ -157,6 +202,10 @@ public class JobHandler {
         return input;
     }
 
+    /**
+     * Enter method to ask the user to select the job level.
+     * @return job level as a String.
+     */
     public String enterJobLevel() {
 
         String[] options = {
@@ -168,6 +217,10 @@ public class JobHandler {
         return UserIO.menuSelectorValue("Please enter the level of this job:", options);
     }
 
+    /**
+     * Enter method to ask the user to select if the user would like to advertise the job.
+     * @return advertise status as a boolean.
+     */
     public boolean enterIsAdvertised() {
 
         String[] options = {
@@ -186,8 +239,10 @@ public class JobHandler {
         return isAdvertised;
     }
 
-    public void saveJob(Job job) {}
-
+    /**
+     * Enter method to ask the user to enter the keywords.
+     * @return keywords as an ArrayList<String>.
+     */
     public ArrayList<String> enterKeywords() {
 
         ArrayList<String> keywords = new ArrayList<>();
@@ -202,16 +257,11 @@ public class JobHandler {
         return keywords;
     }
 
-    public static void main(String[] args) {
-
-        Recruiter recruiter = new Recruiter("James", "Bond", "james_bond@hotmail.com", "Abcabc123", new Date(System.currentTimeMillis()), "Seek Pty Ltd", "Computer Science", "0459797824", new Date(System.currentTimeMillis()));
-        JobHandler jobHandler = new JobHandler();
-        Job newJob = jobHandler.createJob(recruiter);
-        UserIO.displayHeading("Please review the job details:");
-        newJob.display();
-
-    }
-
+    /**
+     * Gets the key information from a Job as a String.
+     * @param job the Job to transform into a String.
+     * @return job as a String.
+     */
     public String getJobAsString(Job job)
     {
         return job.getJobTitle() + " " +job.getCompany() + " " + String.join(" ", job.getKeywords() + " " + job.getDescription());

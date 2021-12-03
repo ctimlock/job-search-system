@@ -9,9 +9,21 @@ import java.sql.SQLException;
 import java.util.HashMap;
 
 
-
+/**
+ * Controller class for the JobSeeker entity.
+ *
+ * @author Charlie Timlock, Levi Quilliam, Tim Perkins, and Merrill Nguyen
+ * @version ver1.0.0
+ */
 public class JobSeekerHandler extends UserHandler {
 
+    /**
+     * Creates the home screen for the Job Seeker.
+     * @param jobSeeker the JobSeeker user for the home screen.
+     * @param db the DatabaseManager.
+     * @throws SQLException handles SQL exception.
+     * @throws IOException handles IOException.
+     */
     public void home(JobSeeker jobSeeker, DatabaseManager db) throws SQLException, IOException {
         UserIO.displayTitle("Home");
         String[] options = {
@@ -38,6 +50,13 @@ public class JobSeekerHandler extends UserHandler {
         }
     }
 
+    /**
+     * Creates the messages screen.
+     * @param jobSeeker The JobSeeker using the program.
+     * @param db The DatabaseManager handling the databaseIO.
+     * @throws SQLException handles SQL exception.
+     * @throws IOException handles IOException.
+     */
     public void sendMessage (JobSeeker jobSeeker, DatabaseManager db) throws SQLException, IOException {
         UserIO.displayHeading("Sending message");
         UserIO.displayBody("This option is not yet implemented coming soon");
@@ -47,6 +66,8 @@ public class JobSeekerHandler extends UserHandler {
 
     /**
      * Called when the jobSeeker elects to search for a job.
+     * @param jobSeeker The JobSeeker using the program.
+     * @param db The DatabaseManager handling the databaseIO.
      */
     public void jobSearch(JobSeeker jobSeeker, DatabaseManager db) {
         String searchTerm = getSearchTerm();
@@ -61,6 +82,10 @@ public class JobSeekerHandler extends UserHandler {
 
     //TODO: Get filters
 
+    /**
+     * Method to filter job
+     * @return
+     */
     public HashMap<String, String> getFilters() {
         HashMap<String, String> filters =  new HashMap<>();
         while (true) {
@@ -86,7 +111,10 @@ public class JobSeekerHandler extends UserHandler {
         return filters;
     }
 
-
+    /**
+     * Method to sort jobs.
+     * @return
+     */
     public HashMap<String, String> getSort() {
         return new HashMap<>();
     }
@@ -273,6 +301,13 @@ public class JobSeekerHandler extends UserHandler {
 
     // 2. VIEW WATCHLIST
 
+    /**
+     * Creates the watchlist screen.
+     * @param jobSeeker The JobSeeker using the program.
+     * @param db The DatabaseManager handling the databaseIO.
+     * @throws SQLException handles SQL exception.
+     * @throws IOException handles IOException.
+     */
     public void watchlist(JobSeeker jobSeeker, DatabaseManager db) throws SQLException, IOException {
         UserIO.displayHeading("Watchlist");
         UserIO.displayBody("This option is not yet implemented coming soon.");
@@ -281,7 +316,13 @@ public class JobSeekerHandler extends UserHandler {
     }
 
     // 4. VIEW PENDING JOB APPLICATIONS
-
+    /**
+     * Creates the pending job applications screen.
+     * @param jobSeeker The JobSeeker using the program.
+     * @param db The DatabaseManager handling the databaseIO.
+     * @throws SQLException handles SQL exception.
+     * @throws IOException handles IOException.
+     */
     public void pendingJobApplications(JobSeeker jobSeeker, DatabaseManager db) throws SQLException, IOException {
         UserIO.displayHeading("Viewing pending job applications");
         UserIO.displayBody("This option is not yet implemented coming soon.");
@@ -346,7 +387,13 @@ public class JobSeekerHandler extends UserHandler {
 
 
     // 6. PROFILE MANAGEMENT FUNCTIONS
-
+    /**
+     * Creates the profile management screen.
+     * @param jobSeeker The JobSeeker using the program.
+     * @param db The DatabaseManager handling the databaseIO.
+     * @throws SQLException handles SQL exception.
+     * @throws IOException handles IOException.
+     */
     public void profileManagement(JobSeeker jobSeeker, DatabaseManager db) throws SQLException, IOException {
         UserIO.displayHeading("Profile Management");
         String[] options = {
@@ -366,6 +413,13 @@ public class JobSeekerHandler extends UserHandler {
         }
     }
 
+    /**
+     * Creates the delete profile screen.
+     * @param jobSeeker The JobSeeker using the program.
+     * @param db The DatabaseManager handling the databaseIO.
+     * @throws SQLException handles SQL exception.
+     * @throws IOException handles IOException.
+     */
     public void deleteProfile(JobSeeker jobSeeker, DatabaseManager db) throws SQLException, IOException {
 
         String[] options = {
@@ -385,18 +439,39 @@ public class JobSeekerHandler extends UserHandler {
         }
     }
 
+    /**
+     * Creates the screen after the job seeker decides not to delete their profile.
+     * @param jobSeeker The JobSeeker using the program.
+     * @param db The DatabaseManager handling the databaseIO.
+     * @throws SQLException handles SQL exception.
+     * @throws IOException handles IOException.
+     */
     public void deleteProfileNo(JobSeeker jobSeeker, DatabaseManager db) throws SQLException, IOException {
         UserIO.displayBody("Your profile has NOT been deleted.");
         UserIO.displayBody("Returning to profile management");
         profileManagement(jobSeeker, db);
     }
 
+    /**
+     * Creates the screen after the job seeker decides to delete their profile.
+     * @param jobSeeker The JobSeeker using the program.
+     * @param db The DatabaseManager handling the databaseIO.
+     * @throws SQLException handles SQL exception.
+     * @throws IOException handles IOException.
+     */
     public void deleteProfileYes(JobSeeker jobSeeker, DatabaseManager db) throws SQLException, IOException {
         UserIO.displayBody("This option is not yet implemented coming soon");
         UserIO.displayBody("Returning to profile management");
         profileManagement(jobSeeker, db);
     }
 
+    /**
+     * Creates the update profile screen.
+     * @param jobSeeker The JobSeeker using the program.
+     * @param db The DatabaseManager handling the databaseIO.
+     * @throws SQLException handles SQL exception.
+     * @throws IOException handles IOException.
+     */
     public void updateProfile(JobSeeker jobSeeker, DatabaseManager db) throws SQLException, IOException {
         UserIO.displayHeading("Updating profile");
         UserIO.displayBody("This option is not yet implemented coming soon");
@@ -404,8 +479,11 @@ public class JobSeekerHandler extends UserHandler {
         profileManagement(jobSeeker, db);
     }
 
-    // 7. Logout
+    // 7. LOGOUT
 
+    /**
+     * Logs the user out.
+     */
     public void logOut() {
         UserIO.displayBody("You have now been logged out.  You will now be redirected to the Job Searchie Welcome Screen.");
         //JobSearchie.welcomeScreen();  //TODO: fix

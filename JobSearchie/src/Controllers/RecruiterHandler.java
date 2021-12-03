@@ -12,8 +12,21 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * Controller class for the Recruiter entity.
+ *
+ * @author Charlie Timlock, Levi Quilliam, Tim Perkins, and Merrill Nguyen
+ * @version ver1.0.0
+ */
 public class RecruiterHandler extends UserHandler{
 
+    /**
+     * Creates the home screen for the recruiuter.
+     * @param recruiter the Recruiter user for the home screen.
+     * @param db the DatabaseManager.
+     * @throws SQLException handles SQL exception.
+     * @throws IOException handles IOException.
+     */
     public void home(Recruiter recruiter, DatabaseManager db) throws SQLException, IOException {
         UserIO.displayHeading("Home Page");
         String[] options = {
@@ -37,6 +50,14 @@ public class RecruiterHandler extends UserHandler{
         }
     }
 
+    /**
+     * Method option to delete a job.
+     * @param recruiter The Recruiter using the program.
+     * @param db The DatabaseManager handling the databaseIO.
+     * @param job The Job to delete.
+     * @throws SQLException handles SQL exception.
+     * @throws IOException handles IOException.
+     */
     public void deleteJob(Recruiter recruiter, DatabaseManager db, Job job) throws SQLException, IOException {
         UserIO.displayHeading("Deleting job");
         UserIO.displayBody("This option is not yet implemented coming soon.");
@@ -44,6 +65,13 @@ public class RecruiterHandler extends UserHandler{
         viewMyJobsMenu(recruiter, db, job);
     }
 
+    /**
+     * Creates the screen to ask the user if they would like to delete a profile.
+     * @param recruiter The Recruiter using the program.
+     * @param db The DatabaseManager handling the databaseIO.
+     * @throws SQLException handles SQL exception.
+     * @throws IOException handles IOException.
+     */
     public void deleteProfile(Recruiter recruiter, DatabaseManager db) throws SQLException, IOException {
 
         String[] options = {
@@ -63,18 +91,39 @@ public class RecruiterHandler extends UserHandler{
         }
     }
 
+    /**
+     * Method option to not delete a profile.
+     * @param recruiter The Recruiter using the program.
+     * @param db The DatabaseManager handling the databaseIO.
+     * @throws SQLException handles SQL exception.
+     * @throws IOException handles IOException.
+     */
     public void deleteProfileNo(Recruiter recruiter, DatabaseManager db) throws SQLException, IOException {
         UserIO.displayBody("Your profile has NOT been deleted.");
         UserIO.displayBody("Returning to profile management");
         profileManagement(recruiter, db);
     }
 
+    /**
+     * Method option to not delete a profile.
+     * @param recruiter The Recruiter using the program.
+     * @param db The DatabaseManager handling the databaseIO.
+     * @throws SQLException handles SQL exception.
+     * @throws IOException handles IOException.
+     */
     public void deleteProfileYes(Recruiter recruiter, DatabaseManager db) throws SQLException, IOException {
         UserIO.displayBody("This option is not yet implemented coming soon");
         UserIO.displayBody("Returning to profile management");
         profileManagement(recruiter, db);
     }
 
+    /**
+     * Method to ask the recruiter to review their job posting and then post their job.
+     * @param recruiter The Recruiter using the program.
+     * @param db The DatabaseManager handling the databaseIO.
+     * @throws SQLException handles SQL exception.
+     * @throws IOException handles IOException.
+     */
     public void postJob(Recruiter recruiter, DatabaseManager db) throws SQLException, IOException {
         Job job = new JobHandler().createJob(recruiter);
         UserIO.displayHeading("Please review the job details:");
@@ -93,6 +142,13 @@ public class RecruiterHandler extends UserHandler{
         }
     }
 
+    /**
+     * Creates the profile management screen.
+     * @param recruiter The Recruiter using the program.
+     * @param db The DatabaseManager handling the databaseIO.
+     * @throws SQLException handles SQL exception.
+     * @throws IOException handles IOException.
+     */
     public void profileManagement(Recruiter recruiter, DatabaseManager db) throws SQLException, IOException {
         UserIO.displayHeading("Profile Management");
         String[] options = {
@@ -112,6 +168,13 @@ public class RecruiterHandler extends UserHandler{
         }
     }
 
+    /**
+     * Method to view jobs posted.
+     * @param recruiter The Recruiter using the program.
+     * @param db The DatabaseManager handling the databaseIO.
+     * @throws SQLException handles SQL exception.
+     * @throws IOException handles IOException.
+     */
     public void viewMyJobs(Recruiter recruiter, DatabaseManager db) throws SQLException, IOException {
         UserIO.displayHeading("Viewing my jobs");
         ArrayList<Job> jobs = db.getAllJobs();
@@ -128,6 +191,14 @@ public class RecruiterHandler extends UserHandler{
         viewMyJobsMenu(recruiter, db, job);
     }
 
+    /**
+     * Creates the screen for the recruiter to select an option on their job.
+     * @param recruiter The Recruiter using the program.
+     * @param db The DatabaseManager handling the databaseIO.
+     * @param job The Job to view menu.
+     * @throws SQLException handles SQL exception.
+     * @throws IOException handles IOException.
+     */
     public void viewMyJobsMenu(Recruiter recruiter, DatabaseManager db, Job job) throws SQLException, IOException {
 
         UserIO.displayHeading("Options for job");
@@ -155,6 +226,9 @@ public class RecruiterHandler extends UserHandler{
         }
     }
 
+    /**
+     * Method to search for a job seeker.
+     */
     public void searchJobSeeker() {
         UserIO.displayBody("Please enter a role you would like to recruit, or enter home to return home");
 
@@ -166,14 +240,25 @@ public class RecruiterHandler extends UserHandler{
         // Options on Job Seeker
     }
 
+    /**
+     * Method to select a job seeker.
+     * @return JobSeeker object.
+     */
     public JobSeeker selectJobSeeker() {
         return new JobSeeker();
     }
 
+    /**
+     * Method to filter job seekers.
+     * @return ArrayList<JobSeeker> of job seekers.
+     */
     public ArrayList<JobSeeker> filterJobSeeker() {
         return new ArrayList<JobSeeker>();
     }
 
+    /**
+     * Creates screen to ask the recruiter on what to do with job seeker who applied for the job.
+     */
     public void menuJobSeeker() {
 
         String[] options = {
@@ -201,6 +286,13 @@ public class RecruiterHandler extends UserHandler{
         */
     }
 
+    /**
+     * Creates the screen for the recruiter to send a message to a job seeker.
+     * @param recruiter The Recruiter using the program.
+     * @param db The DatabaseManager handling the databaseIO.
+     * @throws SQLException handles SQL exception.
+     * @throws IOException handles IOException.
+     */
     public void sendMessage (Recruiter recruiter, DatabaseManager db) throws SQLException, IOException {
         UserIO.displayHeading("Sending message");
         UserIO.displayBody("This option is not yet implemented coming soon");
@@ -208,6 +300,14 @@ public class RecruiterHandler extends UserHandler{
         home(recruiter, db);
     }
 
+    /**
+     * Method to submit the job.
+     * @param recruiter The Recruiter using the program.
+     * @param db The DatabaseManager handling the databaseIO.
+     * @param job The Job to submit to database.
+     * @throws SQLException handles SQL exception.
+     * @throws IOException handles IOException.
+     */
     public void submitJobYes(Recruiter recruiter, DatabaseManager db, Job job) throws SQLException, IOException {
         db.insertJob(job);
         UserIO.displayBody("You have submitted the job. Thank you for using Job Searchie.");
@@ -215,12 +315,27 @@ public class RecruiterHandler extends UserHandler{
         home(recruiter, db);
     }
 
+    /**
+     * Method to not submit the job.
+     * @param recruiter The Recruiter using the program.
+     * @param db The DatabaseManager handling the databaseIO.
+     * @throws SQLException handles SQL exception.
+     * @throws IOException handles IOException.
+     */
     public void submitJobNo(Recruiter recruiter, DatabaseManager db) throws SQLException, IOException {
         UserIO.displayBody("You have not submitted");
         UserIO.displayBody("Returning to home screen now");
         home(recruiter, db);
     }
 
+    /**
+     * Method to update advertising status.
+     * @param recruiter The Recruiter using the program.
+     * @param db The DatabaseManager handling the databaseIO.
+     * @param job The Job to set advertising status.
+     * @throws SQLException handles SQL exception.
+     * @throws IOException handles IOException.
+     */
     public void updateAdvertisingStatus (Recruiter recruiter, DatabaseManager db, Job job) throws SQLException, IOException {
         UserIO.displayHeading("Updating job advertising status");
         UserIO.displayBody("This option is not yet implemented coming soon");
@@ -228,6 +343,14 @@ public class RecruiterHandler extends UserHandler{
         viewMyJobsMenu(recruiter, db, job);
     }
 
+    /**
+     * Method to update job details.
+     * @param recruiter The Recruiter using the program.
+     * @param db The DatabaseManager handling the databaseIO.
+     * @param job The Job to update.
+     * @throws SQLException handles SQL exception.
+     * @throws IOException handles IOException.
+     */
     public void updateJob (Recruiter recruiter, DatabaseManager db, Job job) throws SQLException, IOException {
         UserIO.displayHeading("Updating job details");
         UserIO.displayBody("This option is not yet implemented coming soon");
@@ -235,7 +358,13 @@ public class RecruiterHandler extends UserHandler{
         viewMyJobsMenu(recruiter, db, job);
     }
 
-
+    /**
+     * Method to update profile.
+     * @param recruiter The Recruiter using the program.
+     * @param db The DatabaseManager handling the databaseIO.
+     * @throws SQLException handles SQL exception.
+     * @throws IOException handles IOException.
+     */
     public void updateProfile(Recruiter recruiter, DatabaseManager db) throws SQLException, IOException {
         UserIO.displayHeading("Updating profile");
         UserIO.displayBody("This option is not yet implemented coming soon");
@@ -243,6 +372,14 @@ public class RecruiterHandler extends UserHandler{
         profileManagement(recruiter, db);
     }
 
+    /**
+     * Method to view job applicants for a job.
+     * @param recruiter The Recruiter using the program.
+     * @param db The DatabaseManager handling the databaseIO.
+     * @param job The Job to view applicants.
+     * @throws SQLException handles SQL exception.
+     * @throws IOException handles IOException.
+     */
     public void viewJobApplicants(Recruiter recruiter, DatabaseManager db, Job job) throws SQLException, IOException {
         UserIO.displayHeading("Displaying applicants for " + job.getJobTitle());
         ArrayList<Application> applications = db.getJobApplications(job);
