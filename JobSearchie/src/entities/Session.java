@@ -82,14 +82,8 @@ public class Session {
         this.logoutTime = logoutTime;
     }
 
-    public UserHandler getUserHandler() {
-        UserHandler userHandler;
-        switch (user.getClass().toString().split("\\.")[1]) {
-            case ("Admin") -> userHandler = new AdminHandler();
-            case ("Recruiter") -> userHandler = new RecruiterHandler();
-            case ("JobSeeker") -> userHandler = new JobSeekerHandler();
-            default -> throw new IllegalStateException("Unexpected value: " + user.getClass().toString().split("\\.")[1] + "Session class - getUserHandler.");
-        }
-        return userHandler;
+    public String getUserType()
+    {
+        return user.getClass().toString().split("\\.")[1];
     }
 }
