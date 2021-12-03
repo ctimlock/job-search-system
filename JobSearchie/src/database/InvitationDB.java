@@ -8,6 +8,12 @@ import java.util.ArrayList;
 import static database.InvitationDB.Column.*;
 import static database.Parser.parseInvitation;
 
+/**
+ * Establishes connection to the invitation table in SQL.
+ *
+ * @author Charlie Timlock, Levi Quilliam, Tim Perkins, and Merrill Nguyen
+ * @version 1.0
+ */
 public class InvitationDB implements DBHelper{
     public static final String NAME = "invitation";
     /**
@@ -20,6 +26,12 @@ public class InvitationDB implements DBHelper{
     private final PreparedStatement queryInvitationById;
     private final PreparedStatement queryAllInvitations;
 
+    /**
+     * Establishes connection to SQL database.
+     *
+     * @param conn conn as Connection
+     * @throws SQLException Handles SQL Exception
+     */
     public InvitationDB(Connection conn) throws SQLException {
         insertInvitation = conn.prepareStatement(InvitationDB.Insert.INVITATION, Statement.RETURN_GENERATED_KEYS);
         queryInvitationById = conn.prepareStatement(InvitationDB.Query.INVITATION_BY_ID);
@@ -28,6 +40,7 @@ public class InvitationDB implements DBHelper{
 
     /**
      * Closes all prepared statements.
+     *
      * @throws SQLException Throws an SQLException if a prepared statement is unable to be closed.
      */
     @Override
@@ -40,7 +53,18 @@ public class InvitationDB implements DBHelper{
             queryAllInvitations.close();
     }
 
-
+    /**
+     * Gets invitation from the SQL database by querying the information to construct the Invitation object.
+     *
+     * @param invitationId invitation id as int
+     * @param userDB userDB as UserDB
+     * @param userKeywordDB userKeywordDB as UserKeywordDB
+     * @param locationDB locationDB as LocationDB
+     * @param jobDB jobDB as JobDB
+     * @param jobKeywordDB jobKeywordDB as JobKeywordDB
+     * @param jobCategoryDB jobCategoryDB as JobCategoryDB
+     * @return invitation as Invitation
+     */
     public Invitation getInvitation(int invitationId, UserDB userDB, LocationDB locationDB, JobDB jobDB, UserKeywordDB userKeywordDB, JobKeywordDB jobKeywordDB, JobCategoryDB jobCategoryDB) {
         try {
             queryInvitationById.setInt(1, invitationId);
@@ -54,6 +78,17 @@ public class InvitationDB implements DBHelper{
         }
     }
 
+    /**
+     * Gets invitations from the SQL database by querying the information to construct the list of Invitation objects.
+     *
+     * @param userDB userDB as UserDB
+     * @param userKeywordDB userKeywordDB as UserKeywordDB
+     * @param locationDB locationDB as LocationDB
+     * @param jobDB jobDB as JobDB
+     * @param jobKeywordDB jobKeywordDB as JobKeywordDB
+     * @param jobCategoryDB jobCategoryDB as JobCategoryDB
+     * @return applications as ArrayList<Application>
+     */
     public ArrayList<Invitation> getAllInvitations(UserDB userDB, LocationDB locationDB, JobDB jobDB, UserKeywordDB userKeywordDB, JobKeywordDB jobKeywordDB, JobCategoryDB jobCategoryDB) {
         try {
             ArrayList<Invitation> invitations = new ArrayList<>();
@@ -69,8 +104,9 @@ public class InvitationDB implements DBHelper{
     }
 
     /**
-     * Inserts a invitation into the database. If any of the invitation foreign keys don't exist such as location, them location
+     * Inserts an invitation into the database. If any of the invitation foreign keys don't exist such as location, them location
      * will be inserted into the database.
+     *
      * @param invitation The invitation to be inserted into the database.
      * @param locationDB LocationBD helper class used to insert or get invitation location.
      * @param userDB InvitationKeywordDB helper class used to insert invitation keywords.
@@ -105,8 +141,14 @@ public class InvitationDB implements DBHelper{
         }
     }
 
+    /**
+     * View strings
+     */
     public static class View {}
 
+    /**
+     * Column name strings
+     */
     public static class Column {
         public static final String ID = "id";
         public static final String JOBSEEKEREMAIL = "jobSeekerEmail";
@@ -120,16 +162,28 @@ public class InvitationDB implements DBHelper{
         public static final String ACCEPTED = "accepted";
     }
 
+    /**
+     * Query strings
+     */
     public static class Query {
         public static final String INVITATION_BY_ID = "SELECT * FROM " + NAME + " WHERE " + ID + " = ?";
         public static final String ALL_INVITATIONS = "SELECT * FROM " + NAME;
     }
 
+    /**
+     * Insert strings
+     */
     public static class Insert {
         public static final String INVITATION = "INSERT INTO " + NAME + " (" + JOBSEEKEREMAIL + ", " + RECRUITEREMAIL + ", " + JOBID + ", " + DATESENT + ", " + DATEOFINTERVIEW + ", " + LOCATIONID + ", " + MESSAGE + ", " + TYPE + ", " + ACCEPTED + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     }
 
+    /**
+     * Update strings
+     */
     public static class Update {}
 
+    /**
+     * Delete strings
+     */
     public static class Delete {}
 }

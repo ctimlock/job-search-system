@@ -6,6 +6,12 @@ import java.sql.*;
 
 import static database.SessionDB.Column.*;
 
+/**
+ * Establishes connection to the session table in SQL.
+ *
+ * @author Charlie Timlock, Levi Quilliam, Tim Perkins, and Merrill Nguyen
+ * @version 1.0
+ */
 public class SessionDB implements DBHelper{
 
     public static final String NAME = "session";
@@ -19,7 +25,12 @@ public class SessionDB implements DBHelper{
 
     private static PreparedStatement updateSession;
 
-
+    /**
+     * Establishes connection to SQL database.
+     *
+     * @param conn conn as Connection
+     * @throws SQLException Handles SQL Exception
+     */
     public SessionDB(Connection conn) throws SQLException {
         insertSession = conn.prepareStatement(SessionDB.Insert.SESSION, Statement.RETURN_GENERATED_KEYS);
         updateSession = conn.prepareStatement(SessionDB.Update.SESSION, Statement.RETURN_GENERATED_KEYS);
@@ -62,6 +73,13 @@ public class SessionDB implements DBHelper{
         }
     }
 
+    /**
+     * Updates the session in the database.
+     *
+     * @param session as Session
+     * @return session as Session
+     * @throws SQLException Handles SQL Exception
+     */
     public Session updateSession(Session session) throws SQLException {
         updateSession.setDate(1, session.getLogoutTime());
         updateSession.setInt(2, session.getId());
@@ -74,6 +92,9 @@ public class SessionDB implements DBHelper{
 
     }
 
+    /**
+     * Column name strings
+     */
     public static class Column {
         public static final String ID = "id";
         public static final String USERID = "UserID";
@@ -81,16 +102,28 @@ public class SessionDB implements DBHelper{
         public static final String LOGOUTTIME= "logOutTime";
     }
 
+    /**
+     * Query strings
+     */
     public static class Query {
     }
 
+    /**
+     * Insert strings
+     */
     public static class Insert {
         public static final String SESSION = "INSERT INTO " + NAME + " (" + USERID + ", " + LOGINTIME + ", " + LOGOUTTIME  + ") VALUES (?, ?, ?)";
     }
 
+    /**
+     * Update strings
+     */
     public static class Update {
         public static final String SESSION = "UPDATE " + NAME + " SET " + LOGOUTTIME + " = ? WHERE " + ID + " = ?";
     }
 
+    /**
+     * Delete strings
+     */
     public static class Delete {}
 }

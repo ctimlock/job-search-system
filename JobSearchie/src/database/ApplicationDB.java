@@ -9,7 +9,12 @@ import java.util.ArrayList;
 import static database.ApplicationDB.Column.*;
 import static database.Parser.parseApplication;
 
-
+/**
+ * Establishes connection to the application table in SQL.
+ *
+ * @author Charlie Timlock, Levi Quilliam, Tim Perkins, and Merrill Nguyen
+ * @version 1.0
+ */
 public class ApplicationDB implements DBHelper {
     public static final String NAME = "application";
     /**
@@ -37,6 +42,18 @@ public class ApplicationDB implements DBHelper {
             queryApplicationByJob.close();
     }
 
+    /**
+     * Gets application from the SQL database by querying the information to construct the Application object.
+     *
+     * @param applicationId application id as int
+     * @param userDB userDB as UserDB
+     * @param userKeywordDB userKeywordDB as UserKeywordDB
+     * @param locationDB locationDB as LocationDB
+     * @param jobDB jobDB as JobDB
+     * @param jobKeywordDB jobKeywordDB as JobKeywordDB
+     * @param jobCategoryDB jobCategoryDB as JobCategoryDB
+     * @return application as Application
+     */
     public Application getApplication(int applicationId, UserDB userDB, UserKeywordDB userKeywordDB, LocationDB locationDB, JobDB jobDB, JobKeywordDB jobKeywordDB, JobCategoryDB jobCategoryDB) {
         try {
             queryApplication.setInt(1, applicationId);
@@ -51,6 +68,12 @@ public class ApplicationDB implements DBHelper {
         }
     }
 
+    /**
+     * Inserts an Application object into the SQL database by deconstructing the information in the Application object.
+     * @param application application as Application object.
+     * @return application as Application Object.
+     * @throws SQLException Handles SQL Exception.
+     */
     public Application insertApplication(Application application) throws SQLException {
         if (application.getId()!= -1)
             return application;
@@ -74,6 +97,18 @@ public class ApplicationDB implements DBHelper {
         }
     }
 
+    /**
+     * Gets applications from the SQL database by querying the information to construct the list of Application objects.
+     *
+     * @param job job as Job
+     * @param userDB userDB as UserDB
+     * @param userKeywordDB userKeywordDB as UserKeywordDB
+     * @param locationDB locationDB as LocationDB
+     * @param jobDB jobDB as JobDB
+     * @param jobKeywordDB jobKeywordDB as JobKeywordDB
+     * @param jobCategoryDB jobCategoryDB as JobCategoryDB
+     * @return applications as ArrayList<Application>
+     */
     public ArrayList<Application> getJobApplications(Job job, UserDB userDB, UserKeywordDB userKeywordDB, LocationDB locationDB, JobDB jobDB, JobKeywordDB jobKeywordDB, JobCategoryDB jobCategoryDB) {
         ArrayList<Application> applications = new ArrayList<>();
         try {
@@ -89,8 +124,14 @@ public class ApplicationDB implements DBHelper {
         }
     }
 
+    /**
+     * View strings
+     */
     public static class View {}
 
+    /**
+     * Column name strings
+     */
     public static class Column {
         public static final String ID = "id";
         public static final String JOBID = "jobId";
@@ -101,16 +142,28 @@ public class ApplicationDB implements DBHelper {
         public static final String DATE = "date";
     }
 
+    /**
+     * Query strings
+     */
     public static class Query {
         public static final String APPLICATION = "SELECT * FROM " + NAME + " WHERE " + ID + " = ?";
         public static final String APPLICATION_BY_JOB = "SELECT * FROM " + NAME + " WHERE " + JOBID + " = ?";
     }
 
+    /**
+     * Insert strings
+     */
     public static class Insert {
         public static final String APPLICATION = "INSERT INTO " + NAME + " (" + JOBID + ", " + USEREMAIL + ", " + COVERLETTERDIR + ", " + RESUMEDIR + ", " + STATUS + ", " + DATE + ") VALUES (?, ?, ?, ?, ?, ?)";
     }
 
+    /**
+     * Update strings
+     */
     public static class Update {}
 
+    /**
+     * Delete strings
+     */
     public static class Delete {}
 }

@@ -9,6 +9,12 @@ import static database.JobKeywordDB.Column.*;
 import static database.KeywordDB.getKeyword;
 import static database.KeywordDB.insertKeyword;
 
+/**
+ * Establishes connection to the job_keyword table in SQL.
+ *
+ * @author Charlie Timlock, Levi Quilliam, Tim Perkins, and Merrill Nguyen
+ * @version 1.0
+ */
 public class JobKeywordDB implements DBHelper {
     public static final String NAME = "job_keyword";
 
@@ -22,6 +28,12 @@ public class JobKeywordDB implements DBHelper {
      */
     private final PreparedStatement insertJobKeyword;
 
+    /**
+     * Establishes connection to SQL database.
+     *
+     * @param conn conn as Connection
+     * @throws SQLException Handles SQL Exception
+     */
     public JobKeywordDB(Connection conn) throws SQLException {
         queryJobKeywords = conn.prepareStatement(Query.JOB_KEYWORD, Statement.RETURN_GENERATED_KEYS);
         insertJobKeyword = conn.prepareStatement(Insert.JOB_KEYWORD, Statement.RETURN_GENERATED_KEYS);
@@ -117,25 +129,43 @@ public class JobKeywordDB implements DBHelper {
         }
     }
 
+    /**
+     * View strings
+     */
     public static class View {}
 
+    /**
+     * Column name strings
+     */
     public static class Column {
         public static final String JOBID = "jobId";
         public static final String KEYWORDID = "keywordId";
     }
 
+    /**
+     * Query strings
+     */
     public static class Query {
         public static final String CHECK_USER_KEYWORD = "SELECT * FROM " + NAME + " WHERE " + JOBID + " = ? AND " + KEYWORDID + " = ?";
         public static final String JOB_KEYWORD = "SELECT * FROM " + NAME + " WHERE " + JOBID + " = ?";
 
     }
 
+    /**
+     * Insert strings
+     */
     public static class Insert {
         public static final String JOB_KEYWORD = "INSERT INTO " + NAME + " (" + JOBID + ", " + KEYWORDID + ") VALUES (?, ?)";
 
     }
 
+    /**
+     * Update strings
+     */
     public static class Update {}
 
+    /**
+     * Delete strings
+     */
     public static class Delete {}
 }

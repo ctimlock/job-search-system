@@ -13,6 +13,12 @@ import java.sql.SQLException;
 import static database.Parser.*;
 import static database.UserDB.Column.*;
 
+/**
+ * Establishes connection to the user table in SQL.
+ *
+ * @author Charlie Timlock, Levi Quilliam, Tim Perkins, and Merrill Nguyen
+ * @version 1.0
+ */
 public class UserDB implements DBHelper {
     public static final String NAME = "user";
     /**
@@ -46,6 +52,12 @@ public class UserDB implements DBHelper {
      */
     private final PreparedStatement queryUserAccountTypeByEmail;
 
+    /**
+     * Establishes connection to SQL database.
+     *
+     * @param conn conn as Connection
+     * @throws SQLException Handles SQL Exception
+     */
     public UserDB(Connection conn) throws SQLException {
         queryUserAccountTypeByEmail = conn.prepareStatement(UserDB.Query.ACCOUNTTYPE_BY_EMAIL);
         queryUserByEmail = conn.prepareStatement(UserDB.Query.USER_BY_EMAIL);
@@ -258,8 +270,14 @@ public class UserDB implements DBHelper {
         }
     }
 
+    /**
+     * View strings
+     */
     public static class View {}
 
+    /**
+     * Column name strings
+     */
     public static class Column {
         public static final String ACCOUNTTYPE = "accountType";
         public static final String FIRSTNAME = "firstName";
@@ -278,11 +296,17 @@ public class UserDB implements DBHelper {
         public static final String RECRUITINGSPECIALTY = "recruitingSpecialty";
     }
 
+    /**
+     * Query strings
+     */
     public static class Query {
         public static final String USER_BY_EMAIL = "SELECT * FROM " + NAME + " WHERE " + EMAIL + " = ?";
         public static final String ACCOUNTTYPE_BY_EMAIL = "SELECT " + ACCOUNTTYPE + " FROM " + NAME + " WHERE " + EMAIL + " = ?";
     }
 
+    /**
+     * Insert strings
+     */
     public static class Insert {
         public static final String JOBSEEKER = "INSERT INTO " + NAME + " (" + ACCOUNTTYPE + ", " + FIRSTNAME + ", " + LASTNAME + ", " + EMAIL + ", " + PASSWORD + ", " + LOCATIONID + ", " + CONTACTNUMBER + ", " + DATECREATED + ", " + DATEOFBIRTH + ", " + CURRENTJOBNAME + ", " + CURRENTJOBLEVEL + ", " + EXPECTEDCOMPENSATION + ", " + RESUMEDIR + ") VALUES ('Job Seeker', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         public static final String RECRUITER = "INSERT INTO " + NAME + " (" + ACCOUNTTYPE + ", " + FIRSTNAME + ", " + LASTNAME + ", " + EMAIL + ", " + PASSWORD + ", " + DATECREATED + ", " + COMPANYNAME + ", " + RECRUITINGSPECIALTY + ", " + CONTACTNUMBER + ", " + DATEOFBIRTH + ") VALUES ('Recruiter', ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -290,7 +314,13 @@ public class UserDB implements DBHelper {
 
     }
 
+    /**
+     * Update strings
+     */
     public static class Update {}
 
+    /**
+     * Delete strings
+     */
     public static class Delete {}
 }
