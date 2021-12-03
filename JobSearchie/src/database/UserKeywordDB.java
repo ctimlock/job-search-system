@@ -12,9 +12,9 @@ import static database.UserKeywordDB.Column.KEYWORDID;
 import static database.UserKeywordDB.Column.USEREMAIL;
 
 /**
- * This is the class that handles user's keywords with respect to the Job Searchie database.
+ * Establishes connection to the user_keyword table in SQL.
  *
- * @author  Team R
+ * @author Charlie Timlock, Levi Quilliam, Tim Perkins, and Merrill Nguyen
  * @version 1.0
  */
 public class UserKeywordDB implements DBHelper {
@@ -47,10 +47,6 @@ public class UserKeywordDB implements DBHelper {
     }
 
     @Override
-    /**
-     * This method
-     * @throws  SQLException    If there is an access error with the database.
-     */
     public void close() throws SQLException {
 
         if (queryUserKeywords != null)
@@ -140,17 +136,20 @@ public class UserKeywordDB implements DBHelper {
     }
 
     /**
-     *
+     * View strings
      */
     public static class View {}
 
+    /**
+     * Column name strings
+     */
     public static class Column {
         public static final String USEREMAIL = "userEmail";
         public static final String KEYWORDID = "keywordId";
     }
 
     /**
-     *
+     * Query strings
      */
     public static class Query {
         public static final String CHECK_USER_KEYWORD = "SELECT * FROM " + NAME + " WHERE " + USEREMAIL + " = ? AND " + KEYWORDID + " = ?";
@@ -159,14 +158,20 @@ public class UserKeywordDB implements DBHelper {
     }
 
     /**
-     *
+     * Insert strings
      */
     public static class Insert {
         public static final String USER_KEYWORD = "INSERT INTO " + NAME + " (" + USEREMAIL + ", " + KEYWORDID + ") VALUES (?, ?)";
 
     }
 
+    /**
+     * Update strings
+     */
     public static class Update {}
 
+    /**
+     * Delete strings
+     */
     public static class Delete {}
 }

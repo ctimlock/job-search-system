@@ -8,6 +8,12 @@ import java.util.ArrayList;
 import static database.JobDB.Column.*;
 import static database.Parser.parseJob;
 
+/**
+ * Establishes connection to the job table in SQL.
+ *
+ * @author Charlie Timlock, Levi Quilliam, Tim Perkins, and Merrill Nguyen
+ * @version 1.0
+ */
 public class JobDB implements DBHelper {
     public static final String NAME = "job";
     /**
@@ -15,11 +21,17 @@ public class JobDB implements DBHelper {
      */
     private final PreparedStatement insertJob;
     /**
-     * Prepared statement which will query a job and all it's atributes.
+     * Prepared statement which will query a job and all it's attributes.
      */
     private final PreparedStatement queryJobById;
     private final PreparedStatement queryAllJobs;
 
+    /**
+     * Establishes connection to SQL database.
+     *
+     * @param conn conn as Connection
+     * @throws SQLException Handles SQL Exception
+     */
     public JobDB(Connection conn) throws SQLException {
         insertJob = conn.prepareStatement(Insert.JOB, Statement.RETURN_GENERATED_KEYS);
         queryJobById = conn.prepareStatement(Query.JOB_BY_ID);
@@ -40,7 +52,16 @@ public class JobDB implements DBHelper {
             queryAllJobs.close();
     }
 
-
+    /**
+     * Gets job from the SQL database by querying the information to construct the Job object.
+     *
+     * @param jobId job id as int
+     * @param userDB userDB as UserDB
+     * @param locationDB locationDB as LocationDB
+     * @param jobKeywordDB jobKeywordDB as JobKeywordDB
+     * @param jobCategoryDB jobCategoryDB as JobCategoryDB
+     * @return job as Job
+     */
     public Job getJob(int jobId, UserDB userDB, LocationDB locationDB, JobKeywordDB jobKeywordDB, JobCategoryDB jobCategoryDB) {
         try {
             queryJobById.setInt(1, jobId);
@@ -60,7 +81,13 @@ public class JobDB implements DBHelper {
         }
     }
 
-    //TODO: fix this
+    /**
+     * Gets jobs from the SQL database by querying the information to construct the list of Job objects.
+     *
+     * @param userDB userDB as UserDB
+     * @param locationDB locationDB as LocationDB
+     * @return applications as ArrayList<Application>
+     */
     public ArrayList<Job> getAllJobs(UserDB userDB, LocationDB locationDB) {
         try {
             ArrayList<Job> jobs = new ArrayList<>();
@@ -78,6 +105,7 @@ public class JobDB implements DBHelper {
     /**
      * Inserts a job into the database. If any of the job foreign keys don't exist such as location, them location
      * will be inserted into the database.
+     *
      * @param job The job to be inserted into the database.
      * @param locationDB LocationBD helper class used to insert or get job location.
      * @param jobKeywordDB JobKeywordDB helper class used to insert job keywords.
@@ -119,8 +147,14 @@ public class JobDB implements DBHelper {
             }
     }
 
+    /**
+     * View strings
+     */
     public static class View {}
 
+    /**
+     * Column name strings
+     */
     public static class Column {
         public static final String ID = "id";
         public static final String JOBTITLE = "jobTitle";
@@ -138,16 +172,28 @@ public class JobDB implements DBHelper {
         public static final String ISADVERTISED = "isAdvertised";
     }
 
+    /**
+     * Query strings
+     */
     public static class Query {
         public static final String JOB_BY_ID = "SELECT * FROM " + NAME + " WHERE " + ID + " = ?";
         public static final String ALL_JOBS = "SELECT * FROM " + NAME + ";";
     }
 
+    /**
+     * Insert strings
+     */
     public static class Insert {
         public static final String JOB = "INSERT INTO " + NAME + " (" + JOBTITLE + ", " + RECRUITEREMAIL + ", " + DATECREATED + ", " + DATELISTED + ", " + DATEDELISTED + ", " + COMPANYNAME + ", " + LOCATIONID + ", " + WORKTYPE + ", " + WORKINGARRANGEMENT + ", " + COMPENSATION + ", " + JOBLEVEL + ", " + DESCRIPTION + ", " + ISADVERTISED + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     }
 
+    /**
+     * Update strings
+     */
     public static class Update {}
 
+    /**
+     * Delete strings
+     */
     public static class Delete {}
 }

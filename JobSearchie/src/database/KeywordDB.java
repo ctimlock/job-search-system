@@ -5,6 +5,12 @@ import java.sql.*;
 import static database.KeywordDB.Column.ID;
 import static database.KeywordDB.Column.KEYWORD;
 
+/**
+ * Establishes connection to the keyword table in SQL.
+ *
+ * @author Charlie Timlock, Levi Quilliam, Tim Perkins, and Merrill Nguyen
+ * @version 1.0
+ */
 public class KeywordDB implements DBHelper {
 
     public static final String NAME = "keyword";
@@ -28,6 +34,12 @@ public class KeywordDB implements DBHelper {
      */
     private static PreparedStatement queryKeywordId;
 
+    /**
+     * Establishes connection to SQL database.
+     *
+     * @param conn conn as Connection
+     * @throws SQLException Handles SQL Exception
+     */
     public KeywordDB(Connection conn) throws SQLException {
         insertKeyword = conn.prepareStatement(KeywordDB.Insert.INSERT_KEYWORD, Statement.RETURN_GENERATED_KEYS);
         queryKeyword = conn.prepareStatement(KeywordDB.Query.KEYWORD, Statement.RETURN_GENERATED_KEYS);
@@ -113,21 +125,36 @@ public class KeywordDB implements DBHelper {
         }
     }
 
+    /**
+     * Column name strings
+     */
     public static class Column {
         public static final String ID = "id";
         public static final String KEYWORD = "keyword";
     }
 
+    /**
+     * Query strings
+     */
     public static class Query {
         public static final String KEYWORD_ID = "SELECT " + ID + " FROM " + NAME + " WHERE " + Column.KEYWORD + " = ?";
         public static final String KEYWORD = "SELECT " + Column.KEYWORD + " FROM " + NAME + " WHERE " + ID + " = ?";
     }
 
+    /**
+     * Insert strings
+     */
     public static class Insert {
         public static final String INSERT_KEYWORD = "INSERT INTO " + NAME + " (" + KEYWORD + ") VALUES (?)";
     }
 
+    /**
+     * Update strings
+     */
     public static class Update {}
 
+    /**
+     * Delete strings
+     */
     public static class Delete {}
 }

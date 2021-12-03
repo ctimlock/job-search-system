@@ -9,6 +9,12 @@ import static database.JobCategoryDB.Column.*;
 import static database.CategoryDB.getCategory;
 import static database.CategoryDB.insertCategory;
 
+/**
+ * Establishes connection to the job_category table in SQL.
+ *
+ * @author Charlie Timlock, Levi Quilliam, Tim Perkins, and Merrill Nguyen
+ * @version 1.0
+ */
 public class JobCategoryDB implements DBHelper {
 
     public static final String NAME = "job_category";
@@ -23,6 +29,12 @@ public class JobCategoryDB implements DBHelper {
      */
     private final PreparedStatement insertJobCategory;
 
+    /**
+     * Establishes connection to SQL database.
+     *
+     * @param conn conn as Connection
+     * @throws SQLException Handles SQL Exception
+     */
     public JobCategoryDB(Connection conn) throws SQLException {
         queryJobCategories = conn.prepareStatement(JobCategoryDB.Query.JOB_category, Statement.RETURN_GENERATED_KEYS);
         insertJobCategory = conn.prepareStatement(JobCategoryDB.Insert.JOB_category, Statement.RETURN_GENERATED_KEYS);
@@ -118,25 +130,43 @@ public class JobCategoryDB implements DBHelper {
         }
     }
 
+    /**
+     * View strings
+     */
     public static class View {}
 
+    /**
+     * Column name strings
+     */
     public static class Column {
         public static final String JOBID = "jobId";
         public static final String categoryID = "categoryId";
     }
 
+    /**
+     * Query strings
+     */
     public static class Query {
         public static final String CHECK_USER_category = "SELECT * FROM " + NAME + " WHERE " + JOBID + " = ? AND " + categoryID + " = ?";
         public static final String JOB_category = "SELECT * FROM " + NAME + " WHERE " + JOBID + " = ?";
 
     }
 
+    /**
+     * Insert strings
+     */
     public static class Insert {
         public static final String JOB_category = "INSERT INTO " + NAME + " (" + JOBID + ", " + categoryID + ") VALUES (?, ?)";
 
     }
 
+    /**
+     * Update strings
+     */
     public static class Update {}
 
+    /**
+     * Delete strings
+     */
     public static class Delete {}
 }

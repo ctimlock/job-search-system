@@ -7,12 +7,24 @@ import java.sql.*;
 import static database.LocationDB.Column.*;
 import static database.Parser.parseLocation;
 
+/**
+ * Establishes connection to the location table in SQL.
+ *
+ * @author Charlie Timlock, Levi Quilliam, Tim Perkins, and Merrill Nguyen
+ * @version 1.0
+ */
 public class LocationDB implements DBHelper {
     public static final String NAME = "location";
     private final PreparedStatement queryLocationId;
     private final PreparedStatement queryLocation;
     private final PreparedStatement insertIntoLocation;
 
+    /**
+     * Establishes connection to SQL database.
+     *
+     * @param conn conn as Connection
+     * @throws SQLException Handles SQL Exception
+     */
     public LocationDB(Connection conn) throws SQLException {
         queryLocationId = conn.prepareStatement(LocationDB.Query.LOCATION_ID, Statement.RETURN_GENERATED_KEYS);
         queryLocation = conn.prepareStatement(LocationDB.Query.LOCATION, Statement.RETURN_GENERATED_KEYS);
@@ -106,6 +118,11 @@ public class LocationDB implements DBHelper {
         }
     }
 
+    /**
+     * Populates a location object.
+     *
+     * @param location as Location
+     */
     public void populateLocation(Location location) {
         try {
             queryLocation.setInt(1, location.getId());
@@ -121,8 +138,14 @@ public class LocationDB implements DBHelper {
         }
     }
 
+    /**
+     * View strings
+     */
     public static class View {}
 
+    /**
+     * Column name strings
+     */
     public static class Column {
         public static final String ID = "id";
         public static final String COUNTRY = "country";
@@ -131,16 +154,28 @@ public class LocationDB implements DBHelper {
         public static final String POSTCODE = "postcode";
     }
 
+    /**
+     * Query strings
+     */
     public static class Query {
         public static final String LOCATION_ID = "SELECT " + ID + " FROM " + NAME + " WHERE " + COUNTRY + " = ? AND " + STATE + " = ? AND " + CITY + " = ? AND " + POSTCODE + " = ?";
         public static final String LOCATION = "SELECT * FROM " + NAME + " WHERE " + ID + " = ?";
     }
 
+    /**
+     * Insert strings
+     */
     public static class Insert {
         public static final String INSERT_LOCATION = "INSERT INTO " + NAME + " (" + COUNTRY + ", " + STATE + ", " + CITY + ", " + POSTCODE + ") VALUES (?, ?, ?, ?)";
     }
 
+    /**
+     * Update strings
+     */
     public static class Update {}
 
+    /**
+     * Delete strings
+     */
     public static class Delete {}
 }

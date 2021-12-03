@@ -4,6 +4,12 @@ import java.sql.*;
 
 import static database.CategoryDB.Column.*;
 
+/**
+ * Establishes connection to the category table in SQL.
+ *
+ * @author Charlie Timlock, Levi Quilliam, Tim Perkins, and Merrill Nguyen
+ * @version 1.0
+ */
 public class CategoryDB implements DBHelper {
 
     public static final String NAME = "category";
@@ -21,6 +27,11 @@ public class CategoryDB implements DBHelper {
      */
     private static PreparedStatement queryCategoryId;
 
+    /**
+     * Establishes connection to SQL database.
+     * @param conn conn as Connection
+     * @throws SQLException Handles SQL Exception
+     */
     public CategoryDB(Connection conn) throws SQLException {
         insertCategory = conn.prepareStatement(CategoryDB.Insert.CATEGORY, Statement.RETURN_GENERATED_KEYS);
         queryCategory = conn.prepareStatement(CategoryDB.Query.CATEGORY, Statement.RETURN_GENERATED_KEYS);
@@ -39,7 +50,7 @@ public class CategoryDB implements DBHelper {
 
     /**
      * TESTED
-     * Queries the category table to retrun the category associated the category id.
+     * Queries the category table to return the category associated the category id.
      *
      * @param id The category Id that is to be returned.
      * @return Returns the category if it exists and null if it doesn't exist.
@@ -106,21 +117,36 @@ public class CategoryDB implements DBHelper {
         }
     }
 
+    /**
+     * Column name strings
+     */
     public static class Column {
         public static final String ID = "id";
         public static final String CATEGORY = "category";
     }
 
+    /**
+     * Query strings
+     */
     public static class Query {
         public static final String CATEGORY_ID = "SELECT " + ID + " FROM " + NAME + " WHERE " + CategoryDB.Column.CATEGORY + " = ?";
         public static final String CATEGORY = "SELECT " + CategoryDB.Column.CATEGORY + " FROM " + NAME + " WHERE " + ID + " = ?";
     }
 
+    /**
+     * Insert strings
+     */
     public static class Insert {
         public static final String CATEGORY = "INSERT INTO " + NAME + " (" + CategoryDB.Column.CATEGORY + ") VALUES (?)";
     }
 
+    /**
+     * Update strings
+     */
     public static class Update {}
 
+    /**
+     * Delete strings
+     */
     public static class Delete {}
 }
