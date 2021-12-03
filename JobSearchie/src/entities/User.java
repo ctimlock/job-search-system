@@ -107,7 +107,7 @@ public class User {
     /**
      * Accessor method to get the user's account type.
      *
-     * @return  The account type as a string.
+     * @return  The user's account type as a string.
      */
     public String getAccountType() {
         return accountType;

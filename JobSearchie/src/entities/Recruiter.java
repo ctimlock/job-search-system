@@ -91,63 +91,70 @@ public class Recruiter extends User {
     /**
      * Accessor method to get the recruiter's company name.
      *
-     * @return  The company name as a string.
+     * @return  The recruiter's company name as a string.
      */
     public String getCompanyName() {
         return companyName;
     }
 
     /**
+     * Accessor method to get the recruiter's contact number.
      *
-     * @return
+     * @return  The recruiter's contact number as a string.
      */
     public String getContactNumber() {
         return contactNumber;
     }
 
     /**
+     * Accessor method to get the recruiter's date of birth.
      *
-     * @return
+     * @return  The recruiter's date of birth as a Date object datatype.
      */
     public Date getDateOfBirth() {
         return dateOfBirth;
     }
 
     /**
+     * Accessor method to get the recruiter's recruiting specialty.
      *
-     * @return
+     * @return  The recruiter's recruiting specialty as a string.
      */
     public String getRecruitingSpecialty() {
         return recruitingSpecialty;
     }
 
     /**
+     * Mutator method to set the recruiter's company name.
      *
-     * @param companyName
+     * @param companyName   The recruiter's company name as a string.
      */
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
     }
 
     /**
+     * Mutator method to set the recruiter's contact number.
      *
-     * @param contactNumber
+     * @param contactNumber The recruiter's contact number as a string.
      */
     public void setContactNumber(String contactNumber) {
         this.contactNumber = contactNumber;
     }
 
     /**
+     * Mutator method to set the recruiter's date of birth.
      *
-     * @param dateOfBirth
+     * @param dateOfBirth   The recruiter's date of birth as a Date object datatype.
      */
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
     /**
+     * Mutator method to set the recruiter's recruiting specialty.
      *
-     * @param recruitingSpecialty
+     * @param recruitingSpecialty   The recruiter's recruiting specialty as a string.
      */
     public void setRecruitingSpecialty(String recruitingSpecialty) {
         this.recruitingSpecialty = recruitingSpecialty;
