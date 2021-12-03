@@ -1,7 +1,7 @@
-import Controllers.Login;
-import Controllers.UserHandler;
+import Controllers.*;
 import database.DatabaseManager;
-import entities.Session;
+import entities.*;
+import org.bouncycastle.jcajce.provider.asymmetric.ec.KeyFactorySpi;
 import utilities.UserIO;
 
 import javax.swing.*;
@@ -24,21 +24,40 @@ public class JobSearchie
      * @param args  An array of string passed in as command line parameters.
      * @throws SQLException If there is an access error with the database.
      */
-    public static void main(String[] args) throws SQLException
+    public static void main(String[] args)
     {
         JobSearchie program = new JobSearchie();
         program.frameInit = new JFrame();
         program.db = new DatabaseManager();
         Login loginRegistration = new Login();
         program.session = new Session(loginRegistration.beginLoginOrRegistration(program.db));
-        UserHandler userHandler = program.session.getUserHandler();
+
         try
         {
-            userHandler.home(program.session.getUser(), program.db);
-        } catch (IOException e)
+            switch (program.session.getUserType())
+            {
+                case ("Admin") -> {
+                    /* Admin home not yet implemented!!!
+                    AdminHandler handler = new AdminHandler();
+                    Admin admin = (Admin) program.session.getUser();
+                    handler.home(admin, program.db);*/
+                }
+                case ("Recruiter") -> {
+                    RecruiterHandler handler = new RecruiterHandler();
+                    Recruiter recruiter = (Recruiter) program.session.getUser();
+                    handler.home(recruiter, program.db);
+                }
+                case ("JobSeeker") -> {
+                    JobSeekerHandler handler = new JobSeekerHandler();
+                    JobSeeker jobSeeker = (JobSeeker) program.session.getUser();
+                    handler.home(jobSeeker, program.db);
+                }
+            }
+        } catch (Exception e)
         {
-            UserIO.displayBody("The program has encountered an error - shutting down.");
+            //Badnews
         }
+
         program.exit();
         //program.run();
     }
@@ -61,4 +80,6 @@ public class JobSearchie
         db.close();
         System.exit(1);
     }
+
+
 }
