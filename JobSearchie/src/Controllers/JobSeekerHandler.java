@@ -1,10 +1,14 @@
 package Controllers;
 
 import database.DatabaseManager;
+import database.FileManager;
+import entities.Application;
+import entities.Job;
 import entities.JobSeeker;
 import utilities.UserIO;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.HashMap;
 
@@ -47,6 +51,71 @@ public class JobSeekerHandler extends UserHandler {
             case ("5") -> profileManagement(jobSeeker, db);
             case ("6") -> logOut();
             default -> throw new IllegalStateException("Unexpected value: " + userInput);
+        }
+    }
+
+    /**
+     * This method will submit an application for a job.
+     * @param jobSeeker The applicant.
+     * @param db The database manager.
+     * @param job The job being applied to.
+     */
+    public void applyForJob(JobSeeker jobSeeker, DatabaseManager db , Job job)
+    {
+        // 1 - Select a resume and CV file
+        // 2 - create an application record in the DB with the file extension
+        // 3 - read the id of that application
+        // 4 - save files to fileStorage under %applicationID%+%extension%
+        String sectionHeading = "Application";
+        UserIO.displayTitle(sectionHeading);
+
+        String coverLetterPath = "";
+        String resumePath = "";
+        String coverLetterExt = "";
+        String resumeExt = "";
+
+        String selection = UserIO.menuSelectorValue("Do you wish to add a cover letter to your application?", new String[]{"Yes", "No"});
+        if (selection.equals("Yes"))
+        {
+            coverLetterPath = FileManager.selectFilePath("Select a cover letter file", new String[]{"pdf","docx","doc","txt"});
+            coverLetterExt = FileManager.getExtensionFromPath(coverLetterPath);
+        }
+
+        UserIO.clearScreenAndAddTitle(sectionHeading);
+
+        selection = UserIO.menuSelectorValue("Do you wish to add a resume to your application?", new String[]{"Yes", "No"});
+        if (selection.equals("Yes"))
+        {
+            resumePath = FileManager.selectFilePath("Select a resume file", new String[]{"pdf","docx","doc","txt"});
+            resumeExt = FileManager.getExtensionFromPath(resumePath);
+        }
+
+        String status = "Pending";
+
+        try
+        {
+            Application submitted = db.insertApplication(new Application(jobSeeker, job, coverLetterExt, resumeExt, status, new Date(System.currentTimeMillis())));
+            String applicationID = String.valueOf(submitted.getId());
+            if (!coverLetterPath.isEmpty())
+            {
+                FileManager.moveFileToJSStorage(FileManager.COVER_LETTER_DIRECTORY, coverLetterPath, applicationID);
+            }
+            if (!resumePath.isEmpty())
+            {
+                FileManager.moveFileToJSStorage(FileManager.RESUME_DIRECTORY, resumePath, applicationID);
+            }
+
+            UserIO.clearScreenAndAddTitle(sectionHeading);
+
+            UserIO.displayBody("Application submitted. Press \"Enter\" to exit.");
+            UserIO.getInput();
+
+        } catch (SQLException | IOException e)
+        {
+            UserIO.clearScreenAndAddTitle(sectionHeading);
+            UserIO.displayBody("There was an issue in submitting your application. Please try again.");
+            UserIO.displayBody("Press \"Enter\" to exit.");
+            UserIO.getInput();
         }
     }
 
