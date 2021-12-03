@@ -1,5 +1,11 @@
 package Controllers;
 
+import database.DatabaseManager;
+import entities.User;
+
+import java.io.IOException;
+import java.sql.SQLException;
+
 /**
  * Controller class for the User entity.
  *
@@ -8,4 +14,5 @@ package Controllers;
  */
 public abstract class UserHandler
 {
+    public void home(User user, DatabaseManager db) throws SQLException, IOException {}
 }
