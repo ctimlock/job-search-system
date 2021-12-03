@@ -161,7 +161,7 @@ public class Validate {
     /**
      * This method will validated a postcode that is enter by the user.
      * @param postCode  Accepts the postcode entered by the user as a string.
-     * @return  The validity of the inputted postcode as a boolean value.
+     * @return  The validity of the inputted postcode as a boolean value
      */
     public boolean isValidPostCode(String postCode) {
         return false;
