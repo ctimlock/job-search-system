@@ -2,8 +2,10 @@ import Controllers.Login;
 import Controllers.UserHandler;
 import database.DatabaseManager;
 import entities.Session;
+import utilities.UserIO;
 
 import javax.swing.*;
+import java.io.IOException;
 import java.sql.SQLException;
 
 /**
@@ -30,6 +32,14 @@ public class JobSearchie
         Login loginRegistration = new Login();
         program.session = new Session(loginRegistration.beginLoginOrRegistration(program.db));
         UserHandler userHandler = program.session.getUserHandler();
+        try
+        {
+            userHandler.home(program.session.getUser(), program.db);
+        } catch (IOException e)
+        {
+            UserIO.displayBody("The program has encountered an error - shutting down.");
+        }
+        program.exit();
         //program.run();
     }
 
