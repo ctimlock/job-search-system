@@ -29,6 +29,8 @@ import java.nio.file.StandardCopyOption;
 public abstract class FileManager
 {
     private static final String JOB_SEARCHIE_FILE_ROOT_DIRECTORY = "JobSearchie/database/fileStorage/";
+    public static final String RESUME_DIRECTORY = "resume";
+    public static final String COVER_LETTER_DIRECTORY = "coverLetter";
 
 
     /**
@@ -42,6 +44,17 @@ public abstract class FileManager
     {
         File target = new File(JOB_SEARCHIE_FILE_ROOT_DIRECTORY + directory + "/" + fileName);
         return target.exists();
+    }
+
+    /**
+     * Returns the file extension from a valid filePath.
+     * @param filePath The filepath to be analysed
+     * @return The file's extension, as a string.
+     */
+    public static String getExtensionFromPath(String filePath)
+    {
+        int index = filePath.lastIndexOf('.');
+        return filePath.substring(index);
     }
 
     /**
@@ -159,20 +172,6 @@ public abstract class FileManager
         {
             throw new IOException();
         }
-    }
-
-    /**
-     * This method will request that the user selects a file from their local environment, and will then copy that file
-     * into a specified directory in the JobSearchie fileStorage directory.
-     *
-     * @param directory     The selected directory.
-     * @param dialogueTitle The dialogue box's title.
-     * @param newFileName   The selected name for the new file, excluding the file extension.
-     * @param fileTypes     A whitelist of selectable file types. Any file type not in this list will not appear inside the selection window.
-     * @throws IOException Will throw if the file is not found.
-     */
-    public static void selectFileAndMoveToJSStorage(String directory, String dialogueTitle, String newFileName, String... fileTypes) throws IOException {
-        FileManager.moveFileToJSStorage(directory, FileManager.selectFilePath(dialogueTitle, fileTypes), newFileName);
     }
 
     /**
