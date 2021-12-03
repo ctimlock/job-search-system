@@ -2,15 +2,13 @@ package Controllers;
 
 import database.DatabaseManager;
 import database.FileManager;
-import entities.Application;
-import entities.Job;
-import entities.JobSeeker;
+import entities.*;
 import utilities.UserIO;
 
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.*;
 
 
 /**
@@ -401,28 +399,92 @@ public class JobSeekerHandler extends UserHandler {
 
     // 5. VIEW JOB INTERVIEWS FUNCTIONS
 
-    public void jobInterviews(JobSeeker jobSeeker, DatabaseManager db) {
+    public void jobInterviews(JobSeeker jobSeeker, DatabaseManager db)
+    {
         UserIO.displayHeading("Viewing job interviews");
 
+        ArrayList<Invitation> invitations = db.getAllInvitations();
 
-//        String[] options = {
-//                "Example - Finance Officer - Seek Pty Ltd - Applied today",
-//                "Example - Finance Officer - Seek Pty Ltd - Applied today",
-//                "TO SEE MORE JOB INTERVIEWS ON YOUR WATCHLIST",
-//                "TO REMOVE A JOB INTERVIEW ON YOUR WATCHLIST",
-//                "TO RETURN HOME"
-//        };//display rejecteJobs
-//
-//        String userInput = UserIO.menuSelectorKey("Please select number corresponding to job interview to see its details", options);
-//
-//        switch (userInput) {
-//            case ("1") -> displayJobInterviewDetails(); // TODO : CALL JOB
-//            case ("2") -> displayJobInterviewDetails(); // TODO : CALL JOB
-//           // case ("3") -> // more 1 - TODO : TO SEE MORE JOB interviews on my watchlist - IF NO MORE JOB interview, DISPLAY A MESSAGE THAT INDICATES THIS.
-//            case ("4") -> removeJobInterview();
-//            case ("5") -> home();
-//            default -> throw new IllegalStateException("Unexpected value: " + userInput);
-//        }
+        invitations.removeIf(invitation -> !Objects.equals(invitation.getJobSeeker().getEmail(), jobSeeker.getEmail()));
+
+        class sortByDate implements Comparator<Invitation>
+        {
+            @Override
+            public int compare(Invitation i1, Invitation i2)
+            {
+                return i1.getDateSent().compareTo(i2.getDateSent());
+            }
+        }
+
+        int pagesize = 5;
+        invitations.sort(new sortByDate());
+        int pages = (int) Math.ceil((double) invitations.size()/ (double) pagesize);
+        int currPage = 1;
+        String[] navOptions = {
+                "Enter 'view' to view an invitation",
+                "Enter 'exit' to exit",
+                "Enter 'next' to see the next page",
+                "Enter 'prev' to see the previous page"
+        };
+
+        boolean exit = false;
+
+        do
+        {
+            UserIO.clearScreen();
+            UserIO.displayTitleAndBody("Invitations", "Page " + currPage + " of " + pages + ".");
+
+            for (int i = (currPage * pagesize) - pagesize; i < currPage * pagesize && i < invitations.size(); i++)
+            {
+                Invitation invite = invitations.get(i);
+                UserIO.displayBody(i + 1 + ". " + invite.getJob().getJobTitle() + " at " + invite.getJob().getCompany() + ". Sent on " + invite.getDateSent().toString());
+            }
+
+            for (String string: navOptions)
+            {
+                UserIO.displayBody(string);
+            }
+
+            String sel = UserIO.getInput().toLowerCase();
+            switch (sel)
+            {
+                case "exit" -> exit = true;
+                case "next" -> {
+                    if (currPage < pages)
+                    {
+                        currPage++;
+                    } else
+                    {
+                        UserIO.displayBody("No more pages");
+                    }
+                }
+                case "prev" -> {
+                    if (currPage > 1)
+                    {
+                        currPage--;
+                    } else
+                    {
+                        UserIO.displayBody("No more pages");
+                    }
+                }
+                case "view" -> {
+                    UserIO.displayBody("Enter the invitation number");
+                    int selection = Integer.parseInt(UserIO.getInput());
+                    if (Math.abs(selection) < invitations.size())
+                    {
+                        viewInvitation(invitations.get(selection));
+                    } else
+                    {
+                        UserIO.getInput();
+                    }
+                }
+            }
+
+        } while (!exit);
+    }
+
+    private void viewInvitation(Invitation invitation)
+    {
     }
 
     public void displayJobInterviewDetails(JobSeeker jobSeeker, DatabaseManager db) throws SQLException, IOException {
