@@ -11,6 +11,12 @@ import static database.KeywordDB.insertKeyword;
 import static database.UserKeywordDB.Column.KEYWORDID;
 import static database.UserKeywordDB.Column.USEREMAIL;
 
+/**
+ * This is the class that handles user's keywords with respect to the Job Searchie database.
+ *
+ * @author  Team R
+ * @version 1.0
+ */
 public class UserKeywordDB implements DBHelper {
 
     public static final String NAME = "user_keyword";
@@ -29,12 +35,21 @@ public class UserKeywordDB implements DBHelper {
      */
     private final PreparedStatement insertUserKeyword;
 
+    /**
+     * Default constructor which creates the object of the class UserKeywordDB.
+     *
+     * @param conn  Accepts the driver's full name as a string.
+     * @throws SQLException If there is an access error with the database.
+     */
     public UserKeywordDB(Connection conn) throws SQLException {
         queryUserKeywords = conn.prepareStatement(UserKeywordDB.Query.USER_KEYWORD, Statement.RETURN_GENERATED_KEYS);
         insertUserKeyword = conn.prepareStatement(UserKeywordDB.Insert.USER_KEYWORD, Statement.RETURN_GENERATED_KEYS);
     }
 
     @Override
+    /**
+     *
+     */
     public void close() throws SQLException {
 
         if (queryUserKeywords != null)
@@ -123,6 +138,9 @@ public class UserKeywordDB implements DBHelper {
         }
     }
 
+    /**
+     *
+     */
     public static class View {}
 
     public static class Column {
@@ -130,12 +148,18 @@ public class UserKeywordDB implements DBHelper {
         public static final String KEYWORDID = "keywordId";
     }
 
+    /**
+     *
+     */
     public static class Query {
         public static final String CHECK_USER_KEYWORD = "SELECT * FROM " + NAME + " WHERE " + USEREMAIL + " = ? AND " + KEYWORDID + " = ?";
         public static final String USER_KEYWORD = "SELECT * FROM " + NAME + " WHERE " + USEREMAIL + " = ?";
 
     }
 
+    /**
+     *
+     */
     public static class Insert {
         public static final String USER_KEYWORD = "INSERT INTO " + NAME + " (" + USEREMAIL + ", " + KEYWORDID + ") VALUES (?, ?)";
 
