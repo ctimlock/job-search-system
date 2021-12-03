@@ -48,7 +48,8 @@ public class UserKeywordDB implements DBHelper {
 
     @Override
     /**
-     *
+     * This method
+     * @throws  SQLException    If there is an access error with the database.
      */
     public void close() throws SQLException {
 
