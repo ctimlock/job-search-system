@@ -16,12 +16,13 @@ import java.util.ArrayList;
  * Controller class for the Recruiter entity.
  *
  * @author Charlie Timlock, Levi Quilliam, Tim Perkins, and Merrill Nguyen
- * @version ver1.0.0
+ * @version 1.0
  */
 public class RecruiterHandler extends UserHandler{
 
     /**
      * Creates the home screen for the recruiuter.
+     *
      * @param recruiter the Recruiter user for the home screen.
      * @param db the DatabaseManager.
      * @throws SQLException handles SQL exception.
@@ -35,7 +36,8 @@ public class RecruiterHandler extends UserHandler{
                 "Messages (coming soon)",
                 "Offer interview",
                 "Search for a job seeker",
-                "Profile management"
+                "Profile management",
+                "logout",
         };
         String userInput = UserIO.menuSelectorKey("Please enter one of the following:", options);
 
@@ -46,12 +48,14 @@ public class RecruiterHandler extends UserHandler{
             //case ("3") -> offerInterview(recruiter, db);
             //case ("4") -> searchJobSeeker();
             case ("5") -> profileManagement(recruiter, db);
+            case ("6") -> logout(recruiter, db);
             default -> throw new IllegalStateException("Unexpected value: " + userInput);
         }
     }
 
     /**
      * Method option to delete a job.
+     *
      * @param recruiter The Recruiter using the program.
      * @param db The DatabaseManager handling the databaseIO.
      * @param job The Job to delete.
@@ -67,6 +71,7 @@ public class RecruiterHandler extends UserHandler{
 
     /**
      * Creates the screen to ask the user if they would like to delete a profile.
+     *
      * @param recruiter The Recruiter using the program.
      * @param db The DatabaseManager handling the databaseIO.
      * @throws SQLException handles SQL exception.
@@ -93,6 +98,7 @@ public class RecruiterHandler extends UserHandler{
 
     /**
      * Method option to not delete a profile.
+     *
      * @param recruiter The Recruiter using the program.
      * @param db The DatabaseManager handling the databaseIO.
      * @throws SQLException handles SQL exception.
@@ -106,6 +112,7 @@ public class RecruiterHandler extends UserHandler{
 
     /**
      * Method option to not delete a profile.
+     *
      * @param recruiter The Recruiter using the program.
      * @param db The DatabaseManager handling the databaseIO.
      * @throws SQLException handles SQL exception.
@@ -118,7 +125,55 @@ public class RecruiterHandler extends UserHandler{
     }
 
     /**
+     * Creates screen to ask the user if they would like to logout.
+     *
+     * @param recruiter The Recruiter using the program.
+     * @param db The DatabaseManager handling the databaseIO.
+     * @throws SQLException handles SQL exception.
+     * @throws IOException handles IOException.
+     */
+    public void logout(Recruiter recruiter, DatabaseManager db) throws SQLException, IOException {
+        String[] options = {
+                "Yes",
+                "No"
+        };
+        String option = UserIO.menuSelectorKey("Are you sure you would like to logout?", options);
+
+        switch (option) {
+            case ("0") -> logoutYes(recruiter, db);
+            case ("1") -> logoutNo(recruiter, db);
+        }
+    }
+
+    /**
+     * Returns user to the home page.
+     *
+     * @param recruiter The Recruiter using the program.
+     * @param db The DatabaseManager handling the databaseIO.
+     * @throws SQLException handles SQL exception.
+     * @throws IOException handles IOException.
+     */
+    public void logoutNo(Recruiter recruiter, DatabaseManager db) throws SQLException, IOException {
+        UserIO.displayHeading("Returning to Home Page");
+        home(recruiter, db);
+    }
+
+    /**
+     * Logs the user out by shutting down the console.
+     *
+     * @param recruiter The Recruiter using the program.
+     * @param db The DatabaseManager handling the databaseIO.
+     * @throws SQLException handles SQL exception.
+     * @throws IOException handles IOException.
+     */
+    public void logoutYes(Recruiter recruiter, DatabaseManager db) throws SQLException, IOException {
+        UserIO.displayHeading("Thank you using JobSearchie. Logging out now bye :)");
+        System.exit(0);
+    }
+
+    /**
      * Method to ask the recruiter to review their job posting and then post their job.
+     *
      * @param recruiter The Recruiter using the program.
      * @param db The DatabaseManager handling the databaseIO.
      * @throws SQLException handles SQL exception.
@@ -144,6 +199,7 @@ public class RecruiterHandler extends UserHandler{
 
     /**
      * Creates the profile management screen.
+     *
      * @param recruiter The Recruiter using the program.
      * @param db The DatabaseManager handling the databaseIO.
      * @throws SQLException handles SQL exception.
@@ -170,6 +226,7 @@ public class RecruiterHandler extends UserHandler{
 
     /**
      * Method to view jobs posted.
+     *
      * @param recruiter The Recruiter using the program.
      * @param db The DatabaseManager handling the databaseIO.
      * @throws SQLException handles SQL exception.
@@ -193,6 +250,7 @@ public class RecruiterHandler extends UserHandler{
 
     /**
      * Creates the screen for the recruiter to select an option on their job.
+     *
      * @param recruiter The Recruiter using the program.
      * @param db The DatabaseManager handling the databaseIO.
      * @param job The Job to view menu.
@@ -242,6 +300,7 @@ public class RecruiterHandler extends UserHandler{
 
     /**
      * Method to select a job seeker.
+     *
      * @return JobSeeker object.
      */
     public JobSeeker selectJobSeeker() {
@@ -250,6 +309,7 @@ public class RecruiterHandler extends UserHandler{
 
     /**
      * Method to filter job seekers.
+     *
      * @return ArrayList<JobSeeker> of job seekers.
      */
     public ArrayList<JobSeeker> filterJobSeeker() {
@@ -288,6 +348,7 @@ public class RecruiterHandler extends UserHandler{
 
     /**
      * Creates the screen for the recruiter to send a message to a job seeker.
+     *
      * @param recruiter The Recruiter using the program.
      * @param db The DatabaseManager handling the databaseIO.
      * @throws SQLException handles SQL exception.
@@ -302,6 +363,7 @@ public class RecruiterHandler extends UserHandler{
 
     /**
      * Method to submit the job.
+     *
      * @param recruiter The Recruiter using the program.
      * @param db The DatabaseManager handling the databaseIO.
      * @param job The Job to submit to database.
@@ -317,6 +379,7 @@ public class RecruiterHandler extends UserHandler{
 
     /**
      * Method to not submit the job.
+     *
      * @param recruiter The Recruiter using the program.
      * @param db The DatabaseManager handling the databaseIO.
      * @throws SQLException handles SQL exception.
@@ -330,6 +393,7 @@ public class RecruiterHandler extends UserHandler{
 
     /**
      * Method to update advertising status.
+     *
      * @param recruiter The Recruiter using the program.
      * @param db The DatabaseManager handling the databaseIO.
      * @param job The Job to set advertising status.
@@ -345,6 +409,7 @@ public class RecruiterHandler extends UserHandler{
 
     /**
      * Method to update job details.
+     *
      * @param recruiter The Recruiter using the program.
      * @param db The DatabaseManager handling the databaseIO.
      * @param job The Job to update.
@@ -360,6 +425,7 @@ public class RecruiterHandler extends UserHandler{
 
     /**
      * Method to update profile.
+     *
      * @param recruiter The Recruiter using the program.
      * @param db The DatabaseManager handling the databaseIO.
      * @throws SQLException handles SQL exception.
@@ -374,6 +440,7 @@ public class RecruiterHandler extends UserHandler{
 
     /**
      * Method to view job applicants for a job.
+     *
      * @param recruiter The Recruiter using the program.
      * @param db The DatabaseManager handling the databaseIO.
      * @param job The Job to view applicants.
@@ -394,7 +461,6 @@ public class RecruiterHandler extends UserHandler{
             //FileManager.openFileFromJS("resume", application.getId() + application.getResumeDir());
         }
         viewMyJobsMenu(recruiter, db, job);
-
     }
 
 }

@@ -15,12 +15,13 @@ import java.util.*;
  * Controller class for the JobSeeker entity.
  *
  * @author Charlie Timlock, Levi Quilliam, Tim Perkins, and Merrill Nguyen
- * @version ver1.0.0
+ * @version v1.0
  */
 public class JobSeekerHandler extends UserHandler {
 
     /**
      * Creates the home screen for the Job Seeker.
+     *
      * @param jobSeeker the JobSeeker user for the home screen.
      * @param db the DatabaseManager.
      * @throws SQLException handles SQL exception.
@@ -47,13 +48,14 @@ public class JobSeekerHandler extends UserHandler {
             case ("3") -> pendingJobApplications(jobSeeker, db);
             case ("4") -> jobInterviews(jobSeeker, db);
             case ("5") -> profileManagement(jobSeeker, db);
-            case ("6") -> logOut();
+            case ("6") -> logout(jobSeeker, db);
             default -> throw new IllegalStateException("Unexpected value: " + userInput);
         }
     }
 
     /**
      * This method will submit an application for a job.
+     *
      * @param jobSeeker The applicant.
      * @param db The database manager.
      * @param job The job being applied to.
@@ -119,6 +121,7 @@ public class JobSeekerHandler extends UserHandler {
 
     /**
      * Creates the messages screen.
+     *
      * @param jobSeeker The JobSeeker using the program.
      * @param db The DatabaseManager handling the databaseIO.
      * @throws SQLException handles SQL exception.
@@ -133,6 +136,7 @@ public class JobSeekerHandler extends UserHandler {
 
     /**
      * Called when the jobSeeker elects to search for a job.
+     *
      * @param jobSeeker The JobSeeker using the program.
      * @param db The DatabaseManager handling the databaseIO.
      */
@@ -370,6 +374,7 @@ public class JobSeekerHandler extends UserHandler {
 
     /**
      * Creates the watchlist screen.
+     *
      * @param jobSeeker The JobSeeker using the program.
      * @param db The DatabaseManager handling the databaseIO.
      * @throws SQLException handles SQL exception.
@@ -520,6 +525,7 @@ public class JobSeekerHandler extends UserHandler {
     // 6. PROFILE MANAGEMENT FUNCTIONS
     /**
      * Creates the profile management screen.
+     *
      * @param jobSeeker The JobSeeker using the program.
      * @param db The DatabaseManager handling the databaseIO.
      * @throws SQLException handles SQL exception.
@@ -546,6 +552,7 @@ public class JobSeekerHandler extends UserHandler {
 
     /**
      * Creates the delete profile screen.
+     *
      * @param jobSeeker The JobSeeker using the program.
      * @param db The DatabaseManager handling the databaseIO.
      * @throws SQLException handles SQL exception.
@@ -572,6 +579,7 @@ public class JobSeekerHandler extends UserHandler {
 
     /**
      * Creates the screen after the job seeker decides not to delete their profile.
+     *
      * @param jobSeeker The JobSeeker using the program.
      * @param db The DatabaseManager handling the databaseIO.
      * @throws SQLException handles SQL exception.
@@ -585,6 +593,7 @@ public class JobSeekerHandler extends UserHandler {
 
     /**
      * Creates the screen after the job seeker decides to delete their profile.
+     *
      * @param jobSeeker The JobSeeker using the program.
      * @param db The DatabaseManager handling the databaseIO.
      * @throws SQLException handles SQL exception.
@@ -598,6 +607,7 @@ public class JobSeekerHandler extends UserHandler {
 
     /**
      * Creates the update profile screen.
+     *
      * @param jobSeeker The JobSeeker using the program.
      * @param db The DatabaseManager handling the databaseIO.
      * @throws SQLException handles SQL exception.
@@ -611,12 +621,50 @@ public class JobSeekerHandler extends UserHandler {
     }
 
     // 7. LOGOUT
+    /**
+     * Creates screen to ask the user if they would like to logout.
+     *
+     * @param jobSeeker The JobSeeker using the program.
+     * @param db The DatabaseManager handling the databaseIO.
+     * @throws SQLException handles SQL exception.
+     * @throws IOException handles IOException.
+     */
+    public void logout(JobSeeker jobSeeker, DatabaseManager db) throws SQLException, IOException {
+        String[] options = {
+                "Yes",
+                "No"
+        };
+        String option = UserIO.menuSelectorKey("Are you sure you would like to logout?", options);
+
+        switch (option) {
+            case ("0") -> logoutYes(jobSeeker, db);
+            case ("1") -> logoutNo(jobSeeker, db);
+        }
+    }
 
     /**
-     * Logs the user out.
+     * Returns user to the home page.
+     *
+     * @param jobSeeker The JobSeeker using the program.
+     * @param db The DatabaseManager handling the databaseIO.
+     * @throws SQLException handles SQL exception.
+     * @throws IOException handles IOException.
      */
-    public void logOut() {
-        UserIO.displayBody("You have now been logged out.  You will now be redirected to the Job Searchie Welcome Screen.");
-        //JobSearchie.welcomeScreen();  //TODO: fix
+    public void logoutNo(JobSeeker jobSeeker, DatabaseManager db) throws SQLException, IOException {
+        UserIO.displayHeading("Returning to Home Page");
+        home(jobSeeker, db);
+    }
+
+    /**
+     * Logs the user out by shutting down the console.
+     *
+     * @param jobSeeker The JobSeeker using the program.
+     * @param db The DatabaseManager handling the databaseIO.
+     * @throws SQLException handles SQL exception.
+     * @throws IOException handles IOException.
+     */
+    public void logoutYes(JobSeeker jobSeeker, DatabaseManager db) throws SQLException, IOException {
+        UserIO.displayHeading("Thank you using JobSearchie. Logging out now bye :)");
+        System.exit(0);
     }
 }
