@@ -37,8 +37,8 @@ public class RecruiterHandler extends UserHandler{
                     "Create a job listing",
                     "View my jobs",
                     "Messages (coming soon)",
-                    "Offer interview",
-                    "Search for a job seeker",
+                    "Offer interview (coming soon)",
+                    "Search for a job seeker (coming soon)",
                     "Profile management",
                     "Log Out",
             };
@@ -223,14 +223,14 @@ public class RecruiterHandler extends UserHandler{
      */
     public void viewMyJobsMenu(Recruiter recruiter, DatabaseManager db, Job job) throws SQLException, IOException
     {
-    Boolean flag = true;
+    boolean flag = true;
     do
     {
         UserIO.displayHeading("Options for jobs");
 
         String[] options = {
                 "View job applicants",
-                "Search for highly ranked job seekers",
+                "Search for highly ranked job seekers (coming soon)",
                 "Change advertising status of this job (coming soon)",
                 "Update this job (coming soon)",
                 "Delete this job (coming soon)",
