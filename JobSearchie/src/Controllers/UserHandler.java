@@ -1,7 +1,7 @@
 package Controllers;
 
-import database.DatabaseManager;
-import entities.User;
+import Database.DatabaseManager;
+import Entities.User;
 
 import java.io.IOException;
 import java.sql.SQLException;

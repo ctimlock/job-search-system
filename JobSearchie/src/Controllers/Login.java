@@ -1,12 +1,12 @@
 package Controllers;
 
-import database.DatabaseManager;
-import entities.JobSeeker;
-import entities.Location;
-import entities.Recruiter;
-import entities.User;
-import utilities.UserIO;
-import utilities.Validate;
+import Database.DatabaseManager;
+import Entities.JobSeeker;
+import Entities.Location;
+import Entities.Recruiter;
+import Entities.User;
+import Utilities.UserIO;
+import Utilities.Validate;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -300,7 +300,7 @@ public class Login
         {
             try
             {
-                resume =  database.FileManager.returnSelectedFileAsString("Please select a resume file");
+                resume =  Database.FileManager.returnSelectedFileAsString("Please select a resume file");
             } catch (IOException e)
             {
                 UserIO.displayBody("There was an error in uploading your resume.");
@@ -309,8 +309,11 @@ public class Login
         UserIO.clearScreenAndAddTitle(sectionTitle);
         int expectedCompensation = enterCompensation();
         UserIO.clearScreenAndAddTitle(sectionTitle);
-
-        Location location = enterLocation();
+        String country = UserIO.enterAttribute(" which country you live in", 4, 30);
+        String state = UserIO.enterAttribute(" which state you live in", 4, 30);
+        String city = UserIO.enterAttribute(" which suburb you live in", 4, 30);
+        String postcode = UserIO.enterAttribute(" your postcode", 3, 6);
+        Location location = new Location(country, state, city, postcode);
 
         JobSeeker newJobSeeker = new JobSeeker(fName, lName, emailAddress, password, new Date(System.currentTimeMillis()), jobName, jobLevel, contactNumber, resume, location, dateOfBirth, keywords, expectedCompensation);
         JobSeeker insertedJobseeker = null;
@@ -327,29 +330,6 @@ public class Login
         UserIO.displayBody("Thank you, your account has now been set up. Press \"Enter\" to be redirected to the home page.");
         UserIO.getInput();
         return insertedJobseeker;
-    }
-
-    public Location enterLocation() {
-
-        String[] countries = {
-                "Australia"
-        };
-        String country = UserIO.menuSelectorValue("Please select the country", countries);
-        String[] states = {
-                "ACT",
-                "NSW",
-                "NT",
-                "QLD",
-                "SA",
-                "TAS",
-                "VIC",
-                "WA"
-        };
-        String state = UserIO.menuSelectorValue("Please select the state", states);
-        String suburb = UserIO.enterAttribute("Suburb", 1, 30);
-        String postcode = UserIO.enterAttribute("Postcode", 4, 4);
-
-        return new Location(country, state, suburb, postcode);
     }
 
     /**
