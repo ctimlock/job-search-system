@@ -1,9 +1,9 @@
 package Controllers;
 
-import entities.Job;
-import entities.Location;
-import entities.Recruiter;
-import utilities.UserIO;
+import Entities.Job;
+import Entities.Location;
+import Entities.Recruiter;
+import Utilities.UserIO;
 
 import java.sql.Date;
 import java.util.ArrayList;

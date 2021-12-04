@@ -1,13 +1,9 @@
 import Controllers.*;
-import database.DatabaseManager;
-import entities.*;
-import org.bouncycastle.jcajce.provider.asymmetric.ec.KeyFactorySpi;
-import utilities.UserIO;
+import Database.DatabaseManager;
+import Entities.*;
 
 import javax.swing.*;
-import java.io.IOException;
 import java.sql.Date;
-import java.sql.SQLException;
 
 /**
  * This is the driver class of the program.
@@ -23,7 +19,6 @@ public class JobSearchie
     /**
      * This is the main method which begins the program execution.
      * @param args  An array of string passed in as command line parameters.
-     * @throws SQLException If there is an access error with the database.
      */
     public static void main(String[] args)
     {

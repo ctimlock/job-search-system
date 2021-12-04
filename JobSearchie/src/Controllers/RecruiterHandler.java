@@ -1,12 +1,11 @@
 package Controllers;
 
-import database.DatabaseManager;
-import database.FileManager;
-import entities.Application;
-import entities.Job;
-import entities.JobSeeker;
-import entities.Recruiter;
-import utilities.UserIO;
+import Database.DatabaseManager;
+import Entities.Application;
+import Entities.Job;
+import Entities.JobSeeker;
+import Entities.Recruiter;
+import Utilities.UserIO;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -199,6 +198,7 @@ public class RecruiterHandler extends UserHandler{
     public void viewMyJobs(Recruiter recruiter, DatabaseManager db) throws SQLException, IOException {
         UserIO.displayHeading("Viewing my jobs");
         ArrayList<Job> jobs = db.getAllJobs();
+        jobs.removeIf(job -> !job.getAuthor().getEmail().equals(recruiter.getEmail()));
         ArrayList<String> optionsList = new ArrayList<>();
         for (Job job : jobs) {
             optionsList.add(job.getJobTitle() + " - " + job.getCompany() +" - "+ job.getDateListed());
@@ -223,36 +223,36 @@ public class RecruiterHandler extends UserHandler{
      */
     public void viewMyJobsMenu(Recruiter recruiter, DatabaseManager db, Job job) throws SQLException, IOException
     {
-    boolean flag = true;
-    do
-    {
-        UserIO.displayHeading("Options for jobs");
+        boolean flag = true;
+        do
+        {
+            UserIO.displayHeading("Options for jobs");
 
-        String[] options = {
-                "View job applicants",
-                "Search for highly ranked job seekers (coming soon)",
-                "Change advertising status of this job (coming soon)",
-                "Update this job (coming soon)",
-                "Delete this job (coming soon)",
-                "Back",
-                "Home"
-        };
+            String[] options = {
+                    "View job applicants",
+                    "Search for highly ranked job seekers (coming soon)",
+                    "Change advertising status of this job (coming soon)",
+                    "Update this job (coming soon)",
+                    "Delete this job (coming soon)",
+                    "Back",
+                    "Home"
+            };
 
-        String userInput = UserIO.menuSelectorKey("Please select an option", options);
+            String userInput = UserIO.menuSelectorKey("Please select an option", options);
 
-        switch (userInput) {
-            case ("0") -> viewJobApplicants(recruiter, db, job);
-            case ("1") -> searchJobSeeker();
-            case ("2") -> updateAdvertisingStatus(recruiter, db, job);
-            case ("3") -> updateJob(recruiter, db, job);
-            case ("4") -> deleteJob(recruiter, db, job);
-            case ("5") -> viewMyJobs(recruiter, db);
-            case ("6") -> {
-                UserIO.displayBody("Returning to the Home page.");
-                flag = false;
+            switch (userInput) {
+                case ("0") -> viewJobApplicants(recruiter, db, job);
+                case ("1") -> searchJobSeeker();
+                case ("2") -> updateAdvertisingStatus(recruiter, db, job);
+                case ("3") -> updateJob(recruiter, db, job);
+                case ("4") -> deleteJob(recruiter, db, job);
+                case ("5") -> viewMyJobs(recruiter, db);
+                case ("6") -> {
+                    UserIO.displayBody("Returning to the Home page.");
+                    flag = false;
+                }
             }
-        }
-    } while (flag);
+        } while (flag);
 
     }
 
