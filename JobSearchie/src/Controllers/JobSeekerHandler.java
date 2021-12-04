@@ -38,8 +38,8 @@ public class JobSeekerHandler extends UserHandler {
                     "View watchlist (coming soon)",
                     "Messages (coming soon)",
                     "View pending job applications (coming soon)",
-                    "View job interviews",
-                    "Profile management",
+                    "View job interviews", // not tested
+                    "Profile management", // needs cleaning
                     "Log out"
             };
 
