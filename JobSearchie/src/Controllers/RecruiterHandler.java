@@ -29,28 +29,35 @@ public class RecruiterHandler extends UserHandler{
      * @throws IOException handles IOException.
      */
     public void home(Recruiter recruiter, DatabaseManager db) throws SQLException, IOException {
-        UserIO.displayHeading("Home Page");
-        String[] options = {
-                "Create a job listing",
-                "View my jobs",
-                "Messages (coming soon)",
-                "Offer interview",
-                "Search for a job seeker",
-                "Profile management",
-                "logout",
-        };
-        String userInput = UserIO.menuSelectorKey("Please enter one of the following:", options);
+        boolean flag = true;
+        do
+        {
+            UserIO.displayHeading("Home Page");
+            String[] options = {
+                    "Create a job listing",
+                    "View my jobs",
+                    "Messages (coming soon)",
+                    "Offer interview",
+                    "Search for a job seeker",
+                    "Profile management",
+                    "Log Out",
+            };
+            String userInput = UserIO.menuSelectorKey("Please enter one of the following:", options);
 
-        switch (userInput) {
-            case ("0") -> postJob(recruiter, db);
-            case ("1") -> viewMyJobs(recruiter, db);
-            case ("2") -> sendMessage(recruiter, db);
-            //case ("3") -> offerInterview(recruiter, db);
-            //case ("4") -> searchJobSeeker();
-            case ("5") -> profileManagement(recruiter, db);
-            case ("6") -> logout(recruiter, db);
-            default -> throw new IllegalStateException("Unexpected value: " + userInput);
-        }
+            switch (userInput) {
+                case ("0") -> postJob(recruiter, db);
+                case ("1") -> viewMyJobs(recruiter, db);
+                case ("2") -> sendMessage(recruiter, db);
+                //case ("3") -> offerInterview(recruiter, db);
+                //case ("4") -> searchJobSeeker();
+                case ("5") -> profileManagement(recruiter, db);
+                case ("6") -> {
+                    flag = false;
+                    UserIO.displayBody("Logging out.");
+                }
+                default -> throw new IllegalStateException("Unexpected value: " + userInput);
+            }
+        } while (flag);
     }
 
     /**
@@ -82,16 +89,14 @@ public class RecruiterHandler extends UserHandler{
         String[] options = {
                 "Yes (coming soon)",
                 "No",
-                "Back",
-                "Home"
+                "Back"
         };
         String userInput = UserIO.menuSelectorKey("Are you sure you would like to delete your profile?:", options);
 
         switch (userInput) {
             case ("0") -> deleteProfileYes(recruiter, db);
             case ("1") -> deleteProfileNo(recruiter, db);
-            case ("2") -> profileManagement(recruiter, db);
-            case ("3") -> home(recruiter, db);
+            case ("2") -> {UserIO.displayBody("Returning to Profile Management");}
 
         }
     }
@@ -122,53 +127,6 @@ public class RecruiterHandler extends UserHandler{
         UserIO.displayBody("This option is not yet implemented coming soon");
         UserIO.displayBody("Returning to profile management");
         profileManagement(recruiter, db);
-    }
-
-    /**
-     * Creates screen to ask the user if they would like to logout.
-     *
-     * @param recruiter The Recruiter using the program.
-     * @param db The DatabaseManager handling the databaseIO.
-     * @throws SQLException handles SQL exception.
-     * @throws IOException handles IOException.
-     */
-    public void logout(Recruiter recruiter, DatabaseManager db) throws SQLException, IOException {
-        String[] options = {
-                "Yes",
-                "No"
-        };
-        String option = UserIO.menuSelectorKey("Are you sure you would like to logout?", options);
-
-        switch (option) {
-            case ("0") -> logoutYes(recruiter, db);
-            case ("1") -> logoutNo(recruiter, db);
-        }
-    }
-
-    /**
-     * Returns user to the home page.
-     *
-     * @param recruiter The Recruiter using the program.
-     * @param db The DatabaseManager handling the databaseIO.
-     * @throws SQLException handles SQL exception.
-     * @throws IOException handles IOException.
-     */
-    public void logoutNo(Recruiter recruiter, DatabaseManager db) throws SQLException, IOException {
-        UserIO.displayHeading("Returning to Home Page");
-        home(recruiter, db);
-    }
-
-    /**
-     * Logs the user out by shutting down the console.
-     *
-     * @param recruiter The Recruiter using the program.
-     * @param db The DatabaseManager handling the databaseIO.
-     * @throws SQLException handles SQL exception.
-     * @throws IOException handles IOException.
-     */
-    public void logoutYes(Recruiter recruiter, DatabaseManager db) throws SQLException, IOException {
-        UserIO.displayHeading("Thank you using JobSearchie. Logging out now bye :)");
-        System.exit(0);
     }
 
     /**
@@ -206,22 +164,28 @@ public class RecruiterHandler extends UserHandler{
      * @throws IOException handles IOException.
      */
     public void profileManagement(Recruiter recruiter, DatabaseManager db) throws SQLException, IOException {
-        UserIO.displayHeading("Profile Management");
-        String[] options = {
-                "Update profile (coming soon)",
-                "Delete profile",
-                "Back",
-                "Home",
-        };
-        String userInput = UserIO.menuSelectorKey("Please enter one of the following:", options);
+        Boolean flag = true;
 
-        switch (userInput) {
-            case ("0") -> updateProfile(recruiter, db);
-            case ("1") -> deleteProfile(recruiter, db);
-            case ("2") -> home(recruiter, db);
-            case ("3") -> home(recruiter, db);
-            default -> throw new IllegalStateException("Unexpected value: " + userInput);
-        }
+        do
+        {
+            UserIO.displayHeading("Profile Management");
+            String[] options = {
+                    "Update profile (coming soon)",
+                    "Delete profile",
+                    "Home",
+            };
+            String userInput = UserIO.menuSelectorKey("Please enter one of the following:", options);
+
+            switch (userInput) {
+                case ("0") -> updateProfile(recruiter, db);
+                case ("1") -> deleteProfile(recruiter, db);
+                case ("2") -> {
+                    UserIO.displayBody("Returning to Home.");
+                    flag = false;
+                }
+                default -> throw new IllegalStateException("Unexpected value: " + userInput);
+            }
+        } while (flag);
     }
 
     /**
@@ -257,9 +221,12 @@ public class RecruiterHandler extends UserHandler{
      * @throws SQLException handles SQL exception.
      * @throws IOException handles IOException.
      */
-    public void viewMyJobsMenu(Recruiter recruiter, DatabaseManager db, Job job) throws SQLException, IOException {
-
-        UserIO.displayHeading("Options for job");
+    public void viewMyJobsMenu(Recruiter recruiter, DatabaseManager db, Job job) throws SQLException, IOException
+    {
+    Boolean flag = true;
+    do
+    {
+        UserIO.displayHeading("Options for jobs");
 
         String[] options = {
                 "View job applicants",
@@ -280,8 +247,13 @@ public class RecruiterHandler extends UserHandler{
             case ("3") -> updateJob(recruiter, db, job);
             case ("4") -> deleteJob(recruiter, db, job);
             case ("5") -> viewMyJobs(recruiter, db);
-            case ("6") -> home(recruiter, db);
+            case ("6") -> {
+                UserIO.displayBody("Returning to the Home page.");
+                flag = false;
+            }
         }
+    } while (flag);
+
     }
 
     /**
@@ -358,7 +330,6 @@ public class RecruiterHandler extends UserHandler{
         UserIO.displayHeading("Sending message");
         UserIO.displayBody("This option is not yet implemented coming soon");
         UserIO.displayBody("Returning to home.");
-        home(recruiter, db);
     }
 
     /**
@@ -374,7 +345,6 @@ public class RecruiterHandler extends UserHandler{
         db.insertJob(job);
         UserIO.displayBody("You have submitted the job. Thank you for using Job Searchie.");
         UserIO.displayBody("Returning to home screen now");
-        home(recruiter, db);
     }
 
     /**
@@ -388,7 +358,6 @@ public class RecruiterHandler extends UserHandler{
     public void submitJobNo(Recruiter recruiter, DatabaseManager db) throws SQLException, IOException {
         UserIO.displayBody("You have not submitted");
         UserIO.displayBody("Returning to home screen now");
-        home(recruiter, db);
     }
 
     /**
