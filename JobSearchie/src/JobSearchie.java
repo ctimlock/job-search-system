@@ -6,6 +6,7 @@ import utilities.UserIO;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.SQLException;
 
 /**
@@ -53,6 +54,9 @@ public class JobSearchie
                     handler.home(jobSeeker, program.db);
                 }
             }
+
+            program.session.setLogoutTime(new Date(System.currentTimeMillis()));
+            program.db.insertSession(program.session);
         } catch (Exception e)
         {
             //Badnews

@@ -28,29 +28,35 @@ public class JobSeekerHandler extends UserHandler {
      * @throws IOException handles IOException.
      */
     public void home(JobSeeker jobSeeker, DatabaseManager db) throws SQLException, IOException {
-        UserIO.displayTitle("Home");
-        String[] options = {
-                "Search for a job",
-                "View watchlist (coming soon)",
-                "Messages (coming soon)",
-                "View pending job applications (coming soon)",
-                "View job interviews",
-                "Profile management",
-                "Log out"
-        };
+        boolean flag = true;
 
-        String userInput = UserIO.menuSelectorKey("Please enter one of the above options:", options);
+        do
+        {
+            UserIO.displayTitle("Home");
+            String[] options = {
+                    "Search for a job",
+                    "View watchlist (coming soon)",
+                    "Messages (coming soon)",
+                    "View pending job applications (coming soon)",
+                    "View job interviews",
+                    "Profile management",
+                    "Log out"
+            };
 
-        switch (userInput) {
-            case ("0") -> jobSearch(jobSeeker, db);
-            case ("1") -> watchlist(jobSeeker, db);
-            case ("2") -> sendMessage(jobSeeker, db);
-            case ("3") -> pendingJobApplications(jobSeeker, db);
-            case ("4") -> jobInterviews(jobSeeker, db);
-            case ("5") -> profileManagement(jobSeeker, db);
-            case ("6") -> logout(jobSeeker, db);
-            default -> throw new IllegalStateException("Unexpected value: " + userInput);
-        }
+            String userInput = UserIO.menuSelectorKey("Please enter one of the above options:", options);
+
+            switch (userInput)
+            {
+                case ("0") -> jobSearch(jobSeeker, db);
+                case ("1") -> watchlist(jobSeeker, db);
+                case ("2") -> sendMessage(jobSeeker, db);
+                case ("3") -> pendingJobApplications(jobSeeker, db);
+                case ("4") -> jobInterviews(jobSeeker, db);
+                case ("5") -> profileManagement(jobSeeker, db);
+                case ("6") -> {flag = false; UserIO.displayBody("Logging out.");}
+                default -> throw new IllegalStateException("Unexpected value: " + userInput);
+            }
+        } while (flag);
     }
 
     /**
@@ -131,7 +137,6 @@ public class JobSeekerHandler extends UserHandler {
         UserIO.displayHeading("Sending message");
         UserIO.displayBody("This option is not yet implemented coming soon");
         UserIO.displayBody("Returning to home.");
-        home(jobSeeker, db);
     }
 
     /**
@@ -297,7 +302,7 @@ public class JobSeekerHandler extends UserHandler {
            // case ("0") -> displayJob(); // TODO : CALL JOB
            // case ("1") -> displayJob(); // TODO : CALL JOB
            // case ("2") -> // more 1 - TODO : TO SEE MORE JOB applications on my watchlist - IF NO MORE JOB applications, DISPLAY A MESSAGE THAT INDICATES THIS.
-            case ("3") -> home(jobSeeker, db);
+            case ("3") -> UserIO.displayBody("Returning to Home page.");
             default -> throw new IllegalStateException("Unexpected value: " + userInput);
         }
     }
@@ -382,9 +387,8 @@ public class JobSeekerHandler extends UserHandler {
      */
     public void watchlist(JobSeeker jobSeeker, DatabaseManager db) throws SQLException, IOException {
         UserIO.displayHeading("Watchlist");
-        UserIO.displayBody("This option is not yet implemented coming soon.");
-        UserIO.displayBody("Returning to view my jobs.");
-        home(jobSeeker, db);
+        UserIO.displayBody("This option is not yet implemented, coming soon.");
+        UserIO.displayBody("Returning to Home page.");
     }
 
     // 4. VIEW PENDING JOB APPLICATIONS
@@ -397,9 +401,8 @@ public class JobSeekerHandler extends UserHandler {
      */
     public void pendingJobApplications(JobSeeker jobSeeker, DatabaseManager db) throws SQLException, IOException {
         UserIO.displayHeading("Viewing pending job applications");
-        UserIO.displayBody("This option is not yet implemented coming soon.");
-        UserIO.displayBody("Returning to view my jobs.");
-        home(jobSeeker, db);
+        UserIO.displayBody("This option is not yet implemented, coming soon.");
+        UserIO.displayBody("Returning to Home page.");
     }
 
     // 5. VIEW JOB INTERVIEWS FUNCTIONS
@@ -505,7 +508,7 @@ public class JobSeekerHandler extends UserHandler {
         switch (userInput) {
             case ("0") -> cancelApplicationPlusInterview(jobSeeker, db);
             case ("1") -> jobInterviews(jobSeeker, db);
-            case ("2") -> home(jobSeeker, db);
+            case ("2") -> UserIO.displayBody("Returning to Home page.");
         }
     }
 
@@ -532,22 +535,28 @@ public class JobSeekerHandler extends UserHandler {
      * @throws IOException handles IOException.
      */
     public void profileManagement(JobSeeker jobSeeker, DatabaseManager db) throws SQLException, IOException {
-        UserIO.displayHeading("Profile Management");
-        String[] options = {
-                "Update profile (coming soon)",
-                "Delete profile",
-                "Back",
-                "Home",
-        };
-        String userInput = UserIO.menuSelectorKey("Please enter one of the following:", options);
+        boolean flag = true;
+        do
+        {
+            UserIO.displayHeading("Profile Management");
+            String[] options = {
+                    "Update profile (coming soon)",
+                    "Delete profile",
+                    "Home",
+            };
+            String userInput = UserIO.menuSelectorKey("Please enter one of the following:", options);
 
-        switch (userInput) {
-            case ("0") -> updateProfile(jobSeeker, db);
-            case ("1") -> deleteProfile(jobSeeker, db);
-            case ("2") -> home(jobSeeker, db);
-            case ("3") -> home(jobSeeker, db);
-            default -> throw new IllegalStateException("Unexpected value: " + userInput);
-        }
+            switch (userInput) {
+                case ("0") -> updateProfile(jobSeeker, db);
+                case ("1") -> deleteProfile(jobSeeker, db);
+                case ("2") -> {
+                    flag = false;
+                    UserIO.displayBody("Returning to Home page.");
+                }
+                default -> throw new IllegalStateException("Unexpected value: " + userInput);
+            }
+        } while (flag);
+
     }
 
     /**
@@ -559,22 +568,27 @@ public class JobSeekerHandler extends UserHandler {
      * @throws IOException handles IOException.
      */
     public void deleteProfile(JobSeeker jobSeeker, DatabaseManager db) throws SQLException, IOException {
+        boolean flag = true;
+        do
+        {
+            String[] options = {
+                    "Yes (coming soon)",
+                    "No",
+                    "Back"
+            };
+            String userInput = UserIO.menuSelectorKey("Are you sure you would like to delete your profile?:", options);
 
-        String[] options = {
-                "Yes (coming soon)",
-                "No",
-                "Back",
-                "Home"
-        };
-        String userInput = UserIO.menuSelectorKey("Are you sure you would like to delete your profile?:", options);
+            switch (userInput)
+            {
+                case ("0") -> deleteProfileYes(jobSeeker, db);
+                case ("1") -> deleteProfileNo(jobSeeker, db);
+                case ("2") -> {
+                    flag = false;
+                    UserIO.displayBody("Returning to profile management page.");
+                }
 
-        switch (userInput) {
-            case ("0") -> deleteProfileYes(jobSeeker, db);
-            case ("1") -> deleteProfileNo(jobSeeker, db);
-            case ("2") -> profileManagement(jobSeeker, db);
-            case ("3") -> home(jobSeeker, db);
-
-        }
+            }
+        } while (flag);
     }
 
     /**
