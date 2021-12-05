@@ -159,14 +159,6 @@ public class RandomGen {
         country.add("Western Australia");
         country.add("Australian Capital Territory");
         country.add("South Australia");
-        country.add("Colorado");
-        country.add("Jacksonville");
-        country.add("Arizona");
-        country.add("Woucestershire");
-        country.add("Texas");
-        country.add("Pembrokeshire");
-        country.add("Oxfordshire");
-        country.add("Utah");
         return country.get(new Random().nextInt(country.size()));
     }
 
@@ -181,13 +173,6 @@ public class RandomGen {
         country.add("Devenport");
         country.add("Smithton");
         country.add("Perth");
-        country.add("Denver");
-        country.add("Moab");
-        country.add("Devon");
-        country.add("Pembroke");
-        country.add("Oxford");
-        country.add("Cambridge");
-        country.add("New York");
         return country.get(new Random().nextInt(country.size()));
     }
 

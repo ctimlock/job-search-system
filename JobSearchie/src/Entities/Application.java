@@ -1,6 +1,7 @@
 package Entities;
 
 import java.sql.Date;
+import java.util.LinkedHashMap;
 
 /**
  * An entity class which stores information for an application.
@@ -209,4 +210,12 @@ public class Application {
      * @param applicationDate   The application date as a Date object datatype.
      */
     public void setApplicationDate(Date applicationDate) {this.applicationDate = applicationDate;}
+
+    public LinkedHashMap<String, String> getApplicationDetailMap() {
+        LinkedHashMap<String, String> applicationDetails = new LinkedHashMap<>();
+        applicationDetails.put("Application Date", applicationDate.toString());
+        applicationDetails.put("Status", status);
+        applicationDetails.putAll(jobSeeker.getUserDetailMap());
+        return applicationDetails;
+    }
 }
