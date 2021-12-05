@@ -6,7 +6,6 @@ import Utilities.UserIO;
 import java.util.ArrayList;
 import java.sql.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 
 /**
  * An entity class which stores information for a job.
@@ -199,7 +198,7 @@ public class Job {
     }
 
     /**
-     * Accessor method to get the job's deListing date.
+     * Accessor method to get the job's delisting date.
      *
      * @return  The job description's de-listing date as a Date object datatype.
      */
@@ -444,8 +443,8 @@ public class Job {
     public int getCosine(String matchingTerm) {
         HashMap<String, Integer> matches = new HashMap<>();
         matches.put(jobTitle, 50);
-        matches.put(getStringKeywords(" "), 15);
-        matches.put(getStringCategories(" "), 15);
+        matches.put(getStringKeywords(), 15);
+        matches.put(getStringCategories(), 15);
         matches.put(description, 20);
         if (RelevanceScorer.getCosine(matches, matchingTerm) == -1){
             System.out.println("Job failed: id = " + id);
@@ -454,68 +453,45 @@ public class Job {
     }
 
     public String getJobString() {
-        return jobTitle + getStringKeywords(" ") + getStringCategories(" ") + description + jobLevel;
-    }
-
-    private String getStringCategories(String separator) {
         StringBuilder sb = new StringBuilder();
-        categories.forEach(category -> sb.append(category).append(separator));
-        sb.delete(sb.length() - separator.length(), sb.length());
+        sb.append(jobTitle);
+        sb.append(getStringKeywords());
+        sb.append(getStringCategories());
+        sb.append(description);
+        sb.append(jobLevel);
         return sb.toString();
     }
 
-    public LinkedHashMap<String, String> getJobDetailMap(JobSeeker jobSeeker) {
-        LinkedHashMap<String, String> jobDetails = new LinkedHashMap<>();
-
-        jobDetails.put("Title", jobTitle);
-        jobDetails.put("Personal Relevancy",String.valueOf(getPersonalRelevancy(jobSeeker)));
-        jobDetails.put("Date Posted", dateListed.toString());
-        jobDetails.put("Location", location.toString());
-        jobDetails.put("Company", company);
-        jobDetails.put("Compensation", UserIO.formatCompensation(compensation));
-        jobDetails.put("Job Level", jobLevel);
-        jobDetails.put("Working Type", workType);
-        jobDetails.put("Working Arrangement", workingArrangement);
-        jobDetails.put("Description", description);
-        jobDetails.put("Categories", getStringCategories(", "));
-        jobDetails.put("Keywords", getStringKeywords(", "));
-        return jobDetails;
-    }
-
-    public LinkedHashMap<String, String> getJobDetailMap() {
-        LinkedHashMap<String, String> jobDetails = new LinkedHashMap<>();
-        jobDetails.put("Title", jobTitle);
-        jobDetails.put("Date Posted", dateListed.toString());
-        jobDetails.put("Location", location.toString());
-        jobDetails.put("Company", company);
-        jobDetails.put("Compensation", UserIO.formatCompensation(compensation));
-        jobDetails.put("Job Level", jobLevel);
-        jobDetails.put("Working Type", workType);
-        jobDetails.put("Working Arrangement", workingArrangement);
-        jobDetails.put("Description", description);
-        jobDetails.put("Categories", getStringCategories(", "));
-        jobDetails.put("Keywords", getStringKeywords(", "));
-        return jobDetails;
-    }
-
-    private String getStringKeywords(String separator) {
+    private String getStringCategories() {
         StringBuilder sb = new StringBuilder();
-        keywords.forEach(keyword -> sb.append(keyword).append(separator));
-        sb.delete(sb.length() - separator.length(), sb.length());
+        categories.forEach(category -> sb.append(category).append(" "));
+        return sb.toString();
+
+    }
+
+    private String getStringKeywords() {
+        StringBuilder sb = new StringBuilder();
+        try {
+            keywords.forEach(keyword -> sb.append(keyword).append(" "));
+        } catch (Exception e) {
+            display();
+            System.out.println(author.getEmail());
+            System.exit(1);
+        }
         return sb.toString();
     }
 
 
     public int getPersonalRelevancy(JobSeeker jobSeeker) {
         int resumeScore = RelevanceScorer.getCosineScore(jobSeeker.getResumeContent(), getJobString());
-        int keywordScore = RelevanceScorer.getCosineScore(jobSeeker.getKeywordsAsString(" "), getJobString());
+        int keywordScore = RelevanceScorer.getCosineScore(jobSeeker.getKeywordsAsString(), getJobString());
         int jobNameScore = RelevanceScorer.getCosineScore(jobSeeker.getCurrentJobName(), getJobString());
         int jobLevelScore = RelevanceScorer.getCosineScore(jobSeeker.getCurrentJobLevel(), getJobString());
         int expectedComp = jobSeeker.getExpectedCompensation();
         int compensationScore = (expectedComp > 5000 && expectedComp <= 1000000) ? (Math.abs(expectedComp/compensation - 1) + 1) : 100;
 
-        double resumeWeight = 0.2;
-        double keywordWeight = 0.3;
+        double resumeWeight = 0.3;
+        double keywordWeight = 0.2;
         double jobNameWeight = 0.05;
         double jobLevelWeight = 0.05;
         double compensationWeight = 0.4;

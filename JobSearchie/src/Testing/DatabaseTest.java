@@ -56,22 +56,6 @@ public class DatabaseTest {
         }
     }
 
-    private Invitation insertAndGetInvitation(Recruiter recruiter, Job job, JobSeeker jobSeeker) {
-        Invitation invitation = RandomGen.getRandomInvitation(recruiter, job, jobSeeker);
-        return insertInvitation(invitation);
-    }
-
-    private Invitation insertInvitation(Invitation invitation) {
-        try {
-            return db.insertInvitation(invitation);
-        } catch (SQLException e) {
-            System.out.println("Error inserting invitation" + e.getMessage());
-            System.out.println(invitation.getId());
-            System.exit(1);
-            return null;
-        }
-    }
-
     private void insertApplication(Application application) {
         try {
             db.insertApplication(application);
@@ -80,23 +64,19 @@ public class DatabaseTest {
             application.display();
             System.exit(1);
         }
+
     }
 
     private void insertManyJobApplications() {
-        Recruiter recruiter = null;
-        Job job = null;
-        JobSeeker jobSeeker = null;
         for (int i = 0; i < 50; i++) {
-            recruiter = insertAndGetRecruiter();
+            Recruiter recruiter = insertAndGetRecruiter();
             for (int j = 0; j < 20; j++) {
-                job = insertAndGetJob(recruiter);
-                for (int k = 0; k < 5; k++) {
-                    jobSeeker = insertAndGetJobSeeker();
+                Job job = insertAndGetJob(recruiter);
+                for (int k = 0; k < 3; k++) {
+                    JobSeeker jobSeeker = insertAndGetJobSeeker();
                     insertApplication(RandomGen.getRandomApplication(job, jobSeeker));
                 }
             }
-            if (RandomGen.getRandomBoolean())
-                insertAndGetInvitation(recruiter, job, jobSeeker);
         }
     }
 

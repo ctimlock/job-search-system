@@ -11,7 +11,7 @@ public class JobSeekerScreenTest {
 
     public static void main (String[] args) throws SQLException, IOException {
         DatabaseManager db = new DatabaseManager();
-        JobSeeker jobSeeker = db.getJobSeeker("yang_chris@outlook.com.au");
+        JobSeeker jobSeeker = db.getJobSeeker("hannah_putin@gmail.edu");
         JobSeekerHandler jobSeekerHandler = new JobSeekerHandler();
         jobSeekerHandler.home(jobSeeker, db);
     }

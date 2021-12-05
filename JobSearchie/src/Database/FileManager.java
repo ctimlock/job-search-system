@@ -27,7 +27,7 @@ import java.nio.file.StandardCopyOption;
 
 public abstract class FileManager
 {
-    private static final String JOB_SEARCHIE_FILE_ROOT_DIRECTORY = "./database/fileStorage/";
+    private static final String JOB_SEARCHIE_FILE_ROOT_DIRECTORY = "JobSearchie/database/fileStorage/";
     public static final String RESUME_DIRECTORY = "resume";
     public static final String COVER_LETTER_DIRECTORY = "coverLetter";
 
@@ -76,16 +76,13 @@ public abstract class FileManager
      * @param newFileName The selected name for the new file, excluding the file extension.
      */
     public static void moveFileToJSStorage(String directory, String srcPath, String newFileName) throws IOException {
-        
-        if (srcPath != null && directory != null)
-        {
+        if (srcPath != null && directory != null) {
             File src = new File(srcPath);
-            String extension = getExtensionFromPath(srcPath);
-            newFileName += extension;
+            int index = src.getName().lastIndexOf('.');
+            newFileName += src.getName().substring(index);
             File dest = new File(JOB_SEARCHIE_FILE_ROOT_DIRECTORY + directory + "/" + newFileName);
             Files.copy(src.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
         }
-    
     }
 
     /**
@@ -129,25 +126,19 @@ public abstract class FileManager
      */
     public static String readFileToString(String filePath) throws IOException
     {
-        if (filePath.isEmpty() || filePath == null)
-        {
-            return "";
-        }
-        else
-        {
-            String extension = getExtensionFromPath(filePath);
+        int index = filePath.lastIndexOf(".");
+        String extension = filePath.substring(index);
 
-            String text;
-            switch (extension)
-            {
-                case ".pdf" -> text = readPDFFileAsString(filePath);
-                case ".doc" -> text = readDocFileAsString(filePath);
-                case ".docx" -> text = readDocxFileAsString(filePath);
-                case ".txt" -> text = readTextFileAsString(filePath);
-                default -> throw new IOException();
-            }
-            return text;
+        String text;
+        switch (extension)
+        {
+            case ".pdf" -> text = readPDFFileAsString(filePath);
+            case ".doc" -> text = readDocFileAsString(filePath);
+            case ".docx" -> text = readDocxFileAsString(filePath);
+            case ".txt" -> text = readTextFileAsString(filePath);
+            default -> throw new IOException();
         }
+        return text;
     }
 
     private static String readPDFFileAsString(String filePath) throws IOException
@@ -197,6 +188,7 @@ public abstract class FileManager
         String homeDir = System.getProperty("user.home");
         if (osName.contains("mac"))
         {
+            System.setProperty("apple.awt.fileDialogForDirectories", "true");
             Frame frame = new Frame();
             do
             {
@@ -204,34 +196,26 @@ public abstract class FileManager
                 fileDialog.setDirectory(homeDir);
                 fileDialog.setVisible(true);
                 fileDialog.setMultipleMode(false);
-                fileDialog.toFront();
+
                 path = fileDialog.getFile();
                 if (path == null)
                 {
                     String retry = UserIO.menuSelectorValue("Upload cancelled. Do you wish to try again?", new String[]{"Yes", "No"});
-                    if (retry.equalsIgnoreCase("No"))
+                    if (retry.equals("No"))
                     {
-                        return "";
+                        return null;
                     }
                 }
-                path = fileDialog.getDirectory() + path;
-
-                boolean fileIsValid = false;
-                for (String fileType : fileTypes)
+                if (path != null)
                 {
-                    if (path.toLowerCase().endsWith(fileType.toLowerCase()))
+                    if (!path.endsWith(".pdf") || !path.endsWith(".doc") || !path.endsWith(".docx") || !path.endsWith(".txt"))
                     {
-                        fileIsValid = true;
-                        break;
+                        UserIO.displayBody("Invalid file type selected. Please try again.");
+                        path = null;
                     }
                 }
-
-                if (!fileIsValid)
-                {
-                    UserIO.displayBody("Invalid file type selected. Please try again.");
-                    path = null;
-                }
-            }while (path == null);
+            } while (path == null);
+            System.setProperty("apple.awt.fileDialogForDirectories", "true");
         } else
         {
             JFileChooser fileChooser = new JFileChooser();
@@ -246,12 +230,9 @@ public abstract class FileManager
                 case JFileChooser.APPROVE_OPTION -> path = fileChooser.getSelectedFile().getAbsolutePath();
                 case JFileChooser.CANCEL_OPTION -> {
                     String retry = UserIO.menuSelectorValue("Upload cancelled. Do you wish to try again?", new String[]{"Yes", "No"});
-                    if (retry.equalsIgnoreCase("Yes"))
+                    if (retry.equals("Yes"))
                     {
                         path = FileManager.selectFilePath(dialogueTitle, fileTypes);
-                    } else if (retry.equalsIgnoreCase("no"))
-                    {
-                        path = "";
                     }
                 }
 

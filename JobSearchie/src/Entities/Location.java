@@ -159,8 +159,4 @@ public class Location {
     public void setPostcode(String postcode) {
         this.postcode = postcode;
     }
-
-    public String toString() {
-        return country + ", " + state + ", " + city + ", " + postcode;
-    }
 }

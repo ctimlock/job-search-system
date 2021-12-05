@@ -23,18 +23,13 @@ public abstract class RelevanceScorer {
      * @return The similarity rating, from 0-100.
      */
     public static int getCosineScore(String textA, String textB) {
-        if ((textA == null || textA.isBlank()) || (textB == null || textB.isBlank()))
-        {
-            return 0;
-        }
-
         String[] text1Words = textA.split(" ");
         String[] text2Words = textB.split(" ");
         Map<String, Values> wordFreqVector = new HashMap<>();
         List<String> distinctWords = new ArrayList<>();
 
         for (String text : text1Words) {
-            String word = text.trim().toLowerCase();
+            String word = text.trim();
             if (!word.isEmpty()) {
                 if (wordFreqVector.containsKey(word)) {
                     Values vals1 = wordFreqVector.get(word);
@@ -51,7 +46,7 @@ public abstract class RelevanceScorer {
         }
 
         for (String text : text2Words) {
-            String word = text.trim().toLowerCase();
+            String word = text.trim();
             if (!word.isEmpty()) {
                 if (wordFreqVector.containsKey(word)) {
                     Values vals1 = wordFreqVector.get(word);
@@ -89,7 +84,7 @@ public abstract class RelevanceScorer {
      */
     public static int getCosine(HashMap<String, Integer> inputs, String matchingTerm) {
         if (inputs.values().stream().mapToInt(Integer::intValue).sum() == 100) {
-            return inputs.keySet().stream().mapToInt(key -> getCosineScore(key.toLowerCase(), matchingTerm.toLowerCase()) * inputs.get(key)/100).sum();
+            return inputs.keySet().stream().mapToInt(key -> getCosineScore(key, matchingTerm) * inputs.get(key)/100).sum();
         }else {
             System.out.println("Please ensure weights sum to 100");
             System.out.println(inputs.values().stream().mapToInt(Integer::intValue).sum());

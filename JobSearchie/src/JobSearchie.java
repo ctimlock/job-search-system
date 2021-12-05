@@ -1,12 +1,9 @@
 import Controllers.*;
 import Database.DatabaseManager;
 import Entities.*;
-import Utilities.UserIO;
 
 import javax.swing.*;
-import java.io.IOException;
 import java.sql.Date;
-import java.sql.SQLException;
 
 /**
  * This is the driver class of the program.
@@ -23,75 +20,65 @@ public class JobSearchie
      * This is the main method which begins the program execution.
      * @param args  An array of string passed in as command line parameters.
      */
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         JobSearchie program = new JobSearchie();
         program.frameInit = new JFrame();
         program.db = new DatabaseManager();
-        program.run();
-        program.exit();
-    }
+        Login loginRegistration = new Login();
+        program.session = new Session(loginRegistration.beginLoginOrRegistration(program.db));
 
-    private void run() {
-        session = new Session();
-        LoginHandler loginHandler = new LoginHandler();
-        while (true) {
-            User user = loginHandler.startLogin(db);
-            session.setUser(user);
-            if (user != null) {
-                switch (session.getUserType()) {
-                    case ("Admin") -> {}
-                    case ("Recruiter") -> runRecruiter();
-                    case ("JobSeeker") -> runJobSeeker();
+        try
+        {
+            switch (program.session.getUserType())
+            {
+                case ("Admin") -> {
+                    /* Admin home not yet implemented!!!
+                    AdminHandler handler = new AdminHandler();
+                    Admin admin = (Admin) program.session.getUser();
+                    handler.home(admin, program.db);*/
                 }
-            } else
-                break;
-            insertSession();
-            resetSession();
-        }
-
-    }
-
-    private void insertSession() {
-        if (session.getUser() != null) {
-            session.setLogoutTime(new Date(System.currentTimeMillis()));
-            try {
-                db.insertSession(session);
-            } catch (Exception e) {
-                System.out.println("Error inserting session" + e.getMessage());
+                case ("Recruiter") -> {
+                    RecruiterHandler handler = new RecruiterHandler();
+                    Recruiter recruiter = (Recruiter) program.session.getUser();
+                    handler.home(recruiter, program.db);
+                }
+                case ("JobSeeker") -> {
+                    JobSeekerHandler handler = new JobSeekerHandler();
+                    JobSeeker jobSeeker = (JobSeeker) program.session.getUser();
+                    handler.home(jobSeeker, program.db);
+                }
             }
+
+            program.session.setLogoutTime(new Date(System.currentTimeMillis()));
+            program.db.insertSession(program.session);
+        } catch (Exception e)
+        {
+            //Badnews
         }
+
+        program.exit();
+        //program.run();
     }
 
-    private void resetSession() {
-        session = new Session();
-    }
+    /**
+     *
+     */
+    public void run() {
+        DatabaseManager db = new DatabaseManager();
 
-    private void runJobSeeker() {
-        JobSeekerHandler handler = new JobSeekerHandler();
-        JobSeeker jobSeeker = (JobSeeker) session.getUser();
-        try {
-            handler.home(jobSeeker, db);
-        } catch (Exception e) {
-            System.out.println("Could not run Job Seeker home method: " + e.getMessage());
-        }
-    }
 
-    private void runRecruiter() {
-        RecruiterHandler handler = new RecruiterHandler();
-        Recruiter recruiter = (Recruiter) session.getUser();
-        try {
-            handler.home(recruiter, db);
-        } catch (Exception e) {
-            System.out.println("Could not run Recruiter home method: " + e.getMessage());
-        }
+
+        db.close();
     }
 
     /**
      * This method closes the database and terminates the program.
      */
-    private void exit() {
+    public void exit() {
         db.close();
-        UserIO.displayBody("Thank you for using Job Searchie, we hope to see you again soon.");
         System.exit(1);
     }
+
+
 }
