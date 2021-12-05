@@ -1,7 +1,10 @@
 package Entities;
 
+import Utilities.UserIO;
+
 import java.util.ArrayList;
 import java.sql.Date;
+import java.util.LinkedHashMap;
 
 /**
  * An entity class (child class of User class) which stores information for the job seeker user by extending
@@ -251,12 +254,25 @@ public class JobSeeker extends User {
         return sb.toString();
     }
 
-    public String getKeywordsAsString() {
+    public String getKeywordsAsString(String separator) {
         StringBuilder sb = new StringBuilder();
         if (keywords == null) {
             System.out.println(getEmail());
         }
-        keywords.forEach(keyword -> sb.append(keyword).append(" "));
+        keywords.forEach(keyword -> sb.append(keyword).append(separator));
+        sb.delete(sb.length() - separator.length(), sb.length());
         return sb.toString();
+    }
+
+    public LinkedHashMap<String, String> getUserDetailMap() {
+        LinkedHashMap<String, String> jobDetails = new LinkedHashMap<>();
+        jobDetails.put("Name", getFirstName() + getLastName());
+        jobDetails.put("Number", contactNumber);
+        jobDetails.put("Email", getEmail());
+        jobDetails.put("Location", location.toString());
+        jobDetails.put("Current Job", currentJobName);
+        jobDetails.put("Keywords", getKeywordsAsString(", "));
+        jobDetails.put("Resume Content", resumeContent);
+        return jobDetails;
     }
 }

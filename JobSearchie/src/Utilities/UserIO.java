@@ -5,13 +5,33 @@ import Entities.JobSeeker;
 
 import java.sql.Date;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class UserIO {
-    private static final int CHAR_WIDTH = 100;
+    private static final int DEFAULT_SLEEP_TIME = 2;
+    private static final int CHAR_WIDTH = 110;
+    private static final int ATTRIBUTE_WIDTH = 20;
+    private static final int VALUE_WIDTH = CHAR_WIDTH - ATTRIBUTE_WIDTH;
+
+    public static void comingSoon() {
+        clearScreen(20);
+        displayBody("Please sit tight, this functionality is coming soon!");
+        sleep(2);
+        clearScreen(20);
+
+    }
+
+    public static void sleep() {
+        sleep(DEFAULT_SLEEP_TIME);
+    }
+
+    public static void sleep(int seconds) {
+        try {
+            TimeUnit.SECONDS.sleep(seconds);
+        } catch (Exception ignored) {}
+    }
 
     public static <E> void displayArrayList(ArrayList<E> arrayList) {
         try {
@@ -88,10 +108,13 @@ public class UserIO {
         displayLineBreak("=");
     }
 
-    //TODO: Make this work nicely :'(
-    public static void clearScreen()
+    public static void clearScreen() {
+        clearScreen(5);
+    }
+
+    public static void clearScreen(int lines)
     {
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < lines; i++)
         {
             System.out.println();
         }
@@ -211,7 +234,7 @@ public class UserIO {
     }
 
     public static String menuSelectorKey(String question, String[] options) {
-        UserIO.displayBody(question);
+        UserIO.displayBody("\n" + question);
         UserIO.displayOptions(options);
 
         boolean flag = false;
@@ -261,27 +284,41 @@ public class UserIO {
         System.out.print(text);
     }
 
-    public static void printJobHeading() {
-        displayHeading("Search Results");
+    public static void printJobHeading(boolean includePersonalRelevancy) {
         printBlock("No.", " | ", 10);
-        printBlock("Job Title", " | ", 20);
-        printBlock("Company", " | ", 20);
-        printBlock("State, City",  " | ", 20);
-        printBlock("Compensation", " | ", 20);
-        printBlock("Personal Relevancy", " | ", 20);
+        printBlock("Job Title", " | ", includePersonalRelevancy ? 20 : 25);
+        printBlock("Company", " | ", includePersonalRelevancy ? 20 : 25);
+        printBlock("State, City",  " | ", includePersonalRelevancy ? 20 : 25);
+        printBlock("Compensation", " | ", includePersonalRelevancy ? 20 : 25);
+        if (includePersonalRelevancy)
+            printBlock("Personal Relevancy", " | ", 20);
         System.out.println("\n" + "-".repeat(CHAR_WIDTH));
     }
 
-    public static void printJobSummary(Job job, int relevancy, int number) {
-        double amount = job.getCompensation();
+    public static String formatCompensation(double compensation) {
         DecimalFormat formatter = new DecimalFormat("#,###.00");
-        String compensation = "$" + formatter.format(amount);
+        return "$" + formatter.format(compensation);
+    }
+
+    public static void printJobSummary(Job job, int number) {
+        String amount = formatCompensation(job.getCompensation());
+
+        printBlock(String.valueOf(number), " - ", 10);
+        printBlock(job.getJobTitle(), " - ", 25);
+        printBlock(job.getCompany(), " - ", 25);
+        printBlock(job.getLocation().getState() + ", " + job.getLocation().getCity(),  " - ", 25);
+        printBlock(amount, " - ", 25);
+        System.out.println("\n");
+    }
+
+    public static void printJobSummary(Job job, int relevancy, int number) {
+        String amount = formatCompensation(job.getCompensation());
 
         printBlock(String.valueOf(number), " - ", 10);
         printBlock(job.getJobTitle(), " - ", 20);
         printBlock(job.getCompany(), " - ", 20);
         printBlock(job.getLocation().getState() + ", " + job.getLocation().getCity(),  " - ", 20);
-        printBlock(compensation, " - ", 20);
+        printBlock(amount, " - ", 20);
         printBlock(String.valueOf(relevancy), " - ", 20);
         System.out.println("\n");
     }
@@ -353,5 +390,45 @@ public class UserIO {
             }
         }
         return false;
+    }
+
+    public static void printBlock(String attribute, String value) {
+        System.out.println((attribute) + valueBlock(value));
+    }
+
+    public static void printBlock(LinkedHashMap<String, String> data) {
+        data.forEach((k, v) -> System.out.println(attributeBlock(k) + valueBlock(v)));
+    }
+
+    private static String valueBlock(String text) {
+        if (text == null) {
+            return null;
+        }
+        StringBuilder sb = new StringBuilder();
+        int charCount = 0;
+        for (String word : text.split(" ")) {
+            if (word.length() + charCount > VALUE_WIDTH) {
+                sb.append("\n");
+                sb.append(" ".repeat(ATTRIBUTE_WIDTH));
+                charCount = 0;
+            }
+            sb.append(word).append(" ");
+            charCount += word.length() + 1;
+        }
+        return sb.toString();
+    }
+
+    private static String attributeBlock(String text) {
+        if (text == null) {
+            return null;
+        }
+        StringBuilder sb = new StringBuilder(text);
+        int attLen = sb.length();
+
+        if (attLen + 1 >= ATTRIBUTE_WIDTH)
+            sb.delete(ATTRIBUTE_WIDTH - 6, attLen).append("... : ");
+        else
+            sb.append(" ".repeat(ATTRIBUTE_WIDTH - attLen - 2)).append(": ");
+        return sb.toString();
     }
 }
